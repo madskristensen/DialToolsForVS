@@ -19,12 +19,21 @@ namespace DialToolsForVS
         private static IVsUIShell5 _shell = GetService<SVsUIShell, IVsUIShell5>();
         private static IVsSolution5 _solution = GetService<IVsSolution, IVsSolution5>();
         private static IComponentModel _compositionService;
+        private static IVsStatusbar statusbar = GetService<SVsStatusbar, IVsStatusbar>();
 
         internal static DTE2 DTE { get; } = GetService<DTE, DTE2>();
 
         public static TReturnType GetService<TServiceType, TReturnType>()
         {
             return (TReturnType)ServiceProvider.GlobalProvider.GetService(typeof(TServiceType));
+        }
+
+
+        public static void WriteStatus(string text)
+        {
+            statusbar.FreezeOutput(0);
+            statusbar.SetText(text);
+            statusbar.FreezeOutput(1);
         }
 
         /// <summary>Gets the root folder of any Visual Studio project.</summary>

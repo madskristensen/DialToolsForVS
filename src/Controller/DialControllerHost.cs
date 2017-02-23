@@ -128,6 +128,7 @@ namespace DialToolsForVS
             }
 
             _status.Activate();
+            VsHelpers.WriteStatus("Dial activated");
         }
 
         private void OnControlLost(RadialController sender, object args)
@@ -136,6 +137,8 @@ namespace DialToolsForVS
             {
                 _status.Deactivate();
             }
+
+            VsHelpers.WriteStatus("Dial deactivated");
         }
 
         private void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)
