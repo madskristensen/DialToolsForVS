@@ -9,7 +9,7 @@ namespace DialToolsForVS
     {
         public const string Id = "d4ce1d82-9bf6-4136-bd56-43cde615e0db";
         public const string Name = "Surface Dial Tools for Visual Studio";
-        public const string Description = @"Adds features to Visual Studio specific to the Surface DialG";
+        public const string Description = @"Adds features to Visual Studio specific to the Surface Dial";
         public const string Language = "en-US";
         public const string Version = "0.5";
         public const string Author = "Mads Kristensen";

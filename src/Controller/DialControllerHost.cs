@@ -16,11 +16,12 @@ using System.Windows.Threading;
 
 namespace DialToolsForVS
 {
-    public class DialControllerHost
+    public class DialControllerHost : IDialControllerHost
     {
         private DTE2 _dte;
         private RadialController _radialController;
         private List<IDialController> _controllers;
+        private RadialControllerMenuItem _menuItem;
 
         [ImportMany(typeof(IDialControllerProvider))]
         private IEnumerable<IDialControllerProvider> _providers { get; set; }
@@ -30,8 +31,8 @@ namespace DialToolsForVS
             _dte = dte;
 
             CreateController();
-            AddItemFromImageFile();
             HookUpEvents();
+            AddItemFromImageFile();
         }
 
         public static DialControllerHost Instance
@@ -72,14 +73,22 @@ namespace DialToolsForVS
             if (asyncStatus == AsyncStatus.Completed)
             {
                 StorageFile imageFile = asyncInfo.GetResults();
-                var menuItem = RadialControllerMenuItem.CreateFromIcon("Visual Studio", RandomAccessStreamReference.CreateFromFile(imageFile));
-                _radialController.Menu.Items.Add(menuItem);
+                _menuItem = RadialControllerMenuItem.CreateFromIcon("Visual Studio", RandomAccessStreamReference.CreateFromFile(imageFile));
+                _radialController.Menu.Items.Add(_menuItem);
 
-                ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
-                {
-                    _radialController.Menu.SelectMenuItem(menuItem);
-                });
+                RequestActivation();
             }
+        }
+
+        public void RequestActivation()
+        {
+            if (!_radialController.Menu.Items.Contains(_menuItem) || _radialController.Menu.GetSelectedMenuItem() == _menuItem)
+                return;
+
+            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
+            {
+                _radialController.Menu.SelectMenuItem(_menuItem);
+            });
         }
 
         private void HookUpEvents()
@@ -98,7 +107,7 @@ namespace DialToolsForVS
 
                 foreach (IDialControllerProvider provider in _providers)
                 {
-                    IDialController controller = provider.TryCreateController();
+                    IDialController controller = provider.TryCreateController(this);
 
                     if (controller != null)
                         _controllers.Add(controller);

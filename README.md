@@ -16,6 +16,7 @@ See the [change log](CHANGELOG.md) for changes and road map.
 
 - Solution Explorer navigation
 - Debugger commands
+- Error navigator
 - Lighten/brighten hex colors
 - Increase/decrease numbers
 
@@ -25,6 +26,9 @@ See the [change log](CHANGELOG.md) for changes and road map.
 coming soon...
 
 ### Debugger commands
+coming soon...
+
+### Error navigator
 coming soon...
 
 ### Lighten/brighten hex colors

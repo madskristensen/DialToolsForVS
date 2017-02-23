@@ -98,6 +98,11 @@ namespace DialToolsForVS
             return window.Type == vsWindowType.vsWindowTypeSolutionExplorer;
         }
 
+        public static bool IsErrorList(this Window window)
+        {
+            return window.ObjectKind == WindowKinds.vsWindowKindErrorList;
+        }
+
         public static bool IsKind(this Project project, params string[] kindGuids)
         {
             foreach (string guid in kindGuids)

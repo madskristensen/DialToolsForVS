@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controller\DialControllerHost.cs" />
+    <Compile Include="Controller\IDialControllerHost.cs" />
     <Compile Include="Controller\RotationDirection.cs" />
     <Compile Include="Controller\IDialController.cs" />
     <Compile Include="Controller\IDialControllerProvider.cs" />
@@ -58,6 +59,8 @@
     <Compile Include="Providers\Color\ColorController.cs" />
     <Compile Include="Providers\Color\ColorControllerProvider.cs" />
     <Compile Include="Providers\Color\HSLColor.cs" />
+    <Compile Include="Providers\ErrorNavigator\ErrorNavigatorController.cs" />
+    <Compile Include="Providers\ErrorNavigator\ErrorNavigatorControllerProvider.cs" />
     <Compile Include="Providers\SolutionExplorer\SolutionExplorerController.cs" />
     <Compile Include="Providers\SolutionExplorer\SolutionExplorerControllerProvider.cs" />
     <Compile Include="Providers\Number\NumbersController.cs" />

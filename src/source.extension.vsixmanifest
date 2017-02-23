@@ -3,7 +3,7 @@
     <Metadata>
         <Identity Id="d4ce1d82-9bf6-4136-bd56-43cde615e0db" Version="0.5" Language="en-US" Publisher="Mads Kristensen" />
         <DisplayName>Surface Dial Tools for Visual Studio</DisplayName>
-        <Description xml:space="preserve">Adds features to Visual Studio specific to the Surface DialG</Description>
+        <Description xml:space="preserve">Adds features to Visual Studio specific to the Surface Dial</Description>
         <License>Resources\LICENSE</License>
         <Icon>Resources\Icon.png</Icon>
         <PreviewImage>Resources\Icon.png</PreviewImage>

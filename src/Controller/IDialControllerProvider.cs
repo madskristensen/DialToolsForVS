@@ -2,6 +2,6 @@
 {
     public interface IDialControllerProvider
     {
-        IDialController TryCreateController();
+        IDialController TryCreateController(IDialControllerHost host);
     }
 }
