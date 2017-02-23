@@ -48,11 +48,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Controller\DialControllerHost.cs" />
-    <Compile Include="Controller\IDialControllerHost.cs" />
-    <Compile Include="Controller\RotationDirection.cs" />
-    <Compile Include="Controller\IDialController.cs" />
-    <Compile Include="Controller\IDialControllerProvider.cs" />
-    <Compile Include="Controller\Specificity.cs" />
+    <Compile Include="Contracts\IDialControllerHost.cs" />
+    <Compile Include="Contracts\RotationDirection.cs" />
+    <Compile Include="Contracts\IDialController.cs" />
+    <Compile Include="Contracts\IDialControllerProvider.cs" />
+    <Compile Include="Contracts\Specificity.cs" />
     <Compile Include="Controller\StatusBarControl.cs" />
     <Compile Include="Controller\StatusbarInjector.cs" />
     <Compile Include="DialPackage.cs" />

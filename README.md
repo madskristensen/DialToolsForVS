@@ -16,6 +16,7 @@ See the [change log](CHANGELOG.md) for changes and road map.
 ## Features
 
 - Status bar indicator
+- Default behavior enabled
 - Solution Explorer navigation
 - Debugger commands
 - Error navigator
@@ -34,6 +35,13 @@ When the Visual Studio item on the Dial menu hasn't been activated, the status b
 When it is active, the icon looks like this
 
 ![Status inactive](art/status-active.png)
+
+### Default behavior enabled
+By default, the Surface Dial can only zoom and scroll documents in Visual Studio. By enabling default behaviors for the Dial, Visual Studio feels like it has natural support for the Dial.
+
+- **Rotate right**: does the same as arrow down
+- **Rotate left**: does the same as arrow up
+- **Click**: does the same as then ENTER key
 
 ### Solution Explorer navigation
 When the Solution Explorer tool window is active, you can use the dial to navigate it.
