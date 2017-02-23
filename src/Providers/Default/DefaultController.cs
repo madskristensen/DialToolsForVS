@@ -10,7 +10,7 @@ namespace DialToolsForVS
         public bool CanHandleClick => true;
         public bool CanHandleRotate => true;
 
-        public bool OnClick(RadialControllerButtonClickedEventArgs args)
+        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
         {
             if (VsHelpers.DTE.ActiveWindow.IsDocument())
             {
@@ -26,10 +26,10 @@ namespace DialToolsForVS
                 SendKeys.Send("{ENTER}");
             }
 
-            return true;
+            e.Handled = true;
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public void OnRotate(RotationDirection direction, DialEventArgs e)
         {
             if (direction == RotationDirection.Right)
             {
@@ -40,7 +40,7 @@ namespace DialToolsForVS
                 SendKeys.Send("{UP}");
             }
 
-            return true;
+            e.Handled = true;
         }
     }
 }

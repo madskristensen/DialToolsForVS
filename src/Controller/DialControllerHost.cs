@@ -19,7 +19,6 @@ namespace DialToolsForVS
 {
     internal class DialControllerHost : IDialControllerHost
     {
-        private DTE2 _dte;
         private RadialController _radialController;
         private List<IDialController> _controllers;
         private RadialControllerMenuItem _menuItem;
@@ -28,10 +27,8 @@ namespace DialToolsForVS
         [ImportMany(typeof(IDialControllerProvider))]
         private IEnumerable<IDialControllerProvider> _providers { get; set; }
 
-        private DialControllerHost(DTE2 dte)
+        private DialControllerHost()
         {
-            _dte = dte;
-
             CreateController();
             CreateStatusBar();
             HookUpEvents();
@@ -44,14 +41,9 @@ namespace DialToolsForVS
             private set;
         }
 
-        public static async Tasks.Task InitializeAsync(AsyncPackage package)
+        public static void Initialize()
         {
-            var dte = await package.GetServiceAsync(typeof(DTE)) as DTE2;
-
-            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
-            {
-                Instance = new DialControllerHost(dte);
-            });
+            Instance = new DialControllerHost();
         }
 
         private void CreateController()
@@ -59,7 +51,7 @@ namespace DialToolsForVS
             var interop = (IRadialControllerInterop)System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialController));
             Guid guid = typeof(RadialController).GetInterface("IRadialController").GUID;
 
-            _radialController = interop.CreateForWindow(new IntPtr(_dte.MainWindow.HWnd), ref guid);
+            _radialController = interop.CreateForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
         }
 
         private void AddMenuItem()
@@ -143,21 +135,58 @@ namespace DialToolsForVS
 
         private void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)
         {
+            var evt = new DialEventArgs();
+
             foreach (IDialController controller in _controllers.Where(c => c.CanHandleClick))
             {
-                if (controller.OnClick(args))
-                    break;
+                controller.OnClick(args, evt);
+
+                try
+                {
+                    if (evt.Handled)
+                    {
+                        if (!string.IsNullOrEmpty(evt.Action))
+                        {
+                            VsHelpers.WriteStatus(evt.Action);
+                        }
+
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.Write(ex);
+                    // TODO: implement logger
+                }
             }
         }
 
         private void OnRotationChanged(RadialController sender, RadialControllerRotationChangedEventArgs args)
         {
+            var evt = new DialEventArgs();
+            RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
+
             foreach (IDialController controller in _controllers.Where(c => c.CanHandleRotate))
             {
-                RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
+                try
+                {
+                    controller.OnRotate(direction, evt);
 
-                if (controller.OnRotate(direction))
-                    break;
+                    if (evt.Handled)
+                    {
+                        if (!string.IsNullOrEmpty(evt.Action))
+                        {
+                            VsHelpers.WriteStatus(evt.Action);
+                        }
+
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.Write(ex);
+                    // TODO: implement logger
+                }
             }
         }
     }

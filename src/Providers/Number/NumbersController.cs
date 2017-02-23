@@ -57,15 +57,15 @@ namespace DialToolsForVS
             }
         }
 
-        public bool OnClick(RadialControllerButtonClickedEventArgs args)
+        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public void OnRotate(RotationDirection direction, DialEventArgs e)
         {
             if (_view == null || _span == null || _span.IsEmpty)
-                return false;
+                return;
 
             var bufferSpan = new SnapshotSpan(_view.TextBuffer.CurrentSnapshot, _span);
             string text = bufferSpan.GetText();
@@ -77,14 +77,20 @@ namespace DialToolsForVS
                 format = "F1";
 
             if (direction == RotationDirection.Left)
-                UpdateSpan(bufferSpan, (_number - delta).ToString(format, CultureInfo.InvariantCulture), "Decrease value");
+            {
+                e.Action = "Decrease value";
+                UpdateSpan(bufferSpan, (_number - delta).ToString(format, CultureInfo.InvariantCulture));
+            }
             else
-                UpdateSpan(bufferSpan, (_number + delta).ToString(format, CultureInfo.InvariantCulture), "Increase value");
+            {
+                e.Action = "Increase value";
+                UpdateSpan(bufferSpan, (_number + delta).ToString(format, CultureInfo.InvariantCulture));
+            }
 
-            return true;
+            e.Handled = true;
         }
 
-        private static void UpdateSpan(SnapshotSpan span, string result, string undoTitle)
+        private static void UpdateSpan(SnapshotSpan span, string result)
         {
             if (result.Length > 1)
                 result = result.TrimStart('0');

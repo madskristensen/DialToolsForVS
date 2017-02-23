@@ -4,6 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Tasks = System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace DialToolsForVS
 {
@@ -12,11 +13,14 @@ namespace DialToolsForVS
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuids.guidPackageString)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string)]
-    internal sealed class DialPackage : AsyncPackage
+    internal sealed class DialPackage : Package
     {
-        protected override async Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override void Initialize()
         {
-            await DialControllerHost.InitializeAsync(this);
+            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
+            {
+                DialControllerHost.Initialize();
+            });
         }
     }
 }

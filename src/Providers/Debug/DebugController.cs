@@ -28,25 +28,28 @@ namespace DialToolsForVS
             get { return CanHandleClick; }
         }
 
-        public bool OnClick(RadialControllerButtonClickedEventArgs args)
+        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
         {
             _dte.Application.Debugger.StepInto();
 
-            return true;
+            e.Action = "Step into";
+            e.Handled = true;
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public void OnRotate(RotationDirection direction, DialEventArgs e)
         {
             if (direction == RotationDirection.Right)
             {
                 _dte.Application.Debugger.StepOver();
+                e.Action = "Step over";
             }
             else
             {
                 _dte.Application.Debugger.StepOut();
+                e.Action = "Step out";
             }
 
-            return true;
+            e.Handled = true;
         }
     }
 }

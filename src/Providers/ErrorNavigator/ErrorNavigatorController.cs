@@ -35,23 +35,25 @@ namespace DialToolsForVS
             get { return _errorList.TableControl.Entries.Any(); }
         }
 
-        public bool OnClick(RadialControllerButtonClickedEventArgs args)
+        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public void OnRotate(RotationDirection direction, DialEventArgs e)
         {
             if (direction == RotationDirection.Right)
             {
                 Execute("View.NextError");
+                e.Action = "Go to next error";
             }
             else
             {
                 Execute("View.PreviousError");
+                e.Action = "Go to previous error";
             }
 
-            return true;
+            e.Handled = true;
         }
 
         private static void Execute(string commandName)

@@ -51,15 +51,15 @@ namespace DialToolsForVS
             }
         }
 
-        public bool OnClick(RadialControllerButtonClickedEventArgs args)
+        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public void OnRotate(RotationDirection direction, DialEventArgs e)
         {
             if (_view == null || _span == null || _span.IsEmpty)
-                return false;
+                return;
 
             var bufferSpan = new SnapshotSpan(_view.TextBuffer.CurrentSnapshot, _span);
             string text = bufferSpan.GetText();
@@ -73,7 +73,8 @@ namespace DialToolsForVS
 
             UpdateSpan(bufferSpan, ConvertToHex(newColor).ToLowerInvariant());
 
-            return true;
+            e.Handled = true;
+            e.Action = direction == RotationDirection.Left ? "Darkened color value" : "Lightened color value";
         }
 
         private static string ConvertToHex(Color c)

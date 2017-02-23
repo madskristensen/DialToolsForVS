@@ -47,6 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Contracts\DialEventArgs.cs" />
     <Compile Include="Controller\DialControllerHost.cs" />
     <Compile Include="Contracts\IDialControllerHost.cs" />
     <Compile Include="Contracts\RotationDirection.cs" />
