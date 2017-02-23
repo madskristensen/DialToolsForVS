@@ -17,7 +17,7 @@ namespace DialToolsForVS
     internal class DialControllerHost : IDialControllerHost
     {
         private RadialController _radialController;
-        private List<IDialController> _controllers;
+        private IEnumerable<IDialController> _controllers;
         private RadialControllerMenuItem _menuItem;
         private StatusBarControl _status;
 
@@ -92,10 +92,13 @@ namespace DialToolsForVS
 
         private void HookUpEvents()
         {
-            _radialController.RotationChanged += OnRotationChanged;
-            _radialController.ButtonClicked += OnButtonClicked;
-            _radialController.ControlAcquired += OnControlAcquired;
-            _radialController.ControlLost += OnControlLost;
+            if (_radialController != null)
+            {
+                _radialController.RotationChanged += OnRotationChanged;
+                _radialController.ButtonClicked += OnButtonClicked;
+                _radialController.ControlAcquired += OnControlAcquired;
+                _radialController.ControlLost += OnControlLost;
+            }
         }
 
         private void OnControlAcquired(RadialController sender, RadialControllerControlAcquiredEventArgs args)
@@ -103,21 +106,18 @@ namespace DialToolsForVS
             if (_providers == null)
             {
                 this.SatisfyImportsOnce();
-                _controllers = new List<IDialController>();
 
-                foreach (IDialControllerProvider provider in _providers)
-                {
-                    IDialController controller = provider.TryCreateController(this);
-
-                    if (controller != null)
-                        _controllers.Add(controller);
-                }
-
-                _controllers.Sort((x, y) => x.Specificity.CompareTo(y.Specificity));
+                _controllers = _providers
+                    .Select(provider => provider.TryCreateController(this))
+                    .Where(controller => controller != null)
+                    .OrderBy(controller => controller.Specificity);
             }
 
-            _status.Activate();
-            VsHelpers.WriteStatus("Dial activated");
+            if (_status != null)
+            {
+                _status.Activate();
+                VsHelpers.WriteStatus("Dial activated");
+            }
         }
 
         private void OnControlLost(RadialController sender, object args)
@@ -125,9 +125,8 @@ namespace DialToolsForVS
             if (_status != null)
             {
                 _status.Deactivate();
+                VsHelpers.WriteStatus("Dial deactivated");
             }
-
-            VsHelpers.WriteStatus("Dial deactivated");
         }
 
         private void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)

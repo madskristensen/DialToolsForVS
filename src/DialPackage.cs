@@ -19,7 +19,14 @@ namespace DialToolsForVS
         {
             ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
             {
-                DialControllerHost.Initialize();
+                try
+                {
+                    DialControllerHost.Initialize();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(ex);
+                }
             });
 
             return base.InitializeAsync(cancellationToken, progress);
