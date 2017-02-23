@@ -23,19 +23,39 @@ See the [change log](CHANGELOG.md) for changes and road map.
 ![Dial Menu](art/dial-menu.png)
 
 ### Solution Explorer navigation
-Description coming soon...
+When the Solution Explorer tool window is active, you can use the dial to navigate it.
+
+- **Rotate right**: does the same as arrow down
+- **Rotate left**: does the same as arrow up
+- **Click**: expands/collapses folders and parent items
 
 ### Debugger commands
-Description coming soon...
+When a breakpoint is hit, use the dial to step into, over and out.
+
+- **Rotate right**: step over
+- **Rotate left**: step out
+- **Click**: step into
 
 ### Error navigator
-Description coming soon...
+When the error list contain errors, the dial makes it easy to navigate to the next error in the list.
+
+- **Rotate right**: go to next error
+- **Rotate left**: go to previous error
+- **Click**: [no action]
 
 ### Lighten/brighten hex colors
-Description coming soon...
+Hex colors found primarily in .css files can be lightened and darkened easily. Place the caret in a hex value (e.g. `#ff0000`) and rotate the dial.
+
+- **Rotate right**: lightens the color value
+- **Rotate left**: darkens the color value
+- **Click**: [no action]
 
 ### Increase/decrease numbers
-Description coming soon...
+When the caret is located in any number, you can increase and decrease the numerical value.
+
+- **Rotate right**: increase the number
+- **Rotate left**: decrease the number
+- **Click**: [no action]
 
 ## Contribute
 Check out the [contribution guidelines](.github/CONTRIBUTING.md)
