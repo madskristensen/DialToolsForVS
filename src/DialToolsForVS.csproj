@@ -71,7 +71,7 @@
     <Compile Include="Providers\Debug\DebugController.cs" />
     <Compile Include="Providers\Number\NumbersControllerProvider.cs" />
     <Compile Include="Providers\Debug\DebugControllerProvider.cs" />
-    <Compile Include="RadialControllerInterop.cs" />
+    <Compile Include="Controller\RadialControllerInterop.cs" />
     <Compile Include="source.extension.cs">
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>

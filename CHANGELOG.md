@@ -1,6 +1,7 @@
 # Road map
 
 - [x] Status bar text update on activation state change
+- [ ] Write dial event description in status bar
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for

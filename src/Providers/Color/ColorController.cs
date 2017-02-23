@@ -3,17 +3,15 @@ using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
 using System;
+using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Windows.UI.Input;
-using System.Windows.Forms;
-using System.Drawing;
 
 namespace DialToolsForVS
 {
     internal class ColorController : IDialController
     {
-        private DTE2 _dte = VsHelpers.DTE;
         private IWpfTextView _view;
         private Span _span;
 
@@ -25,7 +23,7 @@ namespace DialToolsForVS
         {
             get
             {
-                if (_dte.ActiveWindow?.Kind != "Document")
+                if (!VsHelpers.DTE.ActiveWindow.IsDocument())
                     return false;
 
                 _view = VsHelpers.GetCurentTextView();

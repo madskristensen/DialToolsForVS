@@ -12,7 +12,7 @@ namespace DialToolsForVS
 
         public bool OnClick(RadialControllerButtonClickedEventArgs args)
         {
-            if (VsHelpers.DTE.ActiveWindow.Kind == "Document")
+            if (VsHelpers.DTE.ActiveWindow.IsDocument())
             {
                 IWpfTextView view = VsHelpers.GetCurentTextView();
 

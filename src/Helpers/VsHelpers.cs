@@ -28,7 +28,6 @@ namespace DialToolsForVS
             return (TReturnType)ServiceProvider.GlobalProvider.GetService(typeof(TServiceType));
         }
 
-
         public static void WriteStatus(string text)
         {
             statusbar.FreezeOutput(0);
@@ -104,12 +103,17 @@ namespace DialToolsForVS
 
         public static bool IsSolutionExplorer(this Window window)
         {
-            return window.Type == vsWindowType.vsWindowTypeSolutionExplorer;
+            return window?.Type == vsWindowType.vsWindowTypeSolutionExplorer;
         }
 
         public static bool IsErrorList(this Window window)
         {
-            return window.ObjectKind == WindowKinds.vsWindowKindErrorList;
+            return window?.ObjectKind == WindowKinds.vsWindowKindErrorList;
+        }
+
+        public static bool IsDocument(this Window window)
+        {
+            return window?.Kind == "Document";
         }
 
         public static bool IsKind(this Project project, params string[] kindGuids)

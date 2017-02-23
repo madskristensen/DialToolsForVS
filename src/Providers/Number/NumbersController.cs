@@ -11,7 +11,6 @@ namespace DialToolsForVS
 {
     internal class NumbersController : IDialController
     {
-        private DTE2 _dte = VsHelpers.DTE;
         private IWpfTextView _view;
         private Span _span;
         private double _number;
@@ -24,7 +23,7 @@ namespace DialToolsForVS
         {
             get
             {
-                if (_dte.ActiveWindow?.Kind != "Document")
+                if (!VsHelpers.DTE.ActiveWindow.IsDocument())
                     return false;
 
                 _view = VsHelpers.GetCurentTextView();
