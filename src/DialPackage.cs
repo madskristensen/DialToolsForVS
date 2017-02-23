@@ -3,8 +3,8 @@ using Microsoft.VisualStudio.Shell;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Tasks = System.Threading.Tasks;
 using System.Windows.Threading;
+using Tasks = System.Threading.Tasks;
 
 namespace DialToolsForVS
 {
@@ -13,14 +13,16 @@ namespace DialToolsForVS
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuids.guidPackageString)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string)]
-    internal sealed class DialPackage : Package
+    internal sealed class DialPackage : AsyncPackage
     {
-        protected override void Initialize()
+        protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
             {
                 DialControllerHost.Initialize();
             });
+
+            return base.InitializeAsync(cancellationToken, progress);
         }
     }
 }

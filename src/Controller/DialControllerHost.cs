@@ -1,6 +1,4 @@
-﻿using EnvDTE;
-using EnvDTE80;
-using Microsoft.VisualStudio.Shell;
+﻿using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -13,7 +11,6 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Input;
-using Tasks = System.Threading.Tasks;
 
 namespace DialToolsForVS
 {
@@ -155,8 +152,7 @@ namespace DialToolsForVS
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.Write(ex);
-                    // TODO: implement logger
+                    Logger.Log(ex);
                 }
             }
         }
@@ -184,8 +180,7 @@ namespace DialToolsForVS
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.Write(ex);
-                    // TODO: implement logger
+                    Logger.Log(ex);
                 }
             }
         }

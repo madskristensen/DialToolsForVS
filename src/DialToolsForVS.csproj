@@ -57,6 +57,7 @@
     <Compile Include="Controller\StatusBarControl.cs" />
     <Compile Include="Controller\StatusbarInjector.cs" />
     <Compile Include="DialPackage.cs" />
+    <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\VsHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\Color\ColorController.cs" />

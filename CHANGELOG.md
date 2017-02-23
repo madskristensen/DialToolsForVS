@@ -2,7 +2,7 @@
 
 - [x] Status bar text update on activation state change
 - [x] Write dial event description in status bar
-- [ ] Output Window logging
+- [x] Output Window logging
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for
