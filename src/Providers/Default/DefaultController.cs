@@ -1,15 +1,12 @@
-﻿using EnvDTE;
-using EnvDTE80;
+﻿using Microsoft.VisualStudio.Text.Editor;
 using System.Windows.Forms;
 using Windows.UI.Input;
-using Microsoft.VisualStudio.Text.Editor;
 
 namespace DialToolsForVS
 {
     internal class DefaultController : IDialController
     {
-        public Specificity Specificity => Specificity.None;
-
+        public Specificity Specificity => (Specificity)int.MaxValue;
         public bool CanHandleClick => true;
         public bool CanHandleRotate => true;
 

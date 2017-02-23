@@ -6,7 +6,6 @@
         DocumentType = 2,
         IdeState = 3,
         ToolWindow = 4,
-        Global = 5,
-        None = 10,
+        Global = 5
     }
 }
