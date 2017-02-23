@@ -19,7 +19,7 @@ namespace DialToolsForVS
             {
                 Width = 12,
                 Height = 12,
-                Margin = new Thickness(5, 3, 0, 5),
+                Margin = new Thickness(5, 4, 0, 5),
                 Stroke = Brushes.WhiteSmoke,
                 StrokeThickness = 2
             };

@@ -15,6 +15,7 @@ See the [change log](CHANGELOG.md) for changes and road map.
 
 ## Features
 
+- Status bar indicator
 - Solution Explorer navigation
 - Debugger commands
 - Error navigator
@@ -22,6 +23,17 @@ See the [change log](CHANGELOG.md) for changes and road map.
 - Increase/decrease numbers
 
 ![Dial Menu](art/dial-menu.png)
+
+### Status bar indicator
+An icon is placed at the left corner of the Status Bar indicating the current state of the Dial. 
+
+When the Visual Studio item on the Dial menu hasn't been activated, the status bar icon looks like this
+
+![Status inactive](art/status-inactive.png)
+
+When it is active, the icon looks like this
+
+![Status inactive](art/status-active.png)
 
 ### Solution Explorer navigation
 When the Solution Explorer tool window is active, you can use the dial to navigate it.
