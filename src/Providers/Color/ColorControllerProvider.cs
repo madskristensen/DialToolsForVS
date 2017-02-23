@@ -3,7 +3,7 @@
 namespace DialToolsForVS
 {
     [Export(typeof(IDialControllerProvider))]
-    public class ColorControllerProvider : IDialControllerProvider
+    internal class ColorControllerProvider : IDialControllerProvider
     {
         public IDialController TryCreateController(IDialControllerHost host)
         {

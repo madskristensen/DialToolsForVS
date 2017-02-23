@@ -11,7 +11,7 @@ using System.Drawing;
 
 namespace DialToolsForVS
 {
-    public class ColorController : IDialController
+    internal class ColorController : IDialController
     {
         private DTE2 _dte = VsHelpers.DTE;
         private IWpfTextView _view;

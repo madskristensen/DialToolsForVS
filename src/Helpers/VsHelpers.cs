@@ -14,7 +14,7 @@ using Microsoft.VisualStudio;
 
 namespace DialToolsForVS
 {
-    public static class VsHelpers
+    internal static class VsHelpers
     {
         private static IVsUIShell5 _shell = GetService<SVsUIShell, IVsUIShell5>();
         private static IVsSolution5 _solution = GetService<IVsSolution, IVsSolution5>();

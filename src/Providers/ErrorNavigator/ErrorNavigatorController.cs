@@ -7,7 +7,7 @@ using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
-    public class ErrorNavigatorController : IDialController
+    internal class ErrorNavigatorController : IDialController
     {
         private IErrorList _errorList = VsHelpers.DTE.ToolWindows.ErrorList as IErrorList;
         private WindowEvents _events;

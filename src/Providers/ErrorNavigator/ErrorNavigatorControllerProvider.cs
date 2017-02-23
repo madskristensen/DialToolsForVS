@@ -3,7 +3,7 @@
 namespace DialToolsForVS
 {
     [Export(typeof(IDialControllerProvider))]
-    public class ErrorNavigatorControllerProvider : IDialControllerProvider
+    internal class ErrorNavigatorControllerProvider : IDialControllerProvider
     {
         public IDialController TryCreateController(IDialControllerHost host)
         {

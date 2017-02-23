@@ -12,7 +12,7 @@ namespace DialToolsForVS
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuids.guidPackageString)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string, PackageAutoLoadFlags.BackgroundLoad)]
-    public sealed class DialPackage : AsyncPackage
+    internal sealed class DialPackage : AsyncPackage
     {
         protected override async Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {

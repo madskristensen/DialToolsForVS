@@ -5,7 +5,7 @@ using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
-    public class SolutionExplorerController : IDialController
+    internal class SolutionExplorerController : IDialController
     {
         private DTE2 _dte = VsHelpers.DTE;
 

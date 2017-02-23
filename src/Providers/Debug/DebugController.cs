@@ -4,7 +4,7 @@ using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
-    public class DebugController : IDialController
+    internal class DebugController : IDialController
     {
         private DTE2 _dte = VsHelpers.DTE;
         private DebuggerEvents _events;

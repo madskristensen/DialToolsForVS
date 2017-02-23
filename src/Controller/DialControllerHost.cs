@@ -5,19 +5,19 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Threading;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Input;
 using Tasks = System.Threading.Tasks;
-using System.Linq;
-using System.Windows.Threading;
-using System.Windows;
 
 namespace DialToolsForVS
 {
-    public class DialControllerHost : IDialControllerHost
+    internal class DialControllerHost : IDialControllerHost
     {
         private DTE2 _dte;
         private RadialController _radialController;

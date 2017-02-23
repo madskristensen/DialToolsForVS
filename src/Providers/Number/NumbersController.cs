@@ -9,7 +9,7 @@ using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
-    public class NumbersController : IDialController
+    internal class NumbersController : IDialController
     {
         private DTE2 _dte = VsHelpers.DTE;
         private IWpfTextView _view;
