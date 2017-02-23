@@ -1,6 +1,5 @@
 # Road map
 
-- [x] Default global provider handles basic rotate and click
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for
@@ -17,3 +16,4 @@ on the official Visual Studio extension gallery.
 - [x] Initial release
 - [x] Error navigator by rotation
 - [x] Status bar indicator
+- [x] Default global provider handles basic rotate and click
