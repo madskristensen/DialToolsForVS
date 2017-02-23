@@ -41,7 +41,7 @@ By default, the Surface Dial can only zoom and scroll documents in Visual Studio
 
 - **Rotate right**: does the same as arrow down
 - **Rotate left**: does the same as arrow up
-- **Click**: does the same as then ENTER key
+- **Click**: In a document it opens the context menu, otherwise it does the same as then ENTER key
 
 ### Solution Explorer navigation
 When the Solution Explorer tool window is active, you can use the dial to navigate it.

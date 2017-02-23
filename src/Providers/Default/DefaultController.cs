@@ -2,6 +2,7 @@
 using EnvDTE80;
 using System.Windows.Forms;
 using Windows.UI.Input;
+using Microsoft.VisualStudio.Text.Editor;
 
 namespace DialToolsForVS
 {
@@ -14,7 +15,19 @@ namespace DialToolsForVS
 
         public bool OnClick(RadialControllerButtonClickedEventArgs args)
         {
-            SendKeys.Send("{ENTER}");
+            if (VsHelpers.DTE.ActiveWindow.Kind == "Document")
+            {
+                IWpfTextView view = VsHelpers.GetCurentTextView();
+
+                if (view != null && view.HasAggregateFocus)
+                    SendKeys.Send("+{F10}");
+                else
+                    SendKeys.Send("{ENTER}");
+            }
+            else
+            {
+                SendKeys.Send("{ENTER}");
+            }
 
             return true;
         }

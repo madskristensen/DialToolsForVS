@@ -15,6 +15,7 @@ namespace DialToolsForVS
             _events.OnEnterBreakMode += delegate { host.RequestActivation(); };
         }
 
+
         public Specificity Specificity => Specificity.IdeState;
 
         public bool CanHandleClick
