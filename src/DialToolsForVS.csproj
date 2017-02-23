@@ -53,6 +53,8 @@
     <Compile Include="Controller\IDialController.cs" />
     <Compile Include="Controller\IDialControllerProvider.cs" />
     <Compile Include="Controller\Specificity.cs" />
+    <Compile Include="Controller\StatusBarControl.cs" />
+    <Compile Include="Controller\StatusbarInjector.cs" />
     <Compile Include="DialPackage.cs" />
     <Compile Include="Helpers\VsHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -207,6 +209,8 @@
       <HintPath>..\packages\Microsoft.VisualStudio.Validation.14.1.111\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>

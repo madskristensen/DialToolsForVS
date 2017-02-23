@@ -13,6 +13,7 @@ using Windows.UI.Input;
 using Tasks = System.Threading.Tasks;
 using System.Linq;
 using System.Windows.Threading;
+using System.Windows;
 
 namespace DialToolsForVS
 {
@@ -22,6 +23,7 @@ namespace DialToolsForVS
         private RadialController _radialController;
         private List<IDialController> _controllers;
         private RadialControllerMenuItem _menuItem;
+        private StatusBarControl _status;
 
         [ImportMany(typeof(IDialControllerProvider))]
         private IEnumerable<IDialControllerProvider> _providers { get; set; }
@@ -31,8 +33,9 @@ namespace DialToolsForVS
             _dte = dte;
 
             CreateController();
+            CreateStatusBar();
             HookUpEvents();
-            AddItemFromImageFile();
+            AddMenuItem();
         }
 
         public static DialControllerHost Instance
@@ -59,7 +62,7 @@ namespace DialToolsForVS
             _radialController = interop.CreateForWindow(new IntPtr(_dte.MainWindow.HWnd), ref guid);
         }
 
-        private void AddItemFromImageFile()
+        private void AddMenuItem()
         {
             string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string filePath = Path.Combine(folder, "Resources\\DialIcon.png");
@@ -80,6 +83,13 @@ namespace DialToolsForVS
             }
         }
 
+        private void CreateStatusBar()
+        {
+            _status = new StatusBarControl();
+            var injector = new StatusBarInjector(Application.Current.MainWindow);
+            injector.InjectControl(_status.Control);
+        }
+
         public void RequestActivation()
         {
             if (!_radialController.Menu.Items.Contains(_menuItem) || _radialController.Menu.GetSelectedMenuItem() == _menuItem)
@@ -96,6 +106,7 @@ namespace DialToolsForVS
             _radialController.RotationChanged += OnRotationChanged;
             _radialController.ButtonClicked += OnButtonClicked;
             _radialController.ControlAcquired += OnControlAcquired;
+            _radialController.ControlLost += OnControlLost;
         }
 
         private void OnControlAcquired(RadialController sender, RadialControllerControlAcquiredEventArgs args)
@@ -114,6 +125,16 @@ namespace DialToolsForVS
                 }
 
                 _controllers.Sort((x, y) => x.Specificity.CompareTo(y.Specificity));
+            }
+
+            _status.Activate();
+        }
+
+        private void OnControlLost(RadialController sender, object args)
+        {
+            if (_status != null)
+            {
+                _status.Deactivate();
             }
         }
 
