@@ -9,7 +9,7 @@ or get the [CI build](http://vsixgallery.com/extension/d4ce1d82-9bf6-4136-bd56-4
 
 Adds features to Visual Studio specific to the [Surface Dial](https://www.microsoftstore.com/store/msusa/en_US/pdp/Surface-Dial/productID.5074013900). You don't need a Surface Book or Surface Studio to take advantage of the Surface Dial.
 
-A Surface Dial is $99 and works with all modern Windows 10 computers. [Get yours today!](https://www.microsoftstore.com/store/msusa/en_US/pdp/Surface-Dial/productID.5074013900)
+A Surface Dial is $99 and works with all modern Windows 10 PCs. [Get yours today!](https://www.microsoftstore.com/store/msusa/en_US/pdp/Surface-Dial/productID.5074013900)
 
 See the [change log](CHANGELOG.md) for changes and road map.
 
