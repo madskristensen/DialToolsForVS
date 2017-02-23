@@ -2,13 +2,14 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/nk7vmh0assdw98da?svg=true)](https://ci.appveyor.com/project/madskristensen/dialtoolsforvs)
 
-<!-- Update the VS Gallery link after you upload the VSIX-->
-Download this extension from the [VS Gallery](https://visualstudiogallery.msdn.microsoft.com/[GuidFromGallery])
+Download this extension from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.SurfaceDialToolsforVisualStudio)
 or get the [CI build](http://vsixgallery.com/extension/d4ce1d82-9bf6-4136-bd56-43cde615e0db/).
 
 ---------------------------------------
 
-Adds features to Visual Studio specific to the Surface Dial.
+Adds features to Visual Studio specific to the [Surface Dial](https://www.microsoftstore.com/store/msusa/en_US/pdp/Surface-Dial/productID.5074013900). You don't need a Surface Book or Surface Studio to take advantage of the Surface Dial.
+
+A Surface Dial is $99 and works with all modern Windows 10 computers. [Get yours today!](https://www.microsoftstore.com/store/msusa/en_US/pdp/Surface-Dial/productID.5074013900)
 
 See the [change log](CHANGELOG.md) for changes and road map.
 
