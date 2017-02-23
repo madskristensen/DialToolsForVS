@@ -63,6 +63,8 @@
     <Compile Include="Providers\Color\HSLColor.cs" />
     <Compile Include="Providers\ErrorNavigator\ErrorNavigatorController.cs" />
     <Compile Include="Providers\ErrorNavigator\ErrorNavigatorControllerProvider.cs" />
+    <Compile Include="Providers\Default\DefaultController.cs" />
+    <Compile Include="Providers\Default\DefaultControllerProvider.cs" />
     <Compile Include="Providers\SolutionExplorer\SolutionExplorerController.cs" />
     <Compile Include="Providers\SolutionExplorer\SolutionExplorerControllerProvider.cs" />
     <Compile Include="Providers\Number\NumbersController.cs" />

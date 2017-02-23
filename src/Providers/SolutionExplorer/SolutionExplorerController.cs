@@ -18,13 +18,7 @@ namespace DialToolsForVS
                 return _dte.ActiveWindow.IsSolutionExplorer() && !_dte.SelectedItems.MultiSelect;
             }
         }
-        public bool CanHandleRotate
-        {
-            get
-            {
-                return _dte.ActiveWindow.IsSolutionExplorer();
-            }
-        }
+        public bool CanHandleRotate => false;
 
         public bool OnClick(RadialControllerButtonClickedEventArgs args)
         {
@@ -47,16 +41,16 @@ namespace DialToolsForVS
 
         public bool OnRotate(RotationDirection direction)
         {
-            if (direction == RotationDirection.Right)
-            {
-                SendKeys.Send("{DOWN}");
-            }
-            else
-            {
-                SendKeys.Send("{UP}");
-            }
+            //if (direction == RotationDirection.Right)
+            //{
+            //    SendKeys.Send("{DOWN}");
+            //}
+            //else
+            //{
+            //    SendKeys.Send("{UP}");
+            //}
 
-            return true;
+            return false;
         }
     }
 }

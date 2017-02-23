@@ -1,6 +1,7 @@
 # Road map
 
-- [ ] Nothing yet...
+- [x] Default global provider handles basic rotate and click
+- [ ] Add telemtry
 
 Features that have a checkmark are complete and available for
 download in the
