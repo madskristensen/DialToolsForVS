@@ -1,15 +1,14 @@
-﻿using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
+﻿using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Tasks = System.Threading.Tasks;
-using Microsoft.VisualStudio;
 
 namespace DialToolsForVS
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
+    [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(PackageGuids.guidPackageString)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string)]
