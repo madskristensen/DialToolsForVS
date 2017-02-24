@@ -4,6 +4,7 @@
 - [x] Intellisense rotation shifter
 - [x] Option to select default dial menu item
 - [x] Reset Zoom should move ZoomIn and ZoomOut till reaching 100%
+- [x] Fixed missing tooltip on status bar control
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for

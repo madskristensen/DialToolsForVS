@@ -31,6 +31,7 @@ namespace DialToolsForVS
             _text = new TextBlock
             {
                 Text = string.Empty,
+                ToolTip = "The Surface Dial is inactive.",
                 Foreground = Brushes.White,
                 FontWeight = FontWeights.Medium,
                 Margin = new Thickness(5, 4, 7, 0),
@@ -64,7 +65,7 @@ namespace DialToolsForVS
         public void Deactivate()
         {
             _ellipse.Fill = Brushes.Transparent;
-            Control.ToolTip = "The Surface Dial is inactive. Select the Visual Studio item from the Surface Dial menu to activate.";
+            Control.ToolTip = "The Surface Dial is inactive.";
             _text.Visibility = Visibility.Collapsed;
         }
     }
