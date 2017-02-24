@@ -48,7 +48,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Contracts\DialEventArgs.cs" />
-    <Compile Include="Contracts\PredefinedMonikers.cs" />
     <Compile Include="Controller\DialControllerHost.cs" />
     <Compile Include="Contracts\IDialControllerHost.cs" />
     <Compile Include="Contracts\RotationDirection.cs" />
@@ -61,9 +60,11 @@
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\VsHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\Color\ColorController.cs" />
-    <Compile Include="Providers\Color\ColorControllerProvider.cs" />
-    <Compile Include="Providers\Color\HSLColor.cs" />
+    <Compile Include="Providers\Editor\NumberShifter.cs" />
+    <Compile Include="Providers\Editor\EditorController.cs" />
+    <Compile Include="Providers\Editor\EditorControllerProvider.cs" />
+    <Compile Include="Providers\Editor\ColorShifter.cs" />
+    <Compile Include="Providers\Editor\HSLColor.cs" />
     <Compile Include="Providers\Bookmarks\BookmarksController.cs" />
     <Compile Include="Providers\Bookmarks\BookmarksControllerProvider.cs" />
     <Compile Include="Providers\Errors\ErrorsController.cs" />
@@ -74,11 +75,7 @@
     <Compile Include="Providers\Navigate\NavigateControllerProvider.cs" />
     <Compile Include="Providers\Zoom\ZoomController.cs" />
     <Compile Include="Providers\Zoom\ZoomControllerProvider.cs" />
-    <Compile Include="Providers\SolutionExplorer\SolutionExplorerController.cs" />
-    <Compile Include="Providers\SolutionExplorer\SolutionExplorerControllerProvider.cs" />
-    <Compile Include="Providers\Number\NumbersController.cs" />
     <Compile Include="Providers\Debug\DebugController.cs" />
-    <Compile Include="Providers\Number\NumbersControllerProvider.cs" />
     <Compile Include="Providers\Debug\DebugControllerProvider.cs" />
     <Compile Include="Controller\RadialControllerInterop.cs" />
     <Compile Include="source.extension.cs">
@@ -269,6 +266,9 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Providers\Scroll\icon.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Providers\Editor\icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Providers\Zoom\icon.png">

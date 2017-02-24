@@ -4,7 +4,7 @@ namespace DialToolsForVS
 {
     internal class ZoomController : IDialController
     {
-        public string Moniker => PredefinedMonikers.Zoom;
+        public string Moniker => ZoomControllerProvider.Moniker;
         public Specificity Specificity => Specificity.ToolWindow;
 
         public bool CanHandleClick => true;

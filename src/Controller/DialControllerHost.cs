@@ -118,7 +118,7 @@ namespace DialToolsForVS
 
         private void MenuItemInvoked(RadialControllerMenuItem sender, object args)
         {
-            throw new NotImplementedException();
+            _status.UpdateSelectedItem(sender.DisplayText);
         }
 
         public void RemoveMenuItem(string moniker)
@@ -147,7 +147,7 @@ namespace DialToolsForVS
             if (_status != null)
             {
                 _status.Activate();
-                _status.UpdateSelectedItem(sender.Menu.GetSelectedMenuItem().DisplayText);
+                _status.UpdateSelectedItem(sender.Menu.GetSelectedMenuItem()?.DisplayText);
             }
         }
 
@@ -223,13 +223,10 @@ namespace DialToolsForVS
             if (string.IsNullOrEmpty(moniker))
                 Enumerable.Empty<IDialController>();
 
-            var alwaysInclude = new List<string> { PredefinedMonikers.Scroll };
+            var alwaysInclude = new List<string> { ScrollControllerProvider.Moniker };
 
             try
             {
-                if (VsHelpers.DTE.ActiveWindow.IsDocument())
-                    alwaysInclude.Insert(1, PredefinedMonikers.Editor);
-
                 return _controllers.Where(c => c.Moniker == moniker || alwaysInclude.Contains(c.Moniker));
             }
             catch (Exception ex)
