@@ -12,8 +12,6 @@ namespace DialToolsForVS
 
         public string Moniker => EditorControllerProvider.Moniker;
 
-        public Specificity Specificity => Specificity.CaretPosition;
-
         public bool CanHandleClick => false;
 
         public bool CanHandleRotate

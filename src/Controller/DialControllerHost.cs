@@ -87,7 +87,8 @@ namespace DialToolsForVS
             _controllers = _providers
                 .Select(provider => provider.TryCreateController(this))
                 .Where(controller => controller != null)
-                .OrderBy(controller => controller.Specificity).ToArray();
+                .OrderBy(controller => controller.Moniker == ScrollControllerProvider.Moniker)
+                .ToArray();
 
             SetDefaultItems();
         }
@@ -223,11 +224,9 @@ namespace DialToolsForVS
             if (string.IsNullOrEmpty(moniker))
                 Enumerable.Empty<IDialController>();
 
-            var alwaysInclude = new List<string> { ScrollControllerProvider.Moniker };
-
             try
             {
-                return _controllers.Where(c => c.Moniker == moniker || alwaysInclude.Contains(c.Moniker));
+                return _controllers.Where(c => c.Moniker == moniker || c.Moniker == ScrollControllerProvider.Moniker);
             }
             catch (Exception ex)
             {

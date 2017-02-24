@@ -53,7 +53,6 @@
     <Compile Include="Contracts\RotationDirection.cs" />
     <Compile Include="Contracts\IDialController.cs" />
     <Compile Include="Contracts\IDialControllerProvider.cs" />
-    <Compile Include="Contracts\Specificity.cs" />
     <Compile Include="Controller\StatusBarControl.cs" />
     <Compile Include="Controller\StatusbarInjector.cs" />
     <Compile Include="DialPackage.cs" />

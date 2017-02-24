@@ -14,7 +14,6 @@ namespace DialToolsForVS
         }
 
         public string Moniker => DebugControllerProvider.Moniker;
-        public Specificity Specificity => Specificity.IdeState;
         public bool CanHandleClick => true;
         public bool CanHandleRotate
         {

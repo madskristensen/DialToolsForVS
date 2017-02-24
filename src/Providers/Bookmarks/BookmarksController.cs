@@ -3,7 +3,6 @@
     internal class BookmarksController : IDialController
     {
         public string Moniker => BookmarksControllerProvider.Moniker;
-        public Specificity Specificity => Specificity.Global;
         public bool CanHandleClick => true;
         public bool CanHandleRotate => true;
 

@@ -7,7 +7,6 @@ namespace DialToolsForVS
     internal class ScrollController : IDialController
     {
         public string Moniker => ScrollControllerProvider.Moniker;
-        public Specificity Specificity => (Specificity)int.MaxValue;
         public bool CanHandleClick => true;
         public bool CanHandleRotate => true;
 

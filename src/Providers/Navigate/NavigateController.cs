@@ -3,7 +3,6 @@
     internal class NavigateController : IDialController
     {
         public string Moniker => NavigateControllerProvider.Moniker;
-        public Specificity Specificity => Specificity.Global;
 
         public bool CanHandleClick => false;
 

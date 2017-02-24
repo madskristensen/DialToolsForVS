@@ -8,7 +8,6 @@ namespace DialToolsForVS
         private IErrorList _errorList = VsHelpers.DTE.ToolWindows.ErrorList as IErrorList;
 
         public string Moniker => ErrorsControllerProvider.Moniker;
-        public Specificity Specificity => Specificity.Global;
         public bool CanHandleClick => true;
 
         public bool CanHandleRotate
