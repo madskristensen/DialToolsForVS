@@ -64,8 +64,10 @@
     <Compile Include="Providers\Color\ColorController.cs" />
     <Compile Include="Providers\Color\ColorControllerProvider.cs" />
     <Compile Include="Providers\Color\HSLColor.cs" />
-    <Compile Include="Providers\ErrorNavigator\ErrorNavigatorController.cs" />
-    <Compile Include="Providers\ErrorNavigator\ErrorNavigatorControllerProvider.cs" />
+    <Compile Include="Providers\Bookmarks\BookmarksController.cs" />
+    <Compile Include="Providers\Bookmarks\BookmarksControllerProvider.cs" />
+    <Compile Include="Providers\Errors\ErrorsController.cs" />
+    <Compile Include="Providers\Errors\ErrorsControllerProvider.cs" />
     <Compile Include="Providers\Default\DefaultController.cs" />
     <Compile Include="Providers\Default\DefaultControllerProvider.cs" />
     <Compile Include="Providers\Zoom\ZoomController.cs" />
@@ -251,10 +253,13 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Providers\ErrorNavigator\icon.png">
+    <Content Include="Providers\Bookmarks\icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\DialIcon.png">
+    <Content Include="Providers\Debug\icon.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Providers\Errors\icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Resources\Icon.png">

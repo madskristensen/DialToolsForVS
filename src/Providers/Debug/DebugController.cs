@@ -1,32 +1,42 @@
 ﻿using EnvDTE;
-using EnvDTE80;
 using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
     internal class DebugController : IDialController
     {
-        private DTE2 _dte = VsHelpers.DTE;
+        private DebuggerEvents _events;
 
-        public string Moniker => PredefinedMonikers.IdeState;
-
-        public Specificity Specificity => Specificity.IdeState;
-
-        public bool CanHandleClick
+        public DebugController(IDialControllerHost host)
         {
-            get { return _dte.Application?.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode; }
+            _events = VsHelpers.DTE.Events.DebuggerEvents;
+            _events.OnEnterBreakMode += delegate { host.RequestActivation(Moniker); };
+            _events.OnEnterDesignMode += delegate { host.ReleaseActivation(); };
         }
 
+        public string Moniker => DebugControllerProvider.Moniker;
+        public Specificity Specificity => Specificity.IdeState;
+        public bool CanHandleClick => true;
         public bool CanHandleRotate
         {
-            get { return CanHandleClick; }
+            get { return VsHelpers.DTE.Application?.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode; }
         }
 
         public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
         {
-            _dte.Application.Debugger.StepInto();
+            dbgDebugMode? debugMode = VsHelpers.DTE.Application?.Debugger.CurrentMode;
 
-            e.Action = "Step into";
+            if (debugMode == dbgDebugMode.dbgBreakMode)
+            {
+                VsHelpers.DTE.Application.Debugger.StepInto();
+                e.Action = "Step into";
+            }
+            else if (debugMode == dbgDebugMode.dbgDesignMode)
+            {
+                VsHelpers.ExecuteCommand("Debug.ToggleBreakpoint");
+                e.Action = "Toggle breakpoint";
+            }
+
             e.Handled = true;
         }
 
@@ -34,12 +44,12 @@ namespace DialToolsForVS
         {
             if (direction == RotationDirection.Right)
             {
-                _dte.Application.Debugger.StepOver();
+                VsHelpers.DTE.Application.Debugger.StepOver();
                 e.Action = "Step over";
             }
             else
             {
-                _dte.Application.Debugger.StepOut();
+                VsHelpers.DTE.Application.Debugger.StepOut();
                 e.Action = "Step out";
             }
 

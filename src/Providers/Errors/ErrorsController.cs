@@ -4,14 +4,12 @@ using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
-    internal class ErrorNavigatorController : IDialController
+    internal class ErrorsController : IDialController
     {
         private IErrorList _errorList = VsHelpers.DTE.ToolWindows.ErrorList as IErrorList;
 
-        public string Moniker => ErrorNavigatorControllerProvider.Moniker;
-
+        public string Moniker => ErrorsControllerProvider.Moniker;
         public Specificity Specificity => Specificity.Global;
-
         public bool CanHandleClick => true;
 
         public bool CanHandleRotate

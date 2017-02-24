@@ -2,16 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows;
 using System.Windows.Threading;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Input;
-using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace DialToolsForVS
 {
@@ -73,11 +71,6 @@ namespace DialToolsForVS
             var zoom = RadialControllerMenuItem.CreateFromKnownIcon(PredefinedMonikers.Zoom, RadialControllerMenuKnownIcon.Zoom);
             _radialController.Menu.Items.Add(zoom);
 
-            // Visual Studio
-            //string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            //string iconFilePath = Path.Combine(folder, "Resources\\DialIcon.png");
-            //AddMenuItem("Visual Studio", iconFilePath);
-
             config = radialControllerConfigInterop.GetForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
             config.SetDefaultMenuItems(new RadialControllerSystemMenuItemKind[0]);
         }
@@ -105,6 +98,9 @@ namespace DialToolsForVS
 
         public void AddMenuItem(string moniker, string iconFilePath)
         {
+            if (_radialController.Menu.Items.Any(i => i.DisplayText == moniker))
+                return;
+
             IAsyncOperation<StorageFile> operation = StorageFile.GetFileFromPathAsync(iconFilePath);
 
             operation.Completed += (asyncInfo, asyncStatus) =>
@@ -114,30 +110,34 @@ namespace DialToolsForVS
                     StorageFile file = asyncInfo.GetResults();
                     var stream = RandomAccessStreamReference.CreateFromFile(file);
                     var menuItem = RadialControllerMenuItem.CreateFromIcon(moniker, stream);
-                    _radialController.Menu.Items.Add(menuItem);
+
+                    ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
+                    {
+                        _radialController.Menu.Items.Add(menuItem);
+                    });
                 }
             };
+        }
+
+        public void RemoveMenuItem(string moniker)
+        {
+            RadialControllerMenuItem item = _radialController.Menu.Items.FirstOrDefault(i => i.DisplayText == moniker);
+
+            if (item != null && _radialController.Menu.Items.Contains(item))
+                _radialController.Menu.Items.Remove(item);
         }
 
         public void RequestActivation(string moniker)
         {
             RadialControllerMenuItem item = _radialController.Menu.Items.FirstOrDefault(i => i.DisplayText == moniker);
 
-            if (item == null)
-                return;
-
-            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
-            {
+            if (item != null)
                 _radialController.Menu.SelectMenuItem(item);
-            });
         }
 
         public void ReleaseActivation()
         {
-            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
-            {
-                _radialController.Menu.TrySelectPreviouslySelectedMenuItem();
-            });
+            _radialController.Menu.TrySelectPreviouslySelectedMenuItem();
         }
 
         private void OnControlAcquired(RadialController sender, RadialControllerControlAcquiredEventArgs args)
@@ -217,17 +217,25 @@ namespace DialToolsForVS
 
         private IEnumerable<IDialController> GetApplicableControllers()
         {
-            string moniker = _radialController.Menu.GetSelectedMenuItem()?.DisplayText;
+            string moniker = _radialController?.Menu.GetSelectedMenuItem()?.DisplayText;
 
             if (string.IsNullOrEmpty(moniker))
                 Enumerable.Empty<IDialController>();
 
-            var alwaysInclude = new List<string> { PredefinedMonikers.IdeState, PredefinedMonikers.Scroll };
+            var alwaysInclude = new List<string> { PredefinedMonikers.Scroll };
 
-            if (VsHelpers.DTE.ActiveWindow.IsDocument())
-                alwaysInclude.Insert(1, PredefinedMonikers.Editor);
+            try
+            {
+                if (VsHelpers.DTE.ActiveWindow.IsDocument())
+                    alwaysInclude.Insert(1, PredefinedMonikers.Editor);
 
-            return _controllers.Where(c => c.Moniker == moniker || alwaysInclude.Contains(c.Moniker));
+                return _controllers.Where(c => c.Moniker == moniker || alwaysInclude.Contains(c.Moniker));
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex);
+                return Enumerable.Empty<IDialController>();
+            }
         }
     }
 }

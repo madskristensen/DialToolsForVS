@@ -5,18 +5,18 @@ using System.Reflection;
 namespace DialToolsForVS
 {
     [Export(typeof(IDialControllerProvider))]
-    internal class ErrorNavigatorControllerProvider : IDialControllerProvider
+    internal class BookmarksControllerProvider : IDialControllerProvider
     {
-        public const string Moniker = "Error List";
+        public const string Moniker = "Bookmarks";
 
         public IDialController TryCreateController(IDialControllerHost host)
         {
             string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string iconFilePath = Path.Combine(folder, "Providers\\ErrorNavigator\\icon.png");
+            string iconFilePath = Path.Combine(folder, "Providers\\Bookmarks\\icon.png");
 
             host.AddMenuItem(Moniker, iconFilePath);
 
-            return new ErrorNavigatorController();
+            return new BookmarksController();
         }
     }
 }
