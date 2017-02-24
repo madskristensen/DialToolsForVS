@@ -1,6 +1,7 @@
 # Road map
 
 - [ ] Add telemtry
+- [x] Switch to error dial item when Error List is activated
 
 Features that have a checkmark are complete and available for
 download in the

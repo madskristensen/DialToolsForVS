@@ -65,12 +65,16 @@ When a breakpoint is hit, use the dial to step into, over and out.
 - **Rotate left**: step out
 - **Click**: step into
 
+When a breakpoint is hit, the Debug dial item is automatically activated as well
+
 ### Errors
 When the error list contain errors, the dial makes it easy to navigate to the next error in the list.
 
 - **Rotate right**: go to next error
 - **Rotate left**: go to previous error
 - **Click**: Show the Error List
+
+When the Error List window is activated, the Errors dial item is automatically activated as well.
 
 ### Editor shifters
 Shifting is a way to modify text in the editor based on the Dial rotation. When the caret is placed in a supported position, the shifting is enalbed.
@@ -91,6 +95,8 @@ Set and navigate to your bookmarks
 - **Rotate right**: next bookmark
 - **Rotate left**: previous bookmark
 - **Click**: toggle bookmark
+
+When the Bookmarks window is activated, the Bookmarks dial item is automatically activated as well.
 
 ## Suggest new behaviors
 Please send ideas about new behaviors you would find helpful to the [GitHub issue tracker](https://github.com/madskristensen/DialToolsForVS/issues).

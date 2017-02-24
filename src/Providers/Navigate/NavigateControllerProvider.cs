@@ -7,6 +7,7 @@ namespace DialToolsForVS
     internal class NavigateControllerProvider : IDialControllerProvider
     {
         public const string Moniker = "Navigation";
+
         public IDialController TryCreateController(IDialControllerHost host)
         {
             string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

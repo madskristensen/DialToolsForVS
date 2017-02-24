@@ -3,15 +3,9 @@
     internal class NavigateController : IDialController
     {
         public string Moniker => NavigateControllerProvider.Moniker;
-
         public bool CanHandleClick => false;
-
         public bool CanHandleRotate => true;
-
-        public bool OnClick()
-        {
-            return false;
-        }
+        public bool OnClick() => false;
 
         public bool OnRotate(RotationDirection direction)
         {

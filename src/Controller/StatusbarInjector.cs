@@ -51,7 +51,7 @@ namespace DialToolsForVS
 
         private void FindStatusBar()
         {
-            _statusBar = StatusBarInjector.FindChild(_window, "StatusBarContainer") as FrameworkElement;
+            _statusBar = FindChild(_window, "StatusBarContainer") as FrameworkElement;
             _panel = _statusBar.Parent as DockPanel;
         }
 
@@ -90,7 +90,7 @@ namespace DialToolsForVS
         {
             _panel.Dispatcher.Invoke(() =>
             {
-                pControl.SetValue(DockPanel.DockProperty, Dock.Left);
+                pControl.SetValue(DockPanel.DockProperty, Dock.Right);
                 _panel.Children.Insert(1, pControl);
             });
         }

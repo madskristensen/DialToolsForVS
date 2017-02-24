@@ -15,7 +15,7 @@ namespace DialToolsForVS
 
             host.AddMenuItem(Moniker, iconFilePath);
 
-            return new ErrorsController();
+            return new ErrorsController(host);
         }
     }
 }

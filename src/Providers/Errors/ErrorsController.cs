@@ -1,11 +1,29 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System.Linq;
+using EnvDTE;
 
 namespace DialToolsForVS
 {
     internal class ErrorsController : IDialController
     {
         private IErrorList _errorList = VsHelpers.DTE.ToolWindows.ErrorList as IErrorList;
+        private WindowEvents _events;
+        private IDialControllerHost _host;
+
+        public ErrorsController(IDialControllerHost host)
+        {
+            _host = host;
+            _events = VsHelpers.DTE.Events.WindowEvents;
+            _events.WindowActivated += WindowActivated;
+        }
+
+        private void WindowActivated(Window GotFocus, Window LostFocus)
+        {
+            if (GotFocus.IsErrorList())
+            {
+                _host.RequestActivation(Moniker);
+            }
+        }
 
         public string Moniker => ErrorsControllerProvider.Moniker;
         public bool CanHandleClick => true;

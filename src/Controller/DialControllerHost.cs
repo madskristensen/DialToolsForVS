@@ -137,7 +137,10 @@ namespace DialToolsForVS
             RadialControllerMenuItem item = _radialController.Menu.Items.FirstOrDefault(i => i.DisplayText == moniker);
 
             if (item != null)
+            {
                 _radialController.Menu.SelectMenuItem(item);
+                _status.UpdateSelectedItem(item.DisplayText);
+            }
         }
 
         public void ReleaseActivation()

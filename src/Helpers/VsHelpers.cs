@@ -64,6 +64,11 @@ namespace DialToolsForVS
             return window?.ObjectKind == WindowKinds.vsWindowKindErrorList;
         }
 
+        public static bool IsBookmarks(this Window window)
+        {
+            return window?.ObjectKind == WindowKinds.vsWindowKindBookmarks;
+        }
+
         public static bool IsDocument(this Window window)
         {
             return window?.Kind == "Document";
