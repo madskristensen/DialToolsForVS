@@ -58,12 +58,15 @@ namespace DialToolsForVS
 
         private void SetDefaultItems()
         {
-            RadialControllerConfiguration config;
-            var radialControllerConfigInterop = (IRadialControllerConfigurationInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialControllerConfiguration));
-            Guid guid = typeof(RadialControllerConfiguration).GetInterface("IRadialControllerConfiguration").GUID;
+            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.Normal, () =>
+            {
+                RadialControllerConfiguration config;
+                var radialControllerConfigInterop = (IRadialControllerConfigurationInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialControllerConfiguration));
+                Guid guid = typeof(RadialControllerConfiguration).GetInterface("IRadialControllerConfiguration").GUID;
 
-            config = radialControllerConfigInterop.GetForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
-            config.SetDefaultMenuItems(new RadialControllerSystemMenuItemKind[0]);
+                config = radialControllerConfigInterop.GetForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
+                config.SetDefaultMenuItems(new RadialControllerSystemMenuItemKind[0]);
+            });
         }
 
         private void HookUpEvents()
@@ -111,16 +114,6 @@ namespace DialToolsForVS
                     });
                 }
             };
-        }
-
-        public void AddMenuItem(string moniker, RadialControllerMenuKnownIcon icon)
-        {
-            if (_radialController.Menu.Items.Any(i => i.DisplayText == moniker))
-                return;
-
-            var menuitem = RadialControllerMenuItem.CreateFromKnownIcon(moniker, icon);
-            menuitem.Invoked += MenuItemInvoked;
-            _radialController.Menu.Items.Add(menuitem);
         }
 
         private void MenuItemInvoked(RadialControllerMenuItem sender, object args)

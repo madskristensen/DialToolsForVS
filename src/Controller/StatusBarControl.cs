@@ -30,7 +30,7 @@ namespace DialToolsForVS
 
             _text = new TextBlock
             {
-                Text = "foo",
+                Text = string.Empty,
                 Foreground = Brushes.White,
                 FontWeight = FontWeights.Medium,
                 Margin = new Thickness(0, 4, 7, 0),

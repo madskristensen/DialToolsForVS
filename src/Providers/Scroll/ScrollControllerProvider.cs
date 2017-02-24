@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.Composition;
+using System.IO;
+using System.Reflection;
 
 namespace DialToolsForVS
 {
@@ -7,7 +9,10 @@ namespace DialToolsForVS
     {
         public IDialController TryCreateController(IDialControllerHost host)
         {
-            host.AddMenuItem(PredefinedMonikers.Scroll, Windows.UI.Input.RadialControllerMenuKnownIcon.Scroll);
+            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string iconFilePath = Path.Combine(folder, "Providers\\Scroll\\icon.png");
+
+            host.AddMenuItem(PredefinedMonikers.Scroll, iconFilePath);
 
             return new ScrollController();
         }
