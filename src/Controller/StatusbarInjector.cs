@@ -90,7 +90,7 @@ namespace DialToolsForVS
         {
             _panel.Dispatcher.Invoke(() =>
             {
-                pControl.SetValue(DockPanel.DockProperty, Dock.Right);
+                pControl.SetValue(DockPanel.DockProperty, Dock.Left);
                 _panel.Children.Insert(1, pControl);
             });
         }

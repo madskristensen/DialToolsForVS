@@ -10,7 +10,6 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Input;
-using Microsoft.VisualStudio.Utilities;
 
 namespace DialToolsForVS
 {
@@ -59,7 +58,7 @@ namespace DialToolsForVS
 
         private void SetDefaultItems()
         {
-            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.Normal, () =>
+            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
             {
                 RadialControllerConfiguration config;
                 var radialControllerConfigInterop = (IRadialControllerConfigurationInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialControllerConfiguration));
