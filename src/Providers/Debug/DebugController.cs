@@ -20,38 +20,34 @@ namespace DialToolsForVS
             get { return VsHelpers.DTE.Application?.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode; }
         }
 
-        public void OnClick(DialEventArgs e)
+        public bool OnClick()
         {
             dbgDebugMode? debugMode = VsHelpers.DTE.Application?.Debugger.CurrentMode;
 
             if (debugMode == dbgDebugMode.dbgBreakMode)
             {
                 VsHelpers.DTE.Application.Debugger.StepInto();
-                e.Action = "Step into";
             }
             else if (debugMode == dbgDebugMode.dbgDesignMode)
             {
                 VsHelpers.ExecuteCommand("Debug.ToggleBreakpoint");
-                e.Action = "Toggle breakpoint";
             }
 
-            e.Handled = true;
+            return true;
         }
 
-        public void OnRotate(RotationDirection direction, DialEventArgs e)
+        public bool OnRotate(RotationDirection direction)
         {
             if (direction == RotationDirection.Right)
             {
                 VsHelpers.DTE.Application.Debugger.StepOver();
-                e.Action = "Step over";
             }
             else
             {
                 VsHelpers.DTE.Application.Debugger.StepOut();
-                e.Action = "Step out";
             }
 
-            e.Handled = true;
+            return true;
         }
     }
 }

@@ -9,6 +9,12 @@ namespace DialToolsForVS
     internal class EditorController : IDialController
     {
         private IWpfTextView _view;
+        private delegate string Shift(SnapshotSpan bufferSpan, RotationDirection direction);
+        private Dictionary<string, Shift> _dic = new Dictionary<string, Shift>()
+        {
+            { @"(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))\b", ColorShifter.Shift },
+            { @"(\b|\-)[0-9\.]+", NumberShifter.Shift }
+        };
 
         public string Moniker => EditorControllerProvider.Moniker;
 
@@ -27,21 +33,15 @@ namespace DialToolsForVS
             }
         }
 
-        public void OnClick(DialEventArgs e)
+        public bool OnClick()
         {
+            return false;
         }
 
-        private delegate string Shift(SnapshotSpan bufferSpan, RotationDirection direction);
-        private Dictionary<string, Shift> _dic = new Dictionary<string, Shift>()
-        {
-            { @"(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))\b", ColorShifter.Shift },
-            { @"(\b|\-)[0-9\.]+", NumberShifter.Shift }
-        };
-
-        public void OnRotate(RotationDirection direction, DialEventArgs e)
+        public bool OnRotate(RotationDirection direction)
         {
             if (_view == null)
-                return;
+                return false;
 
             foreach (string pattern in _dic.Keys)
             {
@@ -54,10 +54,11 @@ namespace DialToolsForVS
 
                     UpdateSpan(span, value);
 
-                    e.Handled = true;
-                    break;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private bool TryGetMatch(string pattern, out SnapshotSpan span)

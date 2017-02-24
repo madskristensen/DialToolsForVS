@@ -10,7 +10,7 @@ namespace DialToolsForVS
         public bool CanHandleClick => true;
         public bool CanHandleRotate => true;
 
-        public void OnClick(DialEventArgs e)
+        public bool OnClick()
         {
             if (VsHelpers.DTE.ActiveWindow.IsDocument())
             {
@@ -26,7 +26,7 @@ namespace DialToolsForVS
                 var selectedItems = VsHelpers.DTE.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
 
                 if (selectedItems == null || selectedItems.Length != 1)
-                    return;
+                    return false;
 
                 if (selectedItems[0].UIHierarchyItems.Expanded)
                 {
@@ -42,11 +42,12 @@ namespace DialToolsForVS
                 SendKeys.Send("{ENTER}");
             }
 
-            e.Handled = true;
+            return true;
         }
 
-        public void OnRotate(RotationDirection direction, DialEventArgs e)
+        public bool OnRotate(RotationDirection direction)
         {
+            bool handled = false;
             if (VsHelpers.DTE.ActiveWindow.IsDocument())
             {
                 IWpfTextView view = VsHelpers.GetCurentTextView();
@@ -54,17 +55,17 @@ namespace DialToolsForVS
                 if (view != null && view.HasAggregateFocus)
                 {
                     string cmd = direction == RotationDirection.Left ? "Edit.ScrollLineUp" : "Edit.ScrollLineDown";
-                    e.Handled = VsHelpers.ExecuteCommand(cmd);
+                    handled = VsHelpers.ExecuteCommand(cmd);
                 }
             }
 
-            if (!e.Handled)
+            if (!handled)
             {
                 string key = direction == RotationDirection.Left ? "{UP}" : "{DOWN}";
                 SendKeys.Send(key);
             }
 
-            e.Handled = true;
+            return true;
         }
     }
 }

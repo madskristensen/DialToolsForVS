@@ -7,7 +7,7 @@ namespace DialToolsForVS
         string Moniker { get; }
         bool CanHandleClick { get; }
         bool CanHandleRotate { get; }
-        void OnClick(DialEventArgs e);
-        void OnRotate(RotationDirection direction, DialEventArgs e);
+        bool OnClick();
+        bool OnRotate(RotationDirection direction);
     }
 }

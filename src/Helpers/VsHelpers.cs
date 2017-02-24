@@ -34,9 +34,16 @@ namespace DialToolsForVS
         ///<summary>Gets the TextView for the active document.</summary>
         public static IWpfTextView GetCurentTextView()
         {
-            IVsEditorAdaptersFactoryService editorAdapter = _compositionService.GetService<IVsEditorAdaptersFactoryService>();
+            return GetTextView(GetCurrentNativeTextView());
+        }
 
-            return editorAdapter.GetWpfTextView(GetCurrentNativeTextView());
+        public static IWpfTextView GetTextView(IVsTextView nativeView)
+        {
+            if (nativeView == null)
+                return null;
+
+            IVsEditorAdaptersFactoryService editorAdapter = _compositionService.GetService<IVsEditorAdaptersFactoryService>();
+            return editorAdapter.GetWpfTextView(nativeView);
         }
 
         public static IVsTextView GetCurrentNativeTextView()

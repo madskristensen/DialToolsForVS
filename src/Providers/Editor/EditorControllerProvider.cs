@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.Composition;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 
 namespace DialToolsForVS
 {
-    [Export(typeof(IDialControllerProvider))]
+    [DialControllerProvider(4)]
     internal class EditorControllerProvider : IDialControllerProvider
     {
         public const string Moniker = "Editor";

@@ -8,10 +8,12 @@
 
         public bool CanHandleRotate => true;
 
-        public void OnClick(DialEventArgs e)
-        { }
+        public bool OnClick()
+        {
+            return false;
+        }
 
-        public void OnRotate(RotationDirection direction, DialEventArgs e)
+        public bool OnRotate(RotationDirection direction)
         {
             if (direction == RotationDirection.Right)
             {
@@ -22,7 +24,7 @@
                 VsHelpers.ExecuteCommand("View.NavigateBackward");
             }
 
-            e.Handled = true;
+            return true;
         }
     }
 }

@@ -10,6 +10,7 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Input;
+using Microsoft.VisualStudio.Utilities;
 
 namespace DialToolsForVS
 {
@@ -20,7 +21,7 @@ namespace DialToolsForVS
         private StatusBarControl _status;
 
         [ImportMany(typeof(IDialControllerProvider))]
-        private IEnumerable<IDialControllerProvider> _providers { get; set; }
+        private IEnumerable<Lazy<IDialControllerProvider, IDialMetadata>> _providers { get; set; }
 
         private DialControllerHost()
         {
@@ -85,7 +86,8 @@ namespace DialToolsForVS
             this.SatisfyImportsOnce();
 
             _controllers = _providers
-                .Select(provider => provider.TryCreateController(this))
+                .OrderBy(provider => provider.Metadata.Order)
+                .Select(provider => provider.Value.TryCreateController(this))
                 .Where(controller => controller != null)
                 .OrderBy(controller => controller.Moniker == ScrollControllerProvider.Moniker)
                 .ToArray();
@@ -147,8 +149,7 @@ namespace DialToolsForVS
         {
             if (_status != null)
             {
-                _status.Activate();
-                _status.UpdateSelectedItem(sender.Menu.GetSelectedMenuItem()?.DisplayText);
+                _status.Activate(sender.Menu.GetSelectedMenuItem()?.DisplayText);
             }
         }
 
@@ -162,24 +163,16 @@ namespace DialToolsForVS
 
         private void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)
         {
-            var evt = new DialEventArgs();
             IEnumerable<IDialController> controllers = GetApplicableControllers().Where(c => c.CanHandleClick);
 
             foreach (IDialController controller in controllers)
             {
-                controller.OnClick(evt);
-
                 try
                 {
-                    if (evt.Handled)
-                    {
-                        if (!string.IsNullOrEmpty(evt.Action))
-                        {
-                            //VsHelpers.WriteStatus(evt.Action);
-                        }
+                    bool handled = controller.OnClick();
 
+                    if (handled)
                         break;
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -190,7 +183,6 @@ namespace DialToolsForVS
 
         private void OnRotationChanged(RadialController sender, RadialControllerRotationChangedEventArgs args)
         {
-            var evt = new DialEventArgs();
             RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
             IEnumerable<IDialController> controllers = GetApplicableControllers().Where(c => c.CanHandleRotate);
 
@@ -198,17 +190,10 @@ namespace DialToolsForVS
             {
                 try
                 {
-                    controller.OnRotate(direction, evt);
+                    bool handled = controller.OnRotate(direction);
 
-                    if (evt.Handled)
-                    {
-                        if (!string.IsNullOrEmpty(evt.Action))
-                        {
-                            //VsHelpers.WriteStatus(evt.Action);
-                        }
-
+                    if (handled)
                         break;
-                    }
                 }
                 catch (Exception ex)
                 {

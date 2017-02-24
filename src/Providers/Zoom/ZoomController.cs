@@ -1,4 +1,10 @@
-﻿using Microsoft.VisualStudio.Text.Editor;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
@@ -10,29 +16,69 @@ namespace DialToolsForVS
 
         public bool CanHandleRotate => true;
 
-        public void OnClick(DialEventArgs e)
+        public bool OnClick()
         {
             if (!VsHelpers.DTE.ActiveWindow.IsDocument())
-                return;
+                return false;
 
-            IWpfTextView view = VsHelpers.GetCurentTextView();
+            ResetZoomInOpenTextViews();
 
-            if (view != null && view.HasAggregateFocus)
-            {
-                view.ZoomLevel = 100;
-                e.Handled = true;
-            }
+            return true;
         }
 
-        public void OnRotate(RotationDirection direction, DialEventArgs e)
+        public bool OnRotate(RotationDirection direction)
         {
             if (direction == RotationDirection.Right)
             {
-                e.Handled = VsHelpers.ExecuteCommand("View.ZoomIn");
+                return VsHelpers.ExecuteCommand("View.ZoomIn");
             }
             else
             {
-                e.Handled = VsHelpers.ExecuteCommand("View.ZoomOut");
+                return VsHelpers.ExecuteCommand("View.ZoomOut");
+            }
+        }
+
+        private void ResetZoomInOpenTextViews()
+        {
+            IEnumerable<IVsWindowFrame> frames = EnumerateDocumentWindowFrames();
+
+            foreach (IVsWindowFrame frame in frames)
+            {
+                try
+                {
+                    IVsTextView nativeView = VsShellUtilities.GetTextView(frame);
+                    IWpfTextView view = VsHelpers.GetTextView(nativeView);
+
+                    if (view != null)
+                    {
+                        view.ZoomLevel = 100;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.Write(ex);
+                }
+            }
+        }
+
+        private static IEnumerable<IVsWindowFrame> EnumerateDocumentWindowFrames()
+        {
+            IVsUIShell shell = VsHelpers.GetService<SVsUIShell, IVsUIShell>();
+
+            if (shell != null)
+            {
+
+                int hr = shell.GetDocumentWindowEnum(out IEnumWindowFrames framesEnum);
+
+                if (hr == VSConstants.S_OK && framesEnum != null)
+                {
+                    IVsWindowFrame[] frames = new IVsWindowFrame[1];
+
+                    while (framesEnum.Next(1, frames, out uint fetched) == VSConstants.S_OK && fetched == 1)
+                    {
+                        yield return frames[0];
+                    }
+                }
             }
         }
     }

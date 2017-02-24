@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.Composition;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 
 namespace DialToolsForVS
 {
-    [Export(typeof(IDialControllerProvider))]
+    [DialControllerProvider(order: 7)]
     internal class BookmarksControllerProvider : IDialControllerProvider
     {
         public const string Moniker = "Bookmarks";

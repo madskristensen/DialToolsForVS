@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Contracts\DialEventArgs.cs" />
+    <Compile Include="Contracts\ExportDialController.cs" />
     <Compile Include="Controller\DialControllerHost.cs" />
     <Compile Include="Contracts\IDialControllerHost.cs" />
     <Compile Include="Contracts\RotationDirection.cs" />

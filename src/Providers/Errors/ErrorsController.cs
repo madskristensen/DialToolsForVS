@@ -15,25 +15,24 @@ namespace DialToolsForVS
             get { return _errorList.TableControl.Entries.Any(); }
         }
 
-        public void OnClick(DialEventArgs e)
+        public bool OnClick()
         {
             VsHelpers.DTE.ToolWindows.ErrorList.Parent?.Activate();
+            return true;
         }
 
-        public void OnRotate(RotationDirection direction, DialEventArgs e)
+        public bool OnRotate(RotationDirection direction)
         {
             if (direction == RotationDirection.Right)
             {
                 VsHelpers.ExecuteCommand("View.NextError");
-                e.Action = "Go to next error";
             }
             else
             {
                 VsHelpers.ExecuteCommand("View.PreviousError");
-                e.Action = "Go to previous error";
             }
 
-            e.Handled = true;
+            return true;
         }
     }
 }

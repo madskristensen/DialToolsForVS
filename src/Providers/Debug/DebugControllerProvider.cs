@@ -1,12 +1,9 @@
-﻿using EnvDTE;
-using System.ComponentModel.Composition;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace DialToolsForVS
 {
-    [Export(typeof(IDialControllerProvider))]
+    [DialControllerProvider(order: 5)]
     internal class DebugControllerProvider : IDialControllerProvider
     {
         public const string Moniker = "Debug";

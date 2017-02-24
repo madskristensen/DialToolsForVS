@@ -16,12 +16,13 @@ See the [change log](CHANGELOG.md) for changes and road map.
 ## Features
 
 - Status bar indicator
-- Default behavior enabled
-- Solution Explorer navigation
-- Debugger commands
-- Error navigator
-- Lighten/brighten hex colors
-- Increase/decrease numbers
+- Scrolling
+- Zooming
+- Navigation
+- Debugging
+- Errors
+- Editor shifters
+- Bookmarks
 
 ![Dial Menu](art/dial-menu.png)
 
@@ -32,51 +33,67 @@ When the Visual Studio item on the Dial menu hasn't been activated, the status b
 
 ![Status inactive](art/status-inactive.png)
 
-When it is active, the icon looks like this
+When it is active, the icon changes to a solid white dot and a label showing what the selected menu item is appears.
 
 ![Status inactive](art/status-active.png)
 
-### Default behavior enabled
-By default, the Surface Dial can only zoom and scroll documents in Visual Studio. By enabling default behaviors for the Dial, Visual Studio feels like it has natural support for the Dial.
+### Scrolling
+Scroll documents and tool windows. 
 
 - **Rotate right**: does the same as arrow down
 - **Rotate left**: does the same as arrow up
-- **Click**: In a document it opens the context menu, otherwise it does the same as then ENTER key
+- **Click**: In a document it opens the context menu, otherwise it does the same as then ENTER key. In Solution Explorer it expands/collapses folders.
 
-### Solution Explorer navigation
-When the Solution Explorer tool window is active, you can use the dial to navigate it.
+### Zooming
+Zooming is enhanced so that it only zoom the text editors and not other artifacts in Visual Studio
 
-- **Rotate right**: does the same as arrow down
-- **Rotate left**: does the same as arrow up
-- **Click**: expands/collapses folders and parent items
+- **Rotate right**: Zoom in
+- **Rotate left**: Zoom out
+- **Click**: Resets zoom level to 100%
 
-### Debugger commands
+### Navigation
+Takes you to the previous and next location in your files.
+
+- **Rotate right**: navigates forward
+- **Rotate left**: navigates backwards
+- **Click**: [nothing]
+
+### Debugging
 When a breakpoint is hit, use the dial to step into, over and out.
 
 - **Rotate right**: step over
 - **Rotate left**: step out
 - **Click**: step into
 
-### Error navigator
+### Errors
 When the error list contain errors, the dial makes it easy to navigate to the next error in the list.
 
 - **Rotate right**: go to next error
 - **Rotate left**: go to previous error
-- **Click**: [no action]
+- **Click**: Show the Error List
 
-### Lighten/brighten hex colors
-Hex colors found primarily in .css files can be lightened and darkened easily. Place the caret in a hex value (e.g. `#ff0000`) and rotate the dial.
+### Editor shifters
+Shifting is a way to modify text in the editor based on the Dial rotation. When the caret is placed in a supported position, the shifting is enalbed.
 
+#### Hex colors (e.g. #ff000)
 - **Rotate right**: lightens the color value
 - **Rotate left**: darkens the color value
 - **Click**: [no action]
 
-### Increase/decrease numbers
-When the caret is located in any number, you can increase and decrease the numerical value.
-
+#### Numbers (e.g. 123 or 3.4 or .6)
 - **Rotate right**: increase the number
 - **Rotate left**: decrease the number
 - **Click**: [no action]
+
+### Bookmarks
+Set and navigate to your bookmarks
+
+- **Rotate right**: next bookmark
+- **Rotate left**: previous bookmark
+- **Click**: toggle bookmark
+
+## Suggest new behaviors
+Please send ideas about new behaviors you would find helpful to the [GitHub issue tracker](https://github.com/madskristensen/DialToolsForVS/issues).
 
 ## Contribute
 Check out the [contribution guidelines](.github/CONTRIBUTING.md)

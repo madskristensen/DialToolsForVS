@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.Composition;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
-    [Export(typeof(IDialControllerProvider))]
+    [DialControllerProvider(order: 3)]
     internal class NavigateControllerProvider : IDialControllerProvider
     {
         public const string Moniker = "Navigation";

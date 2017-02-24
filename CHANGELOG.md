@@ -1,13 +1,5 @@
 # Road map
 
-- [x] Status bar text update on activation state change
-- [x] Write dial event description in status bar
-- [x] Output Window logging
-- [x] Add bookmark navigation
-- [x] Add debug navigation
-- [x] Reset zoom level on click
-- [x] Add status bar text to show selected menu item
-- [x] Add editor shifter
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for
@@ -18,6 +10,19 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+## 0.6
+
+- [x] Status bar text update on activation state change
+- [x] Output Window logging
+- [x] Add bookmark navigation
+- [x] Add debug navigation
+- [x] Reset zoom level on click
+- [x] Add status bar text to show selected menu item
+- [x] Add editor shifter
+- [x] New icons
+- [x] Make zoom reset work for all open documentss
+- [x] Get rid of DialEventArgs
 
 ## 0.5
 
