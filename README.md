@@ -24,7 +24,7 @@ See the [change log](CHANGELOG.md) for changes and road map.
 - Editor shifters
 - Bookmarks
 
-![Dial Menu](art/dial-menu.png)
+![Dial Menu](art/dial-animation.gif)
 
 ### Status bar indicator
 An icon is placed at the left corner of the Status Bar indicating the current state of the Dial. 
