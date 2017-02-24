@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System.ComponentModel.Composition;
+using System;
 
 namespace DialToolsForVS
 {
@@ -59,6 +60,21 @@ namespace DialToolsForVS
         public static bool IsDocument(this Window window)
         {
             return window?.Kind == "Document";
+        }
+
+        public static void ExecuteCommand(string commandName, object argument = null)
+        {
+            try
+            {
+                Command command = DTE.Commands.Item(commandName);
+
+                if (command != null && command.IsAvailable)
+                    DTE.Commands.Raise(command.Guid, command.ID, argument, argument);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.Write(ex);
+            }
         }
 
         public static void SatisfyImportsOnce(this object o)

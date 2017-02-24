@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Contracts\DialEventArgs.cs" />
+    <Compile Include="Contracts\PredefinedMonikers.cs" />
     <Compile Include="Controller\DialControllerHost.cs" />
     <Compile Include="Contracts\IDialControllerHost.cs" />
     <Compile Include="Contracts\RotationDirection.cs" />
@@ -67,6 +68,8 @@
     <Compile Include="Providers\ErrorNavigator\ErrorNavigatorControllerProvider.cs" />
     <Compile Include="Providers\Default\DefaultController.cs" />
     <Compile Include="Providers\Default\DefaultControllerProvider.cs" />
+    <Compile Include="Providers\Zoom\ZoomController.cs" />
+    <Compile Include="Providers\Zoom\ZoomControllerProvider.cs" />
     <Compile Include="Providers\SolutionExplorer\SolutionExplorerController.cs" />
     <Compile Include="Providers\SolutionExplorer\SolutionExplorerControllerProvider.cs" />
     <Compile Include="Providers\Number\NumbersController.cs" />
@@ -248,6 +251,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Providers\ErrorNavigator\icon.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\DialIcon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

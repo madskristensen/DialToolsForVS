@@ -7,14 +7,8 @@ namespace DialToolsForVS
     internal class DebugController : IDialController
     {
         private DTE2 _dte = VsHelpers.DTE;
-        private DebuggerEvents _events;
 
-        public DebugController(IDialControllerHost host)
-        {
-            _events = _dte.Events.DebuggerEvents;
-            _events.OnEnterBreakMode += delegate { host.RequestActivation(); };
-        }
-
+        public string Moniker => PredefinedMonikers.IdeState;
 
         public Specificity Specificity => Specificity.IdeState;
 

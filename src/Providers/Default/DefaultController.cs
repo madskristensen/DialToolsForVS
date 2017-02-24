@@ -6,6 +6,7 @@ namespace DialToolsForVS
 {
     internal class DefaultController : IDialController
     {
+        public string Moniker => PredefinedMonikers.Scroll;
         public Specificity Specificity => (Specificity)int.MaxValue;
         public bool CanHandleClick => true;
         public bool CanHandleRotate => true;
@@ -31,13 +32,17 @@ namespace DialToolsForVS
 
         public void OnRotate(RotationDirection direction, DialEventArgs e)
         {
-            if (direction == RotationDirection.Right)
+            IWpfTextView view = VsHelpers.GetCurentTextView();
+
+            if (view != null && view.HasAggregateFocus)
             {
-                SendKeys.Send("{DOWN}");
+                string cmd = direction == RotationDirection.Left ? "Edit.ScrollLineUp" : "Edit.ScrollLineDown";
+                VsHelpers.ExecuteCommand(cmd);
             }
             else
             {
-                SendKeys.Send("{UP}");
+                string key = direction == RotationDirection.Left ? "{UP}" : "{DOWN}";
+                SendKeys.Send(key);
             }
 
             e.Handled = true;

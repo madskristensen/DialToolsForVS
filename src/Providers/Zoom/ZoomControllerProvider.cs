@@ -3,11 +3,11 @@
 namespace DialToolsForVS
 {
     [Export(typeof(IDialControllerProvider))]
-    internal class DebugControllerProvider : IDialControllerProvider
+    internal class ZoomControllerProvider : IDialControllerProvider
     {
         public IDialController TryCreateController(IDialControllerHost host)
         {
-            return new DebugController();
+            return new ZoomController();
         }
     }
 }

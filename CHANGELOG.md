@@ -3,6 +3,9 @@
 - [x] Status bar text update on activation state change
 - [x] Write dial event description in status bar
 - [x] Output Window logging
+- [ ] Add additional menu items
+- [ ] Add bookmark navigation
+- [ ] Add callstack navigation
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for

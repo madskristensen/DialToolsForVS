@@ -1,5 +1,4 @@
-﻿using EnvDTE80;
-using Microsoft.VisualStudio.Text;
+﻿using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
 using System;
@@ -14,6 +13,8 @@ namespace DialToolsForVS
     {
         private IWpfTextView _view;
         private Span _span;
+
+        public string Moniker => PredefinedMonikers.Editor;
 
         public Specificity Specificity => Specificity.CaretPosition;
 

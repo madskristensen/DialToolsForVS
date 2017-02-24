@@ -11,6 +11,7 @@ using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Input;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace DialToolsForVS
 {
@@ -18,7 +19,6 @@ namespace DialToolsForVS
     {
         private RadialController _radialController;
         private IEnumerable<IDialController> _controllers;
-        private RadialControllerMenuItem _menuItem;
         private StatusBarControl _status;
 
         [ImportMany(typeof(IDialControllerProvider))]
@@ -26,10 +26,11 @@ namespace DialToolsForVS
 
         private DialControllerHost()
         {
-            CreateController();
             CreateStatusBar();
+            CreateController();
+            SetDefaultItems();
             HookUpEvents();
-            AddMenuItem();
+            ImportProviders();
         }
 
         public static DialControllerHost Instance
@@ -43,35 +44,6 @@ namespace DialToolsForVS
             Instance = new DialControllerHost();
         }
 
-        private void CreateController()
-        {
-            var interop = (IRadialControllerInterop)System.Runtime.InteropServices.WindowsRuntime.WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialController));
-            Guid guid = typeof(RadialController).GetInterface("IRadialController").GUID;
-
-            _radialController = interop.CreateForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
-        }
-
-        private void AddMenuItem()
-        {
-            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string filePath = Path.Combine(folder, "Resources\\DialIcon.png");
-            IAsyncOperation<StorageFile> getItemImageOperation = StorageFile.GetFileFromPathAsync(filePath);
-
-            getItemImageOperation.Completed += new AsyncOperationCompletedHandler<StorageFile>(AddMenuItemFromImage);
-        }
-
-        private void AddMenuItemFromImage(IAsyncOperation<StorageFile> asyncInfo, AsyncStatus asyncStatus)
-        {
-            if (asyncStatus == AsyncStatus.Completed)
-            {
-                StorageFile imageFile = asyncInfo.GetResults();
-                _menuItem = RadialControllerMenuItem.CreateFromIcon("Visual Studio", RandomAccessStreamReference.CreateFromFile(imageFile));
-                _radialController.Menu.Items.Add(_menuItem);
-
-                RequestActivation();
-            }
-        }
-
         private void CreateStatusBar()
         {
             _status = new StatusBarControl();
@@ -79,15 +51,35 @@ namespace DialToolsForVS
             injector.InjectControl(_status.Control);
         }
 
-        public void RequestActivation()
+        private void CreateController()
         {
-            if (!_radialController.Menu.Items.Contains(_menuItem) || _radialController.Menu.GetSelectedMenuItem() == _menuItem)
-                return;
+            var interop = (IRadialControllerInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialController));
+            Guid guid = typeof(RadialController).GetInterface("IRadialController").GUID;
 
-            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
-            {
-                _radialController.Menu.SelectMenuItem(_menuItem);
-            });
+            _radialController = interop.CreateForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
+        }
+
+        private void SetDefaultItems()
+        {
+            RadialControllerConfiguration config;
+            var radialControllerConfigInterop = (IRadialControllerConfigurationInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialControllerConfiguration));
+            Guid guid = typeof(RadialControllerConfiguration).GetInterface("IRadialControllerConfiguration").GUID;
+
+            // Scroll
+            var scroll = RadialControllerMenuItem.CreateFromKnownIcon(PredefinedMonikers.Scroll, RadialControllerMenuKnownIcon.Scroll);
+            _radialController.Menu.Items.Add(scroll);
+
+            // Zoom
+            var zoom = RadialControllerMenuItem.CreateFromKnownIcon(PredefinedMonikers.Zoom, RadialControllerMenuKnownIcon.Zoom);
+            _radialController.Menu.Items.Add(zoom);
+
+            // Visual Studio
+            //string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //string iconFilePath = Path.Combine(folder, "Resources\\DialIcon.png");
+            //AddMenuItem("Visual Studio", iconFilePath);
+
+            config = radialControllerConfigInterop.GetForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
+            config.SetDefaultMenuItems(new RadialControllerSystemMenuItemKind[0]);
         }
 
         private void HookUpEvents()
@@ -101,18 +93,55 @@ namespace DialToolsForVS
             }
         }
 
+        private void ImportProviders()
+        {
+            this.SatisfyImportsOnce();
+
+            _controllers = _providers
+                .Select(provider => provider.TryCreateController(this))
+                .Where(controller => controller != null)
+                .OrderBy(controller => controller.Specificity).ToArray();
+        }
+
+        public void AddMenuItem(string moniker, string iconFilePath)
+        {
+            IAsyncOperation<StorageFile> operation = StorageFile.GetFileFromPathAsync(iconFilePath);
+
+            operation.Completed += (asyncInfo, asyncStatus) =>
+            {
+                if (asyncStatus == AsyncStatus.Completed)
+                {
+                    StorageFile file = asyncInfo.GetResults();
+                    var stream = RandomAccessStreamReference.CreateFromFile(file);
+                    var menuItem = RadialControllerMenuItem.CreateFromIcon(moniker, stream);
+                    _radialController.Menu.Items.Add(menuItem);
+                }
+            };
+        }
+
+        public void RequestActivation(string moniker)
+        {
+            RadialControllerMenuItem item = _radialController.Menu.Items.FirstOrDefault(i => i.DisplayText == moniker);
+
+            if (item == null)
+                return;
+
+            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
+            {
+                _radialController.Menu.SelectMenuItem(item);
+            });
+        }
+
+        public void ReleaseActivation()
+        {
+            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
+            {
+                _radialController.Menu.TrySelectPreviouslySelectedMenuItem();
+            });
+        }
+
         private void OnControlAcquired(RadialController sender, RadialControllerControlAcquiredEventArgs args)
         {
-            if (_providers == null)
-            {
-                this.SatisfyImportsOnce();
-
-                _controllers = _providers
-                    .Select(provider => provider.TryCreateController(this))
-                    .Where(controller => controller != null)
-                    .OrderBy(controller => controller.Specificity);
-            }
-
             if (_status != null)
             {
                 _status.Activate();
@@ -132,8 +161,9 @@ namespace DialToolsForVS
         private void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)
         {
             var evt = new DialEventArgs();
+            IEnumerable<IDialController> controllers = GetApplicableControllers().Where(c => c.CanHandleClick);
 
-            foreach (IDialController controller in _controllers.Where(c => c.CanHandleClick))
+            foreach (IDialController controller in controllers)
             {
                 controller.OnClick(args, evt);
 
@@ -160,8 +190,9 @@ namespace DialToolsForVS
         {
             var evt = new DialEventArgs();
             RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
+            IEnumerable<IDialController> controllers = GetApplicableControllers().Where(c => c.CanHandleRotate);
 
-            foreach (IDialController controller in _controllers.Where(c => c.CanHandleRotate))
+            foreach (IDialController controller in controllers)
             {
                 try
                 {
@@ -182,6 +213,21 @@ namespace DialToolsForVS
                     Logger.Log(ex);
                 }
             }
+        }
+
+        private IEnumerable<IDialController> GetApplicableControllers()
+        {
+            string moniker = _radialController.Menu.GetSelectedMenuItem()?.DisplayText;
+
+            if (string.IsNullOrEmpty(moniker))
+                Enumerable.Empty<IDialController>();
+
+            var alwaysInclude = new List<string> { PredefinedMonikers.IdeState, PredefinedMonikers.Scroll };
+
+            if (VsHelpers.DTE.ActiveWindow.IsDocument())
+                alwaysInclude.Insert(1, PredefinedMonikers.Editor);
+
+            return _controllers.Where(c => c.Moniker == moniker || alwaysInclude.Contains(c.Moniker));
         }
     }
 }

@@ -2,6 +2,8 @@
 {
     public interface IDialControllerHost
     {
-        void RequestActivation();
+        void AddMenuItem(string moniker, string iconFilePath);
+        void RequestActivation(string moniker);
+        void ReleaseActivation();
     }
 }

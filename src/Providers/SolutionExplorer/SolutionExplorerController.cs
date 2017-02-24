@@ -1,5 +1,4 @@
 ﻿using EnvDTE;
-using EnvDTE80;
 using System.Windows.Forms;
 using Windows.UI.Input;
 
@@ -7,6 +6,7 @@ namespace DialToolsForVS
 {
     internal class SolutionExplorerController : IDialController
     {
+        public string Moniker => PredefinedMonikers.Scroll;
         public Specificity Specificity => Specificity.ToolWindow;
 
         public bool CanHandleClick
