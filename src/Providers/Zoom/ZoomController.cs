@@ -8,15 +8,13 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
-    internal class ZoomController : IDialController
+    internal class ZoomController : BaseController
     {
-        public string Moniker => ZoomControllerProvider.Moniker;
+        public override string Moniker => ZoomControllerProvider.Moniker;
+        public override bool CanHandleClick => true;
+        public override bool CanHandleRotate => true;
 
-        public bool CanHandleClick => true;
-
-        public bool CanHandleRotate => true;
-
-        public bool OnClick()
+        public override bool OnClick()
         {
             if (!VsHelpers.DTE.ActiveWindow.IsDocument())
                 return false;
@@ -26,7 +24,7 @@ namespace DialToolsForVS
             return true;
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public override bool OnRotate(RotationDirection direction)
         {
             if (direction == RotationDirection.Right)
             {

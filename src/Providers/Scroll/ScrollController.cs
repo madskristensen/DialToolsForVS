@@ -4,13 +4,13 @@ using EnvDTE;
 
 namespace DialToolsForVS
 {
-    internal class ScrollController : IDialController
+    internal class ScrollController : BaseController
     {
-        public string Moniker => ScrollControllerProvider.Moniker;
-        public bool CanHandleClick => true;
-        public bool CanHandleRotate => true;
+        public override string Moniker => ScrollControllerProvider.Moniker;
+        public override bool CanHandleClick => true;
+        public override bool CanHandleRotate => true;
 
-        public bool OnClick()
+        public override bool OnClick()
         {
             if (VsHelpers.DTE.ActiveWindow.IsDocument())
             {
@@ -45,7 +45,7 @@ namespace DialToolsForVS
             return true;
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public override bool OnRotate(RotationDirection direction)
         {
             bool handled = false;
             if (VsHelpers.DTE.ActiveWindow.IsDocument())

@@ -9,5 +9,6 @@ namespace DialToolsForVS
         bool CanHandleRotate { get; }
         bool OnClick();
         bool OnRotate(RotationDirection direction);
+        void OnActivate();
     }
 }

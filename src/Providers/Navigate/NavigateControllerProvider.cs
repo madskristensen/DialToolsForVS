@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Reflection;
-
-namespace DialToolsForVS
+﻿namespace DialToolsForVS
 {
     [DialControllerProvider(order: 3)]
     internal class NavigateControllerProvider : IDialControllerProvider
@@ -10,9 +7,7 @@ namespace DialToolsForVS
 
         public IDialController TryCreateController(IDialControllerHost host)
         {
-            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string iconFilePath = Path.Combine(folder, "Providers\\Navigate\\icon.png");
-
+            string iconFilePath = VsHelpers.GetFileInVsix("Providers\\Navigate\\icon.png");
             host.AddMenuItem(Moniker, iconFilePath);
 
             return new NavigateController();

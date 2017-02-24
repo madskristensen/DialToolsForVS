@@ -108,7 +108,12 @@ namespace DialToolsForVS
                     StorageFile file = asyncInfo.GetResults();
                     var stream = RandomAccessStreamReference.CreateFromFile(file);
                     var menuItem = RadialControllerMenuItem.CreateFromIcon(moniker, stream);
-                    menuItem.Invoked += MenuItemInvoked;
+
+                    menuItem.Invoked += (sender, args) =>
+                    {
+                        _status.UpdateSelectedItem(sender.DisplayText);
+                        _controllers.FirstOrDefault(c => c.Moniker == moniker)?.OnActivate();
+                    };
 
                     ThreadHelper.Generic.BeginInvoke(DispatcherPriority.Normal, () =>
                     {
@@ -116,11 +121,6 @@ namespace DialToolsForVS
                     });
                 }
             };
-        }
-
-        private void MenuItemInvoked(RadialControllerMenuItem sender, object args)
-        {
-            _status.UpdateSelectedItem(sender.DisplayText);
         }
 
         public void RemoveMenuItem(string moniker)

@@ -1,5 +1,6 @@
 # Road map
 
+- [x] Only select Error List if it contains errors
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for

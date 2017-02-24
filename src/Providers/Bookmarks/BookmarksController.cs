@@ -2,7 +2,7 @@
 
 namespace DialToolsForVS
 {
-    internal class BookmarksController : IDialController
+    internal class BookmarksController : BaseController
     {
         private WindowEvents _events;
         private IDialControllerHost _host;
@@ -22,17 +22,23 @@ namespace DialToolsForVS
             }
         }
 
-        public string Moniker => BookmarksControllerProvider.Moniker;
-        public bool CanHandleClick => true;
-        public bool CanHandleRotate => true;
+        public override string Moniker => BookmarksControllerProvider.Moniker;
+        public override bool CanHandleClick => true;
+        public override bool CanHandleRotate => true;
 
-        public bool OnClick()
+        public override void OnActivate()
+        {
+            Window bookmarks = VsHelpers.DTE.Windows.Item("Bookmarks");
+            (bookmarks as Window)?.Activate();
+        }
+
+        public override bool OnClick()
         {
             VsHelpers.ExecuteCommand("Edit.ToggleBookmark");
             return true;
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public override bool OnRotate(RotationDirection direction)
         {
             if (direction == RotationDirection.Right)
             {

@@ -1,13 +1,11 @@
 ﻿namespace DialToolsForVS
 {
-    internal class NavigateController : IDialController
+    internal class NavigateController : BaseController
     {
-        public string Moniker => NavigateControllerProvider.Moniker;
-        public bool CanHandleClick => false;
-        public bool CanHandleRotate => true;
-        public bool OnClick() => false;
+        public override string Moniker => NavigateControllerProvider.Moniker;
+        public override bool CanHandleRotate => true;
 
-        public bool OnRotate(RotationDirection direction)
+        public override bool OnRotate(RotationDirection direction)
         {
             if (direction == RotationDirection.Right)
             {

@@ -9,6 +9,8 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 using System.ComponentModel.Composition;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace DialToolsForVS
 {
@@ -52,6 +54,12 @@ namespace DialToolsForVS
 
             ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out IVsTextView activeView));
             return activeView;
+        }
+
+        public static string GetFileInVsix(string relativePath)
+        {
+            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            return Path.Combine(folder, relativePath);
         }
 
         public static bool IsSolutionExplorer(this Window window)

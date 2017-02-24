@@ -2,7 +2,7 @@
 
 namespace DialToolsForVS
 {
-    internal class DebugController : IDialController
+    internal class DebugController : BaseController
     {
         private DebuggerEvents _events;
 
@@ -13,14 +13,14 @@ namespace DialToolsForVS
             _events.OnEnterDesignMode += delegate { host.ReleaseActivation(); };
         }
 
-        public string Moniker => DebugControllerProvider.Moniker;
-        public bool CanHandleClick => true;
-        public bool CanHandleRotate
+        public override string Moniker => DebugControllerProvider.Moniker;
+        public override bool CanHandleClick => true;
+        public override bool CanHandleRotate
         {
             get { return VsHelpers.DTE.Application?.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode; }
         }
 
-        public bool OnClick()
+        public override bool OnClick()
         {
             dbgDebugMode? debugMode = VsHelpers.DTE.Application?.Debugger.CurrentMode;
 
@@ -36,7 +36,7 @@ namespace DialToolsForVS
             return true;
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public override bool OnRotate(RotationDirection direction)
         {
             if (direction == RotationDirection.Right)
             {

@@ -19,7 +19,7 @@ namespace DialToolsForVS
 
         private void WindowActivated(Window GotFocus, Window LostFocus)
         {
-            if (GotFocus.IsErrorList())
+            if (GotFocus.IsErrorList() && _errorList.TableControl.Entries.Any())
             {
                 _host.RequestActivation(Moniker);
             }
@@ -33,9 +33,14 @@ namespace DialToolsForVS
             get { return _errorList.TableControl.Entries.Any(); }
         }
 
-        public bool OnClick()
+        public void OnActivate()
         {
             VsHelpers.DTE.ToolWindows.ErrorList.Parent?.Activate();
+        }
+
+        public bool OnClick()
+        {
+            OnActivate();
             return true;
         }
 

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace DialToolsForVS
 {
-    internal class EditorController : IDialController
+    internal class EditorController : BaseController
     {
         private IWpfTextView _view;
         private delegate string Shift(SnapshotSpan bufferSpan, RotationDirection direction);
@@ -16,11 +16,9 @@ namespace DialToolsForVS
             { @"(\b|\-)[0-9\.]+", NumberShifter.Shift }
         };
 
-        public string Moniker => EditorControllerProvider.Moniker;
+        public override string Moniker => EditorControllerProvider.Moniker;
 
-        public bool CanHandleClick => false;
-
-        public bool CanHandleRotate
+        public override bool CanHandleRotate
         {
             get
             {
@@ -33,12 +31,7 @@ namespace DialToolsForVS
             }
         }
 
-        public bool OnClick()
-        {
-            return false;
-        }
-
-        public bool OnRotate(RotationDirection direction)
+        public override bool OnRotate(RotationDirection direction)
         {
             if (_view == null)
                 return false;

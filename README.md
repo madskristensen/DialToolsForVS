@@ -74,7 +74,7 @@ When the error list contain errors, the dial makes it easy to navigate to the ne
 - **Rotate left**: go to previous error
 - **Click**: Show the Error List
 
-When the Error List window is activated, the Errors dial item is automatically activated as well.
+When the Error List window is activated, the Errors dial item is automatically activated if it contains any errors.
 
 ### Editor shifters
 Shifting is a way to modify text in the editor based on the Dial rotation. When the caret is placed in a supported position, the shifting is enalbed.

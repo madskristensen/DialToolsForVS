@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Reflection;
-
-namespace DialToolsForVS
+﻿namespace DialToolsForVS
 {
     [DialControllerProvider(order: 6)]
     internal class ErrorsControllerProvider : IDialControllerProvider
@@ -10,9 +7,7 @@ namespace DialToolsForVS
 
         public IDialController TryCreateController(IDialControllerHost host)
         {
-            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string iconFilePath = Path.Combine(folder, "Providers\\Errors\\icon.png");
-
+            string iconFilePath = VsHelpers.GetFileInVsix("Providers\\Errors\\icon.png");
             host.AddMenuItem(Moniker, iconFilePath);
 
             return new ErrorsController(host);

@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Reflection;
-
-namespace DialToolsForVS
+﻿namespace DialToolsForVS
 {
     [DialControllerProvider(order: 5)]
     internal class DebugControllerProvider : IDialControllerProvider
@@ -10,9 +7,7 @@ namespace DialToolsForVS
 
         public IDialController TryCreateController(IDialControllerHost host)
         {
-            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string iconFilePath = Path.Combine(folder, "Providers\\Debug\\icon.png");
-
+            string iconFilePath = VsHelpers.GetFileInVsix("Providers\\Debug\\icon.png");
             host.AddMenuItem(Moniker, iconFilePath);
 
             return new DebugController(host);
