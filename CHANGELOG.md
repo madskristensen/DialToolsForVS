@@ -1,7 +1,6 @@
 # Road map
 
 - [ ] Add telemtry
-- [x] Switch to error dial item when Error List is activated
 
 Features that have a checkmark are complete and available for
 download in the
@@ -24,6 +23,7 @@ on the official Visual Studio extension gallery.
 - [x] New icons
 - [x] Make zoom reset work for all open documentss
 - [x] Get rid of DialEventArgs
+- [x] Switch to error dial item when Error List is activated
 
 ## 0.5
 
