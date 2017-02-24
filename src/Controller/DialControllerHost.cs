@@ -26,7 +26,6 @@ namespace DialToolsForVS
         {
             CreateStatusBar();
             CreateController();
-            SetDefaultItems();
             HookUpEvents();
             ImportProviders();
         }
@@ -63,14 +62,6 @@ namespace DialToolsForVS
             var radialControllerConfigInterop = (IRadialControllerConfigurationInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialControllerConfiguration));
             Guid guid = typeof(RadialControllerConfiguration).GetInterface("IRadialControllerConfiguration").GUID;
 
-            // Scroll
-            var scroll = RadialControllerMenuItem.CreateFromKnownIcon(PredefinedMonikers.Scroll, RadialControllerMenuKnownIcon.Scroll);
-            _radialController.Menu.Items.Add(scroll);
-
-            // Zoom
-            var zoom = RadialControllerMenuItem.CreateFromKnownIcon(PredefinedMonikers.Zoom, RadialControllerMenuKnownIcon.Zoom);
-            _radialController.Menu.Items.Add(zoom);
-
             config = radialControllerConfigInterop.GetForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
             config.SetDefaultMenuItems(new RadialControllerSystemMenuItemKind[0]);
         }
@@ -94,6 +85,8 @@ namespace DialToolsForVS
                 .Select(provider => provider.TryCreateController(this))
                 .Where(controller => controller != null)
                 .OrderBy(controller => controller.Specificity).ToArray();
+
+            SetDefaultItems();
         }
 
         public void AddMenuItem(string moniker, string iconFilePath)
@@ -117,6 +110,15 @@ namespace DialToolsForVS
                     });
                 }
             };
+        }
+
+        public void AddMenuItem(string moniker, RadialControllerMenuKnownIcon icon)
+        {
+            if (_radialController.Menu.Items.Any(i => i.DisplayText == moniker))
+                return;
+
+            var item = RadialControllerMenuItem.CreateFromKnownIcon(moniker, icon);
+            _radialController.Menu.Items.Add(item);
         }
 
         public void RemoveMenuItem(string moniker)
@@ -165,7 +167,7 @@ namespace DialToolsForVS
 
             foreach (IDialController controller in controllers)
             {
-                controller.OnClick(args, evt);
+                controller.OnClick(evt);
 
                 try
                 {

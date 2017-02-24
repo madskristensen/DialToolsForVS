@@ -7,6 +7,8 @@ namespace DialToolsForVS
     {
         public IDialController TryCreateController(IDialControllerHost host)
         {
+            host.AddMenuItem(PredefinedMonikers.Zoom, Windows.UI.Input.RadialControllerMenuKnownIcon.Zoom);
+
             return new ZoomController();
         }
     }

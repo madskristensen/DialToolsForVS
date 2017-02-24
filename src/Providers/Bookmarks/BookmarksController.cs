@@ -1,6 +1,4 @@
-﻿using Windows.UI.Input;
-
-namespace DialToolsForVS
+﻿namespace DialToolsForVS
 {
     internal class BookmarksController : IDialController
     {
@@ -9,7 +7,7 @@ namespace DialToolsForVS
         public bool CanHandleClick => true;
         public bool CanHandleRotate => true;
 
-        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
+        public void OnClick(DialEventArgs e)
         {
             VsHelpers.ExecuteCommand("Edit.ToggleBookmark");
             e.Action = "Toggle bookmark";

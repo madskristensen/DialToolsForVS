@@ -1,4 +1,4 @@
-﻿using Windows.UI.Input;
+﻿using Microsoft.VisualStudio.Text.Editor;
 
 namespace DialToolsForVS
 {
@@ -7,28 +7,34 @@ namespace DialToolsForVS
         public string Moniker => PredefinedMonikers.Zoom;
         public Specificity Specificity => Specificity.ToolWindow;
 
-        public bool CanHandleClick => false;
+        public bool CanHandleClick => true;
 
         public bool CanHandleRotate => true;
 
-        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
+        public void OnClick(DialEventArgs e)
         {
-            VsHelpers.ExecuteCommand("View.Zoom", 100);
-            e.Handled = true;
+            if (!VsHelpers.DTE.ActiveWindow.IsDocument())
+                return;
+
+            IWpfTextView view = VsHelpers.GetCurentTextView();
+
+            if (view != null && view.HasAggregateFocus)
+            {
+                view.ZoomLevel = 100;
+                e.Handled = true;
+            }
         }
 
         public void OnRotate(RotationDirection direction, DialEventArgs e)
         {
             if (direction == RotationDirection.Right)
             {
-                VsHelpers.ExecuteCommand("View.ZoomIn");
+                e.Handled = VsHelpers.ExecuteCommand("View.ZoomIn");
             }
             else
             {
-                VsHelpers.ExecuteCommand("View.ZoomOut");
+                e.Handled = VsHelpers.ExecuteCommand("View.ZoomOut");
             }
-
-            e.Handled = true;
         }
     }
 }

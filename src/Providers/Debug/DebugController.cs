@@ -1,5 +1,4 @@
 ﻿using EnvDTE;
-using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
@@ -22,7 +21,7 @@ namespace DialToolsForVS
             get { return VsHelpers.DTE.Application?.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode; }
         }
 
-        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
+        public void OnClick(DialEventArgs e)
         {
             dbgDebugMode? debugMode = VsHelpers.DTE.Application?.Debugger.CurrentMode;
 

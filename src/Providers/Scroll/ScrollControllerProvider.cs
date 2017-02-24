@@ -3,11 +3,13 @@
 namespace DialToolsForVS
 {
     [Export(typeof(IDialControllerProvider))]
-    internal class DefaultControllerProvider : IDialControllerProvider
+    internal class ScrollControllerProvider : IDialControllerProvider
     {
         public IDialController TryCreateController(IDialControllerHost host)
         {
-            return new DefaultController();
+            host.AddMenuItem(PredefinedMonikers.Scroll, Windows.UI.Input.RadialControllerMenuKnownIcon.Scroll);
+
+            return new ScrollController();
         }
     }
 }

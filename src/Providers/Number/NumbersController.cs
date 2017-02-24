@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.Text.Formatting;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
@@ -26,6 +25,9 @@ namespace DialToolsForVS
                     return false;
 
                 _view = VsHelpers.GetCurentTextView();
+
+                if (!_view.HasAggregateFocus)
+                    return false;
 
                 SnapshotPoint position = _view.Caret.Position.BufferPosition;
                 IWpfTextViewLine line = _view.GetTextViewLineContainingBufferPosition(position);
@@ -56,10 +58,8 @@ namespace DialToolsForVS
             }
         }
 
-        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+        public void OnClick(DialEventArgs e)
+        { }
 
         public void OnRotate(RotationDirection direction, DialEventArgs e)
         {

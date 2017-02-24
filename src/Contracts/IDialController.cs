@@ -8,7 +8,7 @@ namespace DialToolsForVS
         Specificity Specificity { get; }
         bool CanHandleClick { get; }
         bool CanHandleRotate { get; }
-        void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e);
+        void OnClick(DialEventArgs e);
         void OnRotate(RotationDirection direction, DialEventArgs e);
     }
 }

@@ -68,8 +68,10 @@
     <Compile Include="Providers\Bookmarks\BookmarksControllerProvider.cs" />
     <Compile Include="Providers\Errors\ErrorsController.cs" />
     <Compile Include="Providers\Errors\ErrorsControllerProvider.cs" />
-    <Compile Include="Providers\Default\DefaultController.cs" />
-    <Compile Include="Providers\Default\DefaultControllerProvider.cs" />
+    <Compile Include="Providers\Scroll\ScrollController.cs" />
+    <Compile Include="Providers\Scroll\ScrollControllerProvider.cs" />
+    <Compile Include="Providers\Navigate\NavigateController.cs" />
+    <Compile Include="Providers\Navigate\NavigateControllerProvider.cs" />
     <Compile Include="Providers\Zoom\ZoomController.cs" />
     <Compile Include="Providers\Zoom\ZoomControllerProvider.cs" />
     <Compile Include="Providers\SolutionExplorer\SolutionExplorerController.cs" />

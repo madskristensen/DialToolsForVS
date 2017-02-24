@@ -62,19 +62,24 @@ namespace DialToolsForVS
             return window?.Kind == "Document";
         }
 
-        public static void ExecuteCommand(string commandName, object argument = null)
+        public static bool ExecuteCommand(string commandName)
         {
             try
             {
                 Command command = DTE.Commands.Item(commandName);
 
                 if (command != null && command.IsAvailable)
-                    DTE.Commands.Raise(command.Guid, command.ID, argument, argument);
+                {
+                    DTE.Commands.Raise(command.Guid, command.ID, null, null);
+                    return true;
+                }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.Write(ex);
             }
+
+            return false;
         }
 
         public static void SatisfyImportsOnce(this object o)

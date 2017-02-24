@@ -1,6 +1,5 @@
 ﻿using EnvDTE;
 using System.Windows.Forms;
-using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
@@ -19,7 +18,7 @@ namespace DialToolsForVS
 
         public bool CanHandleRotate => false;
 
-        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
+        public void OnClick(DialEventArgs e)
         {
             var selectedItems = VsHelpers.DTE.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
 

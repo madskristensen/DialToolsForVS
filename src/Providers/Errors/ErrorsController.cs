@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System.Linq;
-using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
@@ -17,7 +16,7 @@ namespace DialToolsForVS
             get { return _errorList.TableControl.Entries.Any(); }
         }
 
-        public void OnClick(RadialControllerButtonClickedEventArgs args, DialEventArgs e)
+        public void OnClick(DialEventArgs e)
         {
             VsHelpers.DTE.ToolWindows.ErrorList.Parent?.Activate();
         }
