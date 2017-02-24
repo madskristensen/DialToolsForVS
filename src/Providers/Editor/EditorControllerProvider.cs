@@ -1,16 +1,22 @@
-﻿namespace DialToolsForVS
+﻿using System.ComponentModel.Composition;
+using Microsoft.VisualStudio.Language.Intellisense;
+
+namespace DialToolsForVS
 {
     [DialControllerProvider(4)]
     internal class EditorControllerProvider : IDialControllerProvider
     {
-        public const string Moniker = "Editor";
+        public static string Moniker = KnownProviders.Editor.ToString();
+
+        [Import]
+        private ICompletionBroker CompletionBroker { get; set; }
 
         public IDialController TryCreateController(IDialControllerHost host)
         {
             string iconFilePath = VsHelpers.GetFileInVsix("Providers\\Editor\\icon.png");
             host.AddMenuItem(Moniker, iconFilePath);
 
-            return new EditorController();
+            return new EditorController(CompletionBroker);
         }
     }
 }

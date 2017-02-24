@@ -3,7 +3,7 @@
     [DialControllerProvider(order: 3)]
     internal class NavigateControllerProvider : IDialControllerProvider
     {
-        public const string Moniker = "Navigation";
+        public static string Moniker = KnownProviders.Navigation.ToString();
 
         public IDialController TryCreateController(IDialControllerHost host)
         {

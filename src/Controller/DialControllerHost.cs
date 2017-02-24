@@ -18,6 +18,7 @@ namespace DialToolsForVS
         private RadialController _radialController;
         private IEnumerable<IDialController> _controllers;
         private StatusBarControl _status;
+        private bool _firstActivation = true;
 
         [ImportMany(typeof(IDialControllerProvider))]
         private IEnumerable<Lazy<IDialControllerProvider, IDialMetadata>> _providers { get; set; }
@@ -149,6 +150,12 @@ namespace DialToolsForVS
 
         private void OnControlAcquired(RadialController sender, RadialControllerControlAcquiredEventArgs args)
         {
+            if (_firstActivation)
+            {
+                _firstActivation = false;
+                RequestActivation(DialPackage.Options.DefaultProvider.ToString());
+            }
+
             if (_status != null)
             {
                 _status.Activate(sender.Menu.GetSelectedMenuItem()?.DisplayText);

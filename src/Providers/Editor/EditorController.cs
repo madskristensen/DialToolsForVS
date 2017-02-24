@@ -3,11 +3,14 @@ using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.Language.Intellisense;
+using System.Windows.Forms;
 
 namespace DialToolsForVS
 {
     internal class EditorController : BaseController
     {
+        private ICompletionBroker _broker;
         private IWpfTextView _view;
         private delegate string Shift(SnapshotSpan bufferSpan, RotationDirection direction);
         private Dictionary<string, Shift> _dic = new Dictionary<string, Shift>()
@@ -15,6 +18,11 @@ namespace DialToolsForVS
             { @"(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))\b", ColorShifter.Shift },
             { @"(\b|\-)[0-9\.]+", NumberShifter.Shift }
         };
+
+        public EditorController(ICompletionBroker completionBroker)
+        {
+            _broker = completionBroker;
+        }
 
         public override string Moniker => EditorControllerProvider.Moniker;
 
@@ -29,6 +37,27 @@ namespace DialToolsForVS
 
                 return _view != null && _view.HasAggregateFocus;
             }
+        }
+
+        public override bool CanHandleClick => true;
+
+        public override bool OnClick()
+        {
+            _view = VsHelpers.GetCurentTextView();
+
+            if (_view == null || !_view.HasAggregateFocus)
+                return false;
+
+            if (_broker.IsCompletionActive(_view))
+            {
+                _broker.GetSessions(_view)[0].Commit();
+            }
+            else
+            {
+                _broker.TriggerCompletion(_view);
+            }
+
+            return true;
         }
 
         public override bool OnRotate(RotationDirection direction)
@@ -51,7 +80,7 @@ namespace DialToolsForVS
                 }
             }
 
-            return false;
+            return IntellisenseShifter.TryShift(_view, _broker, direction);
         }
 
         private bool TryGetMatch(string pattern, out SnapshotSpan span)

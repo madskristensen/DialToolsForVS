@@ -1,11 +1,19 @@
 ﻿using Microsoft.VisualStudio.Text.Editor;
 using System.Windows.Forms;
 using EnvDTE;
+using Microsoft.VisualStudio.Language.Intellisense;
 
 namespace DialToolsForVS
 {
     internal class ScrollController : BaseController
     {
+        private ICompletionBroker _broker;
+
+        public ScrollController(ICompletionBroker broker)
+        {
+            _broker = broker;
+        }
+
         public override string Moniker => ScrollControllerProvider.Moniker;
         public override bool CanHandleClick => true;
         public override bool CanHandleRotate => true;
@@ -16,7 +24,7 @@ namespace DialToolsForVS
             {
                 IWpfTextView view = VsHelpers.GetCurentTextView();
 
-                if (view != null && view.HasAggregateFocus)
+                if (view != null && view.HasAggregateFocus && !_broker.IsCompletionActive(view))
                     SendKeys.Send("+{F10}");
                 else
                     SendKeys.Send("{ENTER}");

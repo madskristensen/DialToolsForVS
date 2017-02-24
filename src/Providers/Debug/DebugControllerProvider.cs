@@ -3,7 +3,7 @@
     [DialControllerProvider(order: 5)]
     internal class DebugControllerProvider : IDialControllerProvider
     {
-        public const string Moniker = "Debug";
+        public static string Moniker = KnownProviders.Debug.ToString();
 
         public IDialController TryCreateController(IDialControllerHost host)
         {

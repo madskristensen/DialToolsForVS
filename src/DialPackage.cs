@@ -8,15 +8,24 @@ using Tasks = System.Threading.Tasks;
 
 namespace DialToolsForVS
 {
+    [Guid(PackageGuids.guidPackageString)]
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(PackageGuids.guidPackageString)]
+    [ProvideOptionPage(typeof(Options), "Surface Dial", "General", 0, 0, true, ProvidesLocalizedCategoryName = false)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string)]
     internal sealed class DialPackage : AsyncPackage
     {
+        public static Options Options
+        {
+            get;
+            private set;
+        }
+
         protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            Options = (Options)GetDialogPage(typeof(Options));
+
             ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
             {
                 try

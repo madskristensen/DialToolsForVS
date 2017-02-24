@@ -1,6 +1,9 @@
 # Road map
 
 - [x] Only select Error List if it contains errors
+- [x] Intellisense rotation shifter
+- [x] Option to select default dial menu item
+- [ ] Reset Zoom should move ZoomIn and ZoomOut till reaching 100%
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for

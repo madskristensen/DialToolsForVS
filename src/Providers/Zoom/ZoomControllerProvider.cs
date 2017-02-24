@@ -3,7 +3,7 @@
     [DialControllerProvider(order: 2)]
     internal class ZoomControllerProvider : IDialControllerProvider
     {
-        public const string Moniker = "Zoom";
+        public static string Moniker = KnownProviders.Zoom.ToString();
 
         public IDialController TryCreateController(IDialControllerHost host)
         {

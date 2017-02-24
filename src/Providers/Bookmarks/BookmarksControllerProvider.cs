@@ -3,7 +3,7 @@
     [DialControllerProvider(order: 7)]
     internal class BookmarksControllerProvider : IDialControllerProvider
     {
-        public const string Moniker = "Bookmarks";
+        public static string Moniker = KnownProviders.Bookmarks.ToString();
 
         public IDialController TryCreateController(IDialControllerHost host)
         {
