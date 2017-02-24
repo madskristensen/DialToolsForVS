@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
@@ -7,7 +8,7 @@ namespace DialToolsForVS
     {
         public IDialController TryCreateController(IDialControllerHost host)
         {
-            host.AddMenuItem(PredefinedMonikers.Navigate, Windows.UI.Input.RadialControllerMenuKnownIcon.NextPreviousTrack);
+            host.AddMenuItem(PredefinedMonikers.Navigate, RadialControllerMenuKnownIcon.NextPreviousTrack);
 
             return new NavigateController();
         }

@@ -6,6 +6,7 @@
 - [x] Add bookmark navigation
 - [x] Add debug navigation
 - [x] Reset zoom level on click
+- [x] Add status bar text to show selected menu item
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for

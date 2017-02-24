@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using Windows.UI.Input;
 
 namespace DialToolsForVS
 {
@@ -7,7 +8,7 @@ namespace DialToolsForVS
     {
         public IDialController TryCreateController(IDialControllerHost host)
         {
-            host.AddMenuItem(PredefinedMonikers.Zoom, Windows.UI.Input.RadialControllerMenuKnownIcon.Zoom);
+            host.AddMenuItem(PredefinedMonikers.Zoom, RadialControllerMenuKnownIcon.Zoom);
 
             return new ZoomController();
         }

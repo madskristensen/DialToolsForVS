@@ -103,8 +103,9 @@ namespace DialToolsForVS
                     StorageFile file = asyncInfo.GetResults();
                     var stream = RandomAccessStreamReference.CreateFromFile(file);
                     var menuItem = RadialControllerMenuItem.CreateFromIcon(moniker, stream);
+                    menuItem.Invoked += MenuItemInvoked;
 
-                    ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
+                    ThreadHelper.Generic.BeginInvoke(DispatcherPriority.Normal, () =>
                     {
                         _radialController.Menu.Items.Add(menuItem);
                     });
@@ -117,8 +118,14 @@ namespace DialToolsForVS
             if (_radialController.Menu.Items.Any(i => i.DisplayText == moniker))
                 return;
 
-            var item = RadialControllerMenuItem.CreateFromKnownIcon(moniker, icon);
-            _radialController.Menu.Items.Add(item);
+            var menuitem = RadialControllerMenuItem.CreateFromKnownIcon(moniker, icon);
+            menuitem.Invoked += MenuItemInvoked;
+            _radialController.Menu.Items.Add(menuitem);
+        }
+
+        private void MenuItemInvoked(RadialControllerMenuItem sender, object args)
+        {
+            throw new NotImplementedException();
         }
 
         public void RemoveMenuItem(string moniker)
@@ -147,7 +154,7 @@ namespace DialToolsForVS
             if (_status != null)
             {
                 _status.Activate();
-                VsHelpers.WriteStatus("Dial activated");
+                _status.UpdateSelectedItem(sender.Menu.GetSelectedMenuItem().DisplayText);
             }
         }
 
@@ -156,7 +163,6 @@ namespace DialToolsForVS
             if (_status != null)
             {
                 _status.Deactivate();
-                VsHelpers.WriteStatus("Dial deactivated");
             }
         }
 
@@ -175,7 +181,7 @@ namespace DialToolsForVS
                     {
                         if (!string.IsNullOrEmpty(evt.Action))
                         {
-                            VsHelpers.WriteStatus(evt.Action);
+                            //VsHelpers.WriteStatus(evt.Action);
                         }
 
                         break;
@@ -204,7 +210,7 @@ namespace DialToolsForVS
                     {
                         if (!string.IsNullOrEmpty(evt.Action))
                         {
-                            VsHelpers.WriteStatus(evt.Action);
+                            //VsHelpers.WriteStatus(evt.Action);
                         }
 
                         break;
