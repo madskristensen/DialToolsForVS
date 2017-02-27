@@ -1,10 +1,5 @@
 # Road map
 
-- [x] Only select Error List if it contains errors
-- [x] Intellisense rotation shifter
-- [x] Option to select default dial menu item
-- [x] Reset Zoom should move ZoomIn and ZoomOut till reaching 100%
-- [x] Fixed missing tooltip on status bar control
 - [ ] Add telemtry
 
 Features that have a checkmark are complete and available for
@@ -15,6 +10,14 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+## 0.7
+
+- [x] Only select Error List if it contains errors
+- [x] Intellisense rotation shifter
+- [x] Option to select default dial menu item
+- [x] Reset Zoom should move ZoomIn and ZoomOut till reaching 100%
+- [x] Fixed missing tooltip on status bar control
 
 ## 0.6
 

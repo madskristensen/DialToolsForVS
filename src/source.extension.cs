@@ -11,7 +11,7 @@ namespace DialToolsForVS
         public const string Name = "Surface Dial Tools for Visual Studio";
         public const string Description = @"Adds features to Visual Studio specific to the Surface Dial. You don't need a Surface Book or Surface Studio to take advantage of the Surface Dial.";
         public const string Language = "en-US";
-        public const string Version = "0.6";
+        public const string Version = "0.7";
         public const string Author = "Mads Kristensen";
         public const string Tags = "surface, dial";
     }
