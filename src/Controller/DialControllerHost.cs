@@ -89,7 +89,6 @@ namespace DialToolsForVS
                 .OrderBy(provider => provider.Metadata.Order)
                 .Select(provider => provider.Value.TryCreateController(this))
                 .Where(controller => controller != null)
-                .OrderBy(controller => controller.Moniker == ScrollControllerProvider.Moniker)
                 .ToArray();
 
             SetDefaultItems();
@@ -192,8 +191,8 @@ namespace DialToolsForVS
 
         private void OnRotationChanged(RadialController sender, RadialControllerRotationChangedEventArgs args)
         {
-            RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
             IEnumerable<IDialController> controllers = GetApplicableControllers().Where(c => c.CanHandleRotate);
+            RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
 
             foreach (IDialController controller in controllers)
             {
@@ -220,7 +219,7 @@ namespace DialToolsForVS
 
             try
             {
-                return _controllers.Where(c => c.Moniker == moniker || c.Moniker == ScrollControllerProvider.Moniker);
+                return _controllers.Where(c => c.Moniker == moniker);
             }
             catch (Exception ex)
             {

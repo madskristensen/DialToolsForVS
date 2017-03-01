@@ -28,8 +28,7 @@ namespace DialToolsForVS
 
         public override void OnActivate()
         {
-            Window bookmarks = VsHelpers.DTE.Windows.Item("Bookmarks");
-            (bookmarks as Window)?.Activate();
+            VsHelpers.ExecuteCommand("View.BookmarkWindow");
         }
 
         public override bool OnClick()

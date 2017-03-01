@@ -54,7 +54,7 @@ namespace DialToolsForVS
             }
             else
             {
-                _broker.TriggerCompletion(_view);
+                VsHelpers.ExecuteCommand("Edit.ListMembers");
             }
 
             return true;
