@@ -55,6 +55,9 @@ namespace DialToolsForVS
             Guid guid = typeof(RadialController).GetInterface("IRadialController").GUID;
 
             _radialController = interop.CreateForWindow(new IntPtr(VsHelpers.DTE.MainWindow.HWnd), ref guid);
+
+            if (_radialController == null)
+                Logger.Log("Coulnd't create RadialController");
         }
 
         private void SetDefaultItems()
@@ -172,6 +175,7 @@ namespace DialToolsForVS
         private void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)
         {
             IEnumerable<IDialController> controllers = GetApplicableControllers().Where(c => c.CanHandleClick);
+            Logger.Log("Click: " + string.Join(", ", controllers.Select(c => c.Moniker)));
 
             foreach (IDialController controller in controllers)
             {
@@ -193,6 +197,8 @@ namespace DialToolsForVS
         {
             IEnumerable<IDialController> controllers = GetApplicableControllers().Where(c => c.CanHandleRotate);
             RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
+
+            Logger.Log("Rotate: " + string.Join(", ", controllers.Select(c => c.Moniker)));
 
             foreach (IDialController controller in controllers)
             {
