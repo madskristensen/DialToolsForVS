@@ -15,18 +15,9 @@ namespace DialToolsForVS
             if (view == null || view.ZoomLevel == 100)
                 return false;
 
-            if (view.ZoomLevel > 100)
-            {
-                while (view.ZoomLevel > 100)
-                    if (!VsHelpers.ExecuteCommand("View.ZoomOut"))
-                        break;
-            }
-            else
-            {
-                while (view.ZoomLevel < 100)
-                    if (!VsHelpers.ExecuteCommand("View.ZoomIn"))
-                        break;
-            }
+            view.ZoomLevel = 100;
+            VsHelpers.ExecuteCommand("View.ZoomOut");
+            VsHelpers.ExecuteCommand("View.ZoomIn");
 
             return true;
         }
