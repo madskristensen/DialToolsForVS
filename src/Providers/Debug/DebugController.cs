@@ -1,4 +1,7 @@
-﻿using EnvDTE;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EnvDTE;
 
 namespace DialToolsForVS
 {
@@ -15,10 +18,7 @@ namespace DialToolsForVS
 
         public override string Moniker => DebugControllerProvider.Moniker;
         public override bool CanHandleClick => true;
-        public override bool CanHandleRotate
-        {
-            get { return VsHelpers.DTE.Application?.Debugger.CurrentMode == dbgDebugMode.dbgBreakMode; }
-        }
+        public override bool CanHandleRotate => true;
 
         public override bool OnClick()
         {
@@ -38,16 +38,80 @@ namespace DialToolsForVS
 
         public override bool OnRotate(RotationDirection direction)
         {
-            if (direction == RotationDirection.Right)
+            dbgDebugMode? debugMode = VsHelpers.DTE.Application?.Debugger.CurrentMode;
+
+            if (debugMode == dbgDebugMode.dbgBreakMode)
             {
-                VsHelpers.DTE.Application.Debugger.StepOver();
+                if (direction == RotationDirection.Right)
+                {
+                    VsHelpers.DTE.Application.Debugger.StepOver();
+                }
+                else
+                {
+                    VsHelpers.DTE.Application.Debugger.StepOut();
+                }
+            }
+            else if (debugMode == dbgDebugMode.dbgDesignMode)
+            {
+                if (direction == RotationDirection.Right)
+                {
+                    MoveToBreakpoint((s, bs, d) =>
+                    {
+                        return bs.FirstOrDefault(b =>
+                            string.Equals(b.File, d.FullName, StringComparison.InvariantCultureIgnoreCase)
+                            && b.FileLine > s.CurrentLine
+                            || string.Compare(b.File, d.FullName, true) > 0) ?? bs.FirstOrDefault();
+                    });
+                }
+                else
+                {
+                    MoveToBreakpoint((s, bs, d) =>
+                    {
+                        return bs.LastOrDefault(b =>
+                            string.Equals(b.File, d.FullName, StringComparison.InvariantCultureIgnoreCase)
+                            && b.FileLine < s.CurrentLine
+                            || string.Compare(b.File, d.FullName, true) < 0) ?? bs.LastOrDefault();
+                    });
+                }
+
+            }
+            return true;
+        }
+
+        private void MoveToBreakpoint(Func<TextSelection, IEnumerable<Breakpoint>, Document, Breakpoint> findBreakpoint)
+        {
+            var dte = VsHelpers.DTE;
+
+            var selection = ((TextSelection)dte.ActiveDocument.Selection);
+
+            var breakpoints = dte.Debugger.Breakpoints.OfType<Breakpoint>().OrderBy(b => b, new FileOrderer());
+
+            var breakpoint = findBreakpoint(selection, breakpoints, dte.ActiveDocument);
+
+            if (breakpoint != null)
+            {
+                var s = dte.Documents.OfType<Document>()
+                    .FirstOrDefault(d => string.Equals(d.FullName, breakpoint.File, StringComparison.InvariantCultureIgnoreCase))
+                    .Selection as TextSelection;
+
+                dte.Documents.Open(breakpoint.File);
+                s.MoveToLineAndOffset(breakpoint.FileLine, breakpoint.FileColumn);
+            }
+        }
+    }
+
+    class FileOrderer : IComparer<Breakpoint>
+    {
+        public int Compare(Breakpoint x, Breakpoint y)
+        {
+            if (x.File == y.File)
+            {
+                return x.FileLine.CompareTo(y.FileLine);
             }
             else
             {
-                VsHelpers.DTE.Application.Debugger.StepOut();
+                return string.Compare(x.File, y.File);
             }
-
-            return true;
         }
     }
 }
