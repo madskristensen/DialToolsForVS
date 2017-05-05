@@ -61,9 +61,9 @@ Takes you to the previous and next location in your files.
 ### Debugging
 When a breakpoint is hit, use the dial to step into, over and out.
 
-- **Rotate right**: step over
-- **Rotate left**: step out
-- **Click**: step into
+- **Rotate right**: When not debugging, go to next breakpoint. Otherwise step over
+- **Rotate left**: When not debugging, go to previous breakpoint. Otherwise step out
+- **Click**: When not debugging, starts the debugger. Otherwise step into
 
 When a breakpoint is hit, the Debug dial item is automatically activated as well
 

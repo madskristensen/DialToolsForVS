@@ -24,13 +24,16 @@ namespace DialToolsForVS
         {
             dbgDebugMode? debugMode = VsHelpers.DTE.Application?.Debugger.CurrentMode;
 
+            if (!debugMode.HasValue)
+                return false;
+
             if (debugMode == dbgDebugMode.dbgBreakMode)
             {
                 VsHelpers.DTE.Application.Debugger.StepInto();
             }
             else if (debugMode == dbgDebugMode.dbgDesignMode)
             {
-                VsHelpers.ExecuteCommand("Debug.ToggleBreakpoint");
+                VsHelpers.DTE.Debugger.Go();
             }
 
             return true;
@@ -80,13 +83,13 @@ namespace DialToolsForVS
 
         private void MoveToBreakpoint(Func<TextSelection, IEnumerable<Breakpoint>, Document, Breakpoint> findBreakpoint)
         {
-            var dte = VsHelpers.DTE;
+            EnvDTE80.DTE2 dte = VsHelpers.DTE;
 
             var selection = ((TextSelection)dte.ActiveDocument.Selection);
 
-            var breakpoints = dte.Debugger.Breakpoints.OfType<Breakpoint>().OrderBy(b => b, new FileOrderer());
+            IOrderedEnumerable<Breakpoint> breakpoints = dte.Debugger.Breakpoints.OfType<Breakpoint>().OrderBy(b => b, new FileOrderer());
 
-            var breakpoint = findBreakpoint(selection, breakpoints, dte.ActiveDocument);
+            Breakpoint breakpoint = findBreakpoint(selection, breakpoints, dte.ActiveDocument);
 
             if (breakpoint != null)
             {
