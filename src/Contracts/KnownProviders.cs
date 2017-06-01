@@ -8,6 +8,7 @@
         Errors,
         Navigation,
         Scroll,
-        Zoom
+        Zoom,
+        Find
     }
 }
