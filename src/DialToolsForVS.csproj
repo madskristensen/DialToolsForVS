@@ -74,6 +74,8 @@
     <Compile Include="Providers\Bookmarks\BookmarksControllerProvider.cs" />
     <Compile Include="Providers\Errors\ErrorsController.cs" />
     <Compile Include="Providers\Errors\ErrorsControllerProvider.cs" />
+    <Compile Include="Providers\Find\FindController.cs" />
+    <Compile Include="Providers\Find\FindControllerProvider.cs" />
     <Compile Include="Providers\Scroll\ScrollController.cs" />
     <Compile Include="Providers\Scroll\ScrollControllerProvider.cs" />
     <Compile Include="Providers\Navigate\NavigateController.cs" />
@@ -269,6 +271,9 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Providers\Errors\icon.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Providers\Find\icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Providers\Navigate\icon.png">
