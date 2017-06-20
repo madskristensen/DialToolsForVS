@@ -82,6 +82,13 @@ namespace DialToolsForVS
                 _radialController.ControlAcquired += OnControlAcquired;
                 _radialController.ControlLost += OnControlLost;
             }
+            DialPackage.Options.OptionsApplied += OptionsApplied;
+        }
+
+        private void OptionsApplied(object sender, EventArgs e)
+        {
+            _radialController.Menu.Items.ToList().ForEach(_ => RemoveMenuItem(_.DisplayText));
+            ImportProviders();
         }
 
         private void ImportProviders()
@@ -101,8 +108,10 @@ namespace DialToolsForVS
         {
             if (_radialController.Menu.Items.Any(i => i.DisplayText == moniker))
                 return;
+            if (!DialPackage.Options.MenuVisibility[moniker])
+                return;
 
-            IAsyncOperation<StorageFile> operation = StorageFile.GetFileFromPathAsync(iconFilePath);
+            IAsyncOperation <StorageFile> operation = StorageFile.GetFileFromPathAsync(iconFilePath);
 
             operation.Completed += (asyncInfo, asyncStatus) =>
             {
@@ -155,7 +164,12 @@ namespace DialToolsForVS
             if (_firstActivation)
             {
                 _firstActivation = false;
-                RequestActivation(DialPackage.Options.DefaultProvider.ToString());
+                var defaultMenu = DialPackage.Options.DefaultProvider.ToString();
+                if (!DialPackage.Options.MenuVisibility[defaultMenu])
+                {
+                    defaultMenu = DialPackage.Options.MenuVisibility.FirstOrDefault(_ => _.Value).Key ?? KnownProviders.Scroll.ToString();
+                }
+                RequestActivation(defaultMenu);
             }
 
             if (_status != null)
@@ -233,5 +247,6 @@ namespace DialToolsForVS
                 return Enumerable.Empty<IDialController>();
             }
         }
+
     }
 }
