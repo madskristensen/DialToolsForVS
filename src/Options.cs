@@ -25,14 +25,14 @@ namespace DialToolsForVS
 
         [Category("General")]
         [DisplayName("Show Debug menu")]
-        [Description("Set to true to Show the Debug menu")]
+        [Description("Set to true to show the Debug menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowDebugMenu { get; set; }
 
         [Category("General")]
         [DisplayName("Show Editor menu")]
-        [Description("Set to true to Show the Editor menu")]
+        [Description("Set to true to show the Editor menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowEditorMenu { get; set; }
