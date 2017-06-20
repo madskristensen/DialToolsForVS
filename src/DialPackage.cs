@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Threading;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Shell;
 using Tasks = System.Threading.Tasks;
 
 namespace DialToolsForVS

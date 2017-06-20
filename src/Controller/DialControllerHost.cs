@@ -82,6 +82,13 @@ namespace DialToolsForVS
                 _radialController.ControlAcquired += OnControlAcquired;
                 _radialController.ControlLost += OnControlLost;
             }
+            DialPackage.Options.OptionsApplied += OptionsApplied;
+        }
+
+        private void OptionsApplied(object sender, EventArgs e)
+        {
+            _radialController.Menu.Items.ToList().ForEach(_ => RemoveMenuItem(_.DisplayText));
+            ImportProviders();
         }
 
         private void ImportProviders()
@@ -240,5 +247,6 @@ namespace DialToolsForVS
                 return Enumerable.Empty<IDialController>();
             }
         }
+
     }
 }

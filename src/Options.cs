@@ -1,11 +1,14 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System;
 
 namespace DialToolsForVS
 {
     public class Options : DialogPage
     {
+        public event EventHandler OptionsApplied;
+
         [Category("General")]
         [DisplayName("Default menu")]
         [Description("Determines the default Dial menu item when opening Visual Studio.")]
@@ -68,6 +71,12 @@ namespace DialToolsForVS
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowZoomMenu { get; set; }
+
+        protected override void OnApply(PageApplyEventArgs e)
+        {
+            base.OnApply(e);
+            OptionsApplied?.Invoke(this, e);
+        }
 
         internal Dictionary<string, bool> MenuVisibility
         {
