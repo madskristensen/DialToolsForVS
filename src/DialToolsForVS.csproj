@@ -55,6 +55,15 @@
     <Compile Include="Contracts\IDialControllerProvider.cs" />
     <Compile Include="Controller\StatusBarControl.cs" />
     <Compile Include="Controller\StatusbarInjector.cs" />
+    <Compile Include="CustomOptions.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomOptionsCOntrol.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomOptionsCOntrol.Designer.cs">
+      <DependentUpon>CustomOptionsCOntrol.cs</DependentUpon>
+    </Compile>
     <Compile Include="DialPackage.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\VsHelpers.cs" />
@@ -64,6 +73,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\BaseController.cs" />
+    <Compile Include="Providers\Custom\CustomController.cs" />
+    <Compile Include="Providers\Custom\CustomControllerProvider.cs" />
     <Compile Include="Providers\Editor\IntellisenseShifter.cs" />
     <Compile Include="Providers\Editor\NumberShifter.cs" />
     <Compile Include="Providers\Editor\EditorController.cs" />
@@ -267,6 +278,7 @@
     <Content Include="Providers\Bookmarks\icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="Providers\Custom\icon.png" />
     <Content Include="Providers\Debug\icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
