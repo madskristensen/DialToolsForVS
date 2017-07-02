@@ -13,7 +13,9 @@ namespace DialToolsForVS
         private string _leftAction = string.Empty;
 
         public string ClickAction { get => _clickAction; set => _clickAction = value; }
+
         public string RightAction { get => _rightAction; set => _rightAction = value; }
+
         public string LeftAction { get => _leftAction; set => _leftAction = value; }
 
         protected override IWin32Window Window

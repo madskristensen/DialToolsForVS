@@ -8,6 +8,7 @@ namespace DialToolsForVS
     public partial class CustomOptionsControl : UserControl
     {
         private string _selectedText;
+
         internal CustomOptions CustomOptions;
 
         public CustomOptionsControl()

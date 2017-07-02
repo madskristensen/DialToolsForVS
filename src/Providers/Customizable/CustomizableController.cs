@@ -3,7 +3,9 @@
     internal class CustomizableController : BaseController
     {
         public override string Moniker => CustomizableControllerProvider.Moniker;
+
         public override bool CanHandleClick => true;
+
         public override bool CanHandleRotate => true;
 
         public override bool OnClick()
