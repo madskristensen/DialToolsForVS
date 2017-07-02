@@ -40,6 +40,7 @@
             this.CommandsBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.SearchBox = new System.Windows.Forms.TextBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // AssignedClickLabel
@@ -202,5 +203,6 @@
         private System.Windows.Forms.TextBox CommandsBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox SearchBox;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
