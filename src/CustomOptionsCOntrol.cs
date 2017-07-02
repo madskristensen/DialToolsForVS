@@ -52,7 +52,7 @@ namespace DialToolsForVS
             }
         }
 
-        private void SearchBox_TextChanged(object sender, System.EventArgs e)
+        private void SearchBox_TextChanged(object sender, EventArgs e)
         {
             var results = VsCommands.Commands.Where(_ => _.ToLower().Contains(SearchBox.Text?.ToLower()));
             CommandsBox.Text = results.Any() ? results.Aggregate((a, b) => $"{a??string.Empty}{Environment.NewLine}{b??string.Empty}") : string.Empty;
