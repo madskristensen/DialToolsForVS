@@ -10,6 +10,6 @@
         Scroll,
         Zoom,
         Find,
-        Custom
+        Customizable
     }
 }

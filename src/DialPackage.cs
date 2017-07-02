@@ -13,6 +13,7 @@ namespace DialToolsForVS
     [InstalledProductRegistration("#110", "#112", Vsix.Version, IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideOptionPage(typeof(Options), "Surface Dial", "General", 0, 0, true, ProvidesLocalizedCategoryName = false)]
+    [ProvideOptionPage(typeof(CustomOptions), "Surface Dial", "Custom controls", 0, 0, true, ProvidesLocalizedCategoryName = false)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string)]
     internal sealed class DialPackage : AsyncPackage
     {
@@ -22,9 +23,16 @@ namespace DialToolsForVS
             private set;
         }
 
+        public static CustomOptions CustomOptions
+        {
+            get;
+            private set;
+        }
+
         protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             Options = (Options)GetDialogPage(typeof(Options));
+            CustomOptions = (CustomOptions)GetDialogPage(typeof(CustomOptions));
 
             ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
             {
