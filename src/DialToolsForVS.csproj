@@ -55,8 +55,18 @@
     <Compile Include="Contracts\IDialControllerProvider.cs" />
     <Compile Include="Controller\StatusBarControl.cs" />
     <Compile Include="Controller\StatusbarInjector.cs" />
+    <Compile Include="CustomOptions.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CustomOptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomOptionsControl.Designer.cs">
+      <DependentUpon>CustomOptionsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DialPackage.cs" />
     <Compile Include="Helpers\Logger.cs" />
+    <Compile Include="Helpers\VsCommands.cs" />
     <Compile Include="Helpers\VsHelpers.cs" />
     <Compile Include="Contracts\KnownProviders.cs" />
     <Compile Include="Options.cs">
@@ -64,6 +74,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\BaseController.cs" />
+    <Compile Include="Providers\Customizable\CustomizableController.cs" />
+    <Compile Include="Providers\Customizable\CustomizableControllerProvider.cs" />
     <Compile Include="Providers\Editor\IntellisenseShifter.cs" />
     <Compile Include="Providers\Editor\NumberShifter.cs" />
     <Compile Include="Providers\Editor\EditorController.cs" />
@@ -254,6 +266,9 @@
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CustomOptionsControl.resx">
+      <DependentUpon>CustomOptionsControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="source.extension.resx">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -265,6 +280,9 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Providers\Bookmarks\icon.png">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Providers\Customizable\icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="Providers\Debug\icon.png">
@@ -288,6 +306,7 @@
     <Content Include="Providers\Zoom\icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <EmbeddedResource Include="Resources\commands.txt" />
     <Content Include="Resources\Icon.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

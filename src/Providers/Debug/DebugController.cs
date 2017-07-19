@@ -23,7 +23,7 @@ namespace DialToolsForVS
         public override bool OnClick()
         {
             dbgDebugMode? debugMode = VsHelpers.DTE.Application?.Debugger.CurrentMode;
-
+            
             if (!debugMode.HasValue)
                 return false;
 

@@ -9,6 +9,7 @@
         Navigation,
         Scroll,
         Zoom,
-        Find
+        Find,
+        Customizable
     }
 }

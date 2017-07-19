@@ -24,6 +24,13 @@ namespace DialToolsForVS
         public bool ShowBookmarksMenu { get; set; }
 
         [Category("General")]
+        [DisplayName("Show Customizable menu")]
+        [Description("Set to true to show the Customizable menu")]
+        [DefaultValue(true)]
+        [TypeConverter(typeof(BooleanConverter))]
+        public bool ShowCustomizableMenu { get; set; }
+
+        [Category("General")]
         [DisplayName("Show Debug menu")]
         [Description("Set to true to show the Debug menu")]
         [DefaultValue(true)]
@@ -85,6 +92,7 @@ namespace DialToolsForVS
                 return new Dictionary<string, bool>
                 {
                     {KnownProviders.Bookmarks.ToString(), ShowBookmarksMenu },
+                    {KnownProviders.Customizable.ToString(), ShowCustomizableMenu },
                     {KnownProviders.Debug.ToString(), ShowDebugMenu },
                     {KnownProviders.Editor.ToString(), ShowEditorMenu},
                     {KnownProviders.Errors.ToString(), ShowErrorsMenu },
