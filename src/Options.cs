@@ -79,31 +79,34 @@ namespace DialToolsForVS
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowZoomMenu { get; set; } = true;
 
+        public Options()
+        {
+            InitializeMenuVisibility();
+        }
 
         protected override void OnApply(PageApplyEventArgs e)
         {
             base.OnApply(e);
+            InitializeMenuVisibility();
             OptionsApplied?.Invoke(this, e);
         }
 
-        internal Dictionary<string, bool> MenuVisibility
+        private void InitializeMenuVisibility()
         {
-            get
+            MenuVisibility = new Dictionary<string, bool>
             {
-                return new Dictionary<string, bool>
-                {
-                    {KnownProviders.Bookmarks.ToString(), ShowBookmarksMenu },
-                    {KnownProviders.Customizable.ToString(), ShowCustomizableMenu },
-                    {KnownProviders.Debug.ToString(), ShowDebugMenu },
-                    {KnownProviders.Editor.ToString(), ShowEditorMenu},
-                    {KnownProviders.Errors.ToString(), ShowErrorsMenu },
-                    {KnownProviders.Find.ToString(), ShowFindMenu },
-                    {KnownProviders.Navigation.ToString(), ShowNavigationMenu },
-                    {KnownProviders.Scroll.ToString(), ShowScrollMenu },
-                    {KnownProviders.Zoom.ToString(), ShowZoomMenu },
-
-                };
-            }
+                {KnownProviders.Bookmarks.ToString(), ShowBookmarksMenu },
+                {KnownProviders.Customizable.ToString(), ShowCustomizableMenu },
+                {KnownProviders.Debug.ToString(), ShowDebugMenu },
+                {KnownProviders.Editor.ToString(), ShowEditorMenu},
+                {KnownProviders.Errors.ToString(), ShowErrorsMenu },
+                {KnownProviders.Find.ToString(), ShowFindMenu },
+                {KnownProviders.Navigation.ToString(), ShowNavigationMenu },
+                {KnownProviders.Scroll.ToString(), ShowScrollMenu },
+                {KnownProviders.Zoom.ToString(), ShowZoomMenu },
+            };
         }
+
+        internal Dictionary<string, bool> MenuVisibility { get; private set; }
     }
 }
