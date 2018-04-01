@@ -12,6 +12,7 @@ namespace DialToolsForVS
         private ICompletionBroker CompletionBroker { get; set; }
 
         public IDialController TryCreateController(IDialControllerHost host)
+        public ScrollControllerProvider() { }
         {
             string iconFilePath = VsHelpers.GetFileInVsix("Providers\\Scroll\\icon.png");
             host.AddMenuItem(Moniker, iconFilePath);

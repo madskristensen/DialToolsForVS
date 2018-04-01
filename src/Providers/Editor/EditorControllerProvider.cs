@@ -12,6 +12,7 @@ namespace DialToolsForVS
         private ICompletionBroker CompletionBroker { get; set; }
 
         public IDialController TryCreateController(IDialControllerHost host)
+        public EditorControllerProvider() { }
         {
             string iconFilePath = VsHelpers.GetFileInVsix("Providers\\Editor\\icon.png");
             host.AddMenuItem(Moniker, iconFilePath);
