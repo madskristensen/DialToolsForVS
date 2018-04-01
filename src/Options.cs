@@ -26,9 +26,9 @@ namespace DialToolsForVS
         [Category("General")]
         [DisplayName("Show Customizable menu")]
         [Description("Set to true to show the Customizable menu")]
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [TypeConverter(typeof(BooleanConverter))]
-        public bool ShowCustomizableMenu { get; set; } = true;
+        public bool ShowCustomizableMenu { get; set; } = false;
 
         [Category("General")]
         [DisplayName("Show Debug menu")]
