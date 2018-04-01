@@ -29,24 +29,25 @@ namespace DialToolsForVS
             private set;
         }
 
-        protected override Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        protected override async Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             Options = (Options)GetDialogPage(typeof(Options));
             CustomOptions = (CustomOptions)GetDialogPage(typeof(CustomOptions));
 
-            ThreadHelper.Generic.BeginInvoke(DispatcherPriority.ApplicationIdle, () =>
+            await ThreadHelper.JoinableTaskFactory.RunAsyncAsVsTask<object>(VsTaskRunContext.UIThreadBackgroundPriority, async ct =>
             {
                 try
                 {
-                    DialControllerHost.Initialize();
+                    await DialControllerHost.InitializeAsync(ct);
                 }
                 catch (Exception ex)
                 {
                     Logger.Log(ex);
                 }
+                return null;
             });
 
-            return base.InitializeAsync(cancellationToken, progress);
+            await base.InitializeAsync(cancellationToken, progress);
         }
     }
 }
