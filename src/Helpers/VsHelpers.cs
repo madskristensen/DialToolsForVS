@@ -1,43 +1,45 @@
-﻿using EnvDTE;
+﻿using System;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.Editor;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
-using System.ComponentModel.Composition;
-using System;
-using System.IO;
-using System.Reflection;
+using ServiceProvider = Microsoft.VisualStudio.Shell.ServiceProvider;
+using ThreadHelper = Microsoft.VisualStudio.Shell.ThreadHelper;
 
 namespace DialToolsForVS
 {
     internal static class VsHelpers
     {
         private static IComponentModel _compositionService;
-        private static IVsStatusbar statusbar = GetService<SVsStatusbar, IVsStatusbar>();
 
-        public static DTE2 DTE { get; } = GetService<DTE, DTE2>();
+        public static Task<DTE2> GetDteAsync(CancellationToken cancellationToken) => GetServiceAsync<DTE, DTE2>(cancellationToken);
 
-        public static TReturnType GetService<TServiceType, TReturnType>()
+        public static async Task<TReturnType> GetServiceAsync<TServiceType, TReturnType>(CancellationToken cancellationToken = default)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             return (TReturnType)ServiceProvider.GlobalProvider.GetService(typeof(TServiceType));
         }
 
-        public static void WriteStatus(string text)
+        public static async Task WriteStatusAsync(string text)
         {
+            var statusbar = await GetServiceAsync<SVsStatusbar, IVsStatusbar>();
             statusbar.FreezeOutput(0);
             statusbar.SetText(text);
             statusbar.FreezeOutput(1);
         }
 
         ///<summary>Gets the TextView for the active document.</summary>
-        public static IWpfTextView GetCurentTextView()
-        {
-            return GetTextView(GetCurrentNativeTextView());
-        }
+        public static IWpfTextView GetCurrentTextView()
+         => ThreadHelper.JoinableTaskFactory.Run(async () => GetTextView(await GetCurrentNativeTextViewAsync()));
 
         public static IWpfTextView GetTextView(IVsTextView nativeView)
         {
@@ -48,9 +50,9 @@ namespace DialToolsForVS
             return editorAdapter.GetWpfTextView(nativeView);
         }
 
-        public static IVsTextView GetCurrentNativeTextView()
+        public static async Task<IVsTextView> GetCurrentNativeTextViewAsync()
         {
-            var textManager = (IVsTextManager)ServiceProvider.GlobalProvider.GetService(typeof(SVsTextManager));
+            var textManager = await GetServiceAsync<SVsTextManager, IVsTextManager>();
 
             ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out IVsTextView activeView));
             return activeView;
@@ -82,15 +84,15 @@ namespace DialToolsForVS
             return window?.Kind == "Document";
         }
 
-        public static bool ExecuteCommand(string commandName)
+        public static bool ExecuteCommand(this Commands commands, string commandName)
         {
             try
             {
-                Command command = DTE.Commands.Item(commandName);
+                Command command = commands.Item(commandName);
 
                 if (command != null && command.IsAvailable)
                 {
-                    DTE.Commands.Raise(command.Guid, command.ID, null, null);
+                    commands.Raise(command.Guid, command.ID, null, null);
                     return true;
                 }
             }
@@ -102,11 +104,11 @@ namespace DialToolsForVS
             return false;
         }
 
-        public static void SatisfyImportsOnce(this object o)
+        public static async Task SatisfyImportsOnceAsync(this object o, CancellationToken cancellationToken = default)
         {
             if (_compositionService == null)
             {
-                _compositionService = GetService<SComponentModel, IComponentModel>();
+                _compositionService = await GetServiceAsync<SComponentModel, IComponentModel>(cancellationToken);
             }
 
             if (_compositionService != null)

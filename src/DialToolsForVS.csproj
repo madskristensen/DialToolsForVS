@@ -22,6 +22,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DialToolsForVS</RootNamespace>
     <AssemblyName>DialToolsForVS</AssemblyName>
+    <LangVersion>latest</LangVersion>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
@@ -286,13 +287,14 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="Windows">
-      <HintPath>$(MSBuildProgramFiles32)\Windows Kits\10\UnionMetadata\Facade\Windows.WinMD</HintPath>
+    <Reference Include="System.Runtime.WindowsRuntime">
+      <HintPath>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Windows.Foundation" />
-    <Reference Include="Windows.Storage" />
-    <Reference Include="Windows.UI" />
+    <Reference Include="Windows">
+      <HintPath>$(MSBuildProgramFiles32)\Windows Kits\10\UnionMetadata\10.0.15063.0\Windows.WinMD</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <VSCTCompile Include="VSCommandTable.vsct">

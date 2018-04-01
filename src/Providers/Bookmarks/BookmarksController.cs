@@ -1,16 +1,19 @@
 ﻿using EnvDTE;
+using EnvDTE80;
 
 namespace DialToolsForVS
 {
     internal class BookmarksController : BaseController
     {
-        private WindowEvents _events;
-        private IDialControllerHost _host;
+        private readonly IDialControllerHost _host;
+        private readonly Commands _commands;
+        private readonly WindowEvents _events;
 
         public BookmarksController(IDialControllerHost host)
         {
             _host = host;
-            _events = VsHelpers.DTE.Events.WindowEvents;
+            _commands = host.DTE.Commands;
+            _events = host.DTE.Events.WindowEvents;
             _events.WindowActivated += WindowActivated;
         }
 
@@ -28,24 +31,25 @@ namespace DialToolsForVS
 
         public override void OnActivate()
         {
-            VsHelpers.ExecuteCommand("View.BookmarkWindow");
+            _commands.ExecuteCommand("View.BookmarkWindow");
         }
 
         public override bool OnClick()
         {
-            VsHelpers.ExecuteCommand("Edit.ToggleBookmark");
+            _commands.ExecuteCommand("Edit.ToggleBookmark");
             return true;
         }
 
         public override bool OnRotate(RotationDirection direction)
         {
-            if (direction == RotationDirection.Right)
+            switch (direction)
             {
-                VsHelpers.ExecuteCommand("Edit.NextBookmark");
-            }
-            else
-            {
-                VsHelpers.ExecuteCommand("Edit.PreviousBookmark");
+                case RotationDirection.Left:
+                    _commands.ExecuteCommand("Edit.PreviousBookmark");
+                    break;
+                case RotationDirection.Right:
+                    _commands.ExecuteCommand("Edit.NextBookmark");
+                    break;
             }
 
             return true;

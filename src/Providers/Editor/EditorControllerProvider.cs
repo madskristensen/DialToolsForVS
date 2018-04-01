@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.Composition;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.Language.Intellisense;
 
 namespace DialToolsForVS
@@ -11,13 +13,14 @@ namespace DialToolsForVS
         [Import]
         private ICompletionBroker CompletionBroker { get; set; }
 
-        public IDialController TryCreateController(IDialControllerHost host)
         public EditorControllerProvider() { }
-        {
-            string iconFilePath = VsHelpers.GetFileInVsix("Providers\\Editor\\icon.png");
-            host.AddMenuItem(Moniker, iconFilePath);
 
-            return new EditorController(CompletionBroker);
+        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, CancellationToken cancellationToken)
+        {
+            string iconFilePath = VsHelpers.GetFileInVsix(@"Providers\Editor\icon.png");
+            await host.AddMenuItemAsync(Moniker, iconFilePath);
+
+            return new EditorController(host, CompletionBroker);
         }
     }
 }

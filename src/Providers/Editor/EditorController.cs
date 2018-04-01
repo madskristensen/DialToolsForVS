@@ -1,16 +1,20 @@
-﻿using Microsoft.VisualStudio.Text;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using EnvDTE80;
+using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using Microsoft.VisualStudio.Language.Intellisense;
-using System.Windows.Forms;
 
 namespace DialToolsForVS
 {
     internal class EditorController : BaseController
     {
-        private ICompletionBroker _broker;
+        private readonly DTE2 _dte;
+
+        private readonly ICompletionBroker _broker;
         private IWpfTextView _view;
         private delegate string Shift(SnapshotSpan bufferSpan, RotationDirection direction);
         private Dictionary<string, Shift> _dic = new Dictionary<string, Shift>()
@@ -19,8 +23,9 @@ namespace DialToolsForVS
             { @"(\b|\-)[0-9\.]+", NumberShifter.Shift }
         };
 
-        public EditorController(ICompletionBroker completionBroker)
+        public EditorController(IDialControllerHost host, ICompletionBroker completionBroker)
         {
+            _dte = host.DTE;
             _broker = completionBroker;
         }
 
@@ -30,10 +35,10 @@ namespace DialToolsForVS
         {
             get
             {
-                if (!VsHelpers.DTE.ActiveWindow.IsDocument())
+                if (!_dte.ActiveWindow.IsDocument())
                     return false;
 
-                _view = VsHelpers.GetCurentTextView();
+                _view = VsHelpers.GetCurrentTextView();
 
                 return _view != null && _view.HasAggregateFocus;
             }
@@ -43,7 +48,7 @@ namespace DialToolsForVS
 
         public override bool OnClick()
         {
-            _view = VsHelpers.GetCurentTextView();
+            _view = VsHelpers.GetCurrentTextView();
 
             if (_view == null || !_view.HasAggregateFocus)
                 return false;
@@ -54,7 +59,7 @@ namespace DialToolsForVS
             }
             else
             {
-                VsHelpers.ExecuteCommand("Edit.ListMembers");
+                _dte.Commands.ExecuteCommand("Edit.ListMembers");
             }
 
             return true;
