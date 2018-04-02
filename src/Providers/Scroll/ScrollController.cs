@@ -1,16 +1,19 @@
-﻿using Microsoft.VisualStudio.Text.Editor;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.Text.Editor;
 
 namespace DialToolsForVS
 {
     internal class ScrollController : BaseController
     {
-        private ICompletionBroker _broker;
+        private readonly DTE2 _dte;
+        private readonly ICompletionBroker _broker;
 
-        public ScrollController(ICompletionBroker broker)
+        public ScrollController(IDialControllerHost host, ICompletionBroker broker)
         {
+            _dte = host.DTE;
             _broker = broker;
         }
 
@@ -20,18 +23,18 @@ namespace DialToolsForVS
 
         public override bool OnClick()
         {
-            if (VsHelpers.DTE.ActiveWindow.IsDocument())
+            if (_dte.ActiveWindow.IsDocument())
             {
-                IWpfTextView view = VsHelpers.GetCurentTextView();
+                IWpfTextView view = VsHelpers.GetCurrentTextView();
 
                 if (view != null && view.HasAggregateFocus && !_broker.IsCompletionActive(view))
                     SendKeys.Send("+{F10}");
                 else
                     SendKeys.Send("{ENTER}");
             }
-            else if (VsHelpers.DTE.ActiveWindow.IsSolutionExplorer())
+            else if (_dte.ActiveWindow.IsSolutionExplorer())
             {
-                var selectedItems = VsHelpers.DTE.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
+                var selectedItems = _dte.ToolWindows.SolutionExplorer.SelectedItems as UIHierarchyItem[];
 
                 if (selectedItems == null || selectedItems.Length != 1)
                     return false;
@@ -56,14 +59,14 @@ namespace DialToolsForVS
         public override bool OnRotate(RotationDirection direction)
         {
             bool handled = false;
-            if (VsHelpers.DTE.ActiveWindow.IsDocument())
+            if (_dte.ActiveWindow.IsDocument())
             {
-                IWpfTextView view = VsHelpers.GetCurentTextView();
+                IWpfTextView view = VsHelpers.GetCurrentTextView();
 
                 if (view != null && view.HasAggregateFocus)
                 {
                     string cmd = direction == RotationDirection.Left ? "Edit.ScrollLineUp" : "Edit.ScrollLineDown";
-                    handled = VsHelpers.ExecuteCommand(cmd);
+                    handled = _dte.Commands.ExecuteCommand(cmd);
                 }
             }
 

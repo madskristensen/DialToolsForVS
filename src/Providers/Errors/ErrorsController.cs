@@ -1,19 +1,23 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System.Linq;
 using EnvDTE;
+using EnvDTE80;
 
 namespace DialToolsForVS
 {
     internal class ErrorsController : IDialController
     {
-        private IErrorList _errorList = VsHelpers.DTE.ToolWindows.ErrorList as IErrorList;
-        private WindowEvents _events;
-        private IDialControllerHost _host;
+        private readonly IDialControllerHost _host;
+        private readonly DTE2 _dte;
+        private readonly IErrorList _errorList;
+        private readonly WindowEvents _events;
 
         public ErrorsController(IDialControllerHost host)
         {
             _host = host;
-            _events = VsHelpers.DTE.Events.WindowEvents;
+            _dte = host.DTE;
+            _errorList = _dte.ToolWindows.ErrorList as IErrorList;
+            _events = _dte.Events.WindowEvents;
             _events.WindowActivated += WindowActivated;
         }
 
@@ -26,6 +30,7 @@ namespace DialToolsForVS
         }
 
         public string Moniker => ErrorsControllerProvider.Moniker;
+
         public bool CanHandleClick => true;
 
         public bool CanHandleRotate
@@ -35,7 +40,7 @@ namespace DialToolsForVS
 
         public void OnActivate()
         {
-            VsHelpers.DTE.ToolWindows.ErrorList.Parent?.Activate();
+            _dte.ToolWindows.ErrorList.Parent?.Activate();
         }
 
         public bool OnClick()
@@ -46,13 +51,15 @@ namespace DialToolsForVS
 
         public bool OnRotate(RotationDirection direction)
         {
-            if (direction == RotationDirection.Right)
+            var commands = _dte.Commands;
+            switch (direction)
             {
-                VsHelpers.ExecuteCommand("View.NextError");
-            }
-            else
-            {
-                VsHelpers.ExecuteCommand("View.PreviousError");
+                case RotationDirection.Left:
+                    commands.ExecuteCommand("View.PreviousError");
+                    break;
+                case RotationDirection.Right:
+                    commands.ExecuteCommand("View.NextError");
+                    break;
             }
 
             return true;

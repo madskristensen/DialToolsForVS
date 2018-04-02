@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -8,25 +11,41 @@ namespace DialToolsForVS.Helpers
     {
         public static void Initialize()
         {
-            Commands = SetupCommands();
+            CommandsAsString = ReadCommandsAsString();
+            CheckEmptyEntries(CommandsAsString);
         }
 
-        public static IEnumerable<string> Commands { get; private set; }
+        public static string CommandsAsString { get; private set; }
 
-        private static IEnumerable<string> SetupCommands()
+        private static ImmutableArray<string> commands;
+
+        public static ImmutableArray<string> Commands => commands == ImmutableArray<string>.Empty
+            ? (commands = CommandsAsString
+                .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .ToImmutableArray())
+            : commands;
+
+        private static string ReadCommandsAsString()
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "DialToolsForVS.Resources.commands.txt";
             var list = new List<string>();
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            var stream = assembly.GetManifestResourceStream(resourceName);
+            using (var reader = new StreamReader(stream))
             {
-                using (var reader = new StreamReader(stream))
+                return reader.ReadToEnd();
+            }
+        }
+
+        [Conditional("Debug")]
+        private static void CheckEmptyEntries(string commandsAsString)
+        {
+            using (var reader = new StringReader(commandsAsString))
+            {
+                string command;
+                while ((command = reader.ReadLine()) != null)
                 {
-                    var command = string.Empty;
-                    while ((command = reader.ReadLine()) != null)
-                    {
-                        yield return command;
-                    }
+                    Debug.Assert(!string.IsNullOrEmpty(command));
                 }
             }
         }

@@ -1,7 +1,10 @@
-﻿namespace DialToolsForVS
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace DialToolsForVS
 {
     public interface IDialControllerProvider
     {
-        IDialController TryCreateController(IDialControllerHost host);
+        Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, CancellationToken cancellationToken);
     }
 }

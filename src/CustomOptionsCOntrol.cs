@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Windows.Forms;
 using DialToolsForVS.Helpers;
+using Microsoft.VisualStudio.Threading;
+using ThreadHelper = Microsoft.VisualStudio.Shell.ThreadHelper;
 //Timer idea from https://stackoverflow.com/questions/26020799/enforcing-a-delay-on-textbox-textchanged
 namespace DialToolsForVS
 {
@@ -19,11 +21,9 @@ namespace DialToolsForVS
             _timer.Tick += Timer_Tick;
         }
 
-
         public void Initialize()
         {
-            VsCommands.Initialize();
-            CommandsBox.Text = VsCommands.Commands.Aggregate((a, b) => $"{a}{Environment.NewLine}{b}");
+            CommandsBox.Text = VsCommands.CommandsAsString;
             AssignedClickLabel.Text = CustomOptions.ClickAction;
             AssignedRightLabel.Text = CustomOptions.RightAction;
             AssignedLeftLabel.Text = CustomOptions.LeftAction;
