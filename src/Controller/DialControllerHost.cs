@@ -60,7 +60,7 @@ namespace DialToolsForVS
 
         private JoinableTask CreateStatusBarItemAsync()
         {
-            _status = new RadialControllerStatusBarHost();
+            _status = new RadialControllerStatusBarHost { Name = "PART_DialControllerHost" };
             var injector = new StatusBarInjector(Application.Current.MainWindow);
             return injector.InjectControlAsync(_status);
         }

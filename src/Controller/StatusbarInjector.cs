@@ -110,16 +110,16 @@ namespace DialToolsForVS
             return null;
         }
 
-        public JoinableTask InjectControlAsync(FrameworkElement pControl) => ThreadHelper.JoinableTaskFactory
+        public JoinableTask InjectControlAsync(FrameworkElement control) => ThreadHelper.JoinableTaskFactory
             .StartOnIdle(() =>
-            _panel.Children.Insert(1, pControl), VsTaskRunContext.UIThreadNormalPriority);
+            _panel.Children.Insert(1, control), VsTaskRunContext.UIThreadNormalPriority);
 
-        public JoinableTask<bool> IsInjectedAsync(FrameworkElement pControl)
+        public JoinableTask<bool> IsInjectedAsync(FrameworkElement control)
          => ThreadHelper.JoinableTaskFactory.RunAsync(VsTaskRunContext.UIThreadNormalPriority,
-        () => Task.FromResult(_panel.Children.Contains(pControl)));
+        () => Task.FromResult(_panel.Children.Contains(control)));
 
-        public JoinableTask UninjectControlAsync(FrameworkElement pControl) => ThreadHelper.JoinableTaskFactory
+        public JoinableTask UninjectControlAsync(FrameworkElement control) => ThreadHelper.JoinableTaskFactory
             .StartOnIdle(() =>
-            _panel.Children.Remove(pControl), VsTaskRunContext.UIThreadNormalPriority);
+            _panel.Children.Remove(control), VsTaskRunContext.UIThreadNormalPriority);
     }
 }
