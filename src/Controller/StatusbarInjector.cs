@@ -3,22 +3,40 @@ using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
+using Task = System.Threading.Tasks.Task;
 
 namespace DialToolsForVS
 {
     internal class StatusBarInjector
     {
-        private Window _window;
-        private FrameworkElement _statusBar;
-        private Panel _panel;
+        private readonly Panel _panel;
 
-        public StatusBarInjector(Window pWindow)
+        public StatusBarInjector(Window window)
         {
-            _window = pWindow;
-            _window.Initialized += new EventHandler(Window_Initialized);
+            _panel = FindChild(window, "StatusBarPanel") as Panel;
 
-            FindStatusBar();
+            //var wih = new WindowInteropHelper(window);
         }
+
+        {
+            {
+            }
+
+            {
+            }
+
+        }
+
+        {
+        }
+
+        {
+
+            {
+
+
 
         private static DependencyObject FindChild(DependencyObject parent, string childName)
         {
@@ -37,6 +55,11 @@ namespace DialToolsForVS
                 {
                     return frameworkElement;
                 }
+            }
+
+            for (int i = 0; i < childrenCount; i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
 
                 child = StatusBarInjector.FindChild(child, childName);
 
@@ -49,74 +72,16 @@ namespace DialToolsForVS
             return null;
         }
 
-        private void FindStatusBar()
-        {
-            _statusBar = FindChild(_window, "StatusBarContainer") as FrameworkElement;
-            _panel = _statusBar.Parent as DockPanel;
-        }
+        public JoinableTask InjectControlAsync(FrameworkElement pControl) => ThreadHelper.JoinableTaskFactory
+            .StartOnIdle(() =>
+            _panel.Children.Insert(1, pControl), VsTaskRunContext.UIThreadNormalPriority);
 
-        private static FrameworkElement FindStatusBarContainer(Panel panel)
-        {
-            FrameworkElement frameworkElement;
-            IEnumerator enumerator = panel.Children.GetEnumerator();
+        public JoinableTask<bool> IsInjectedAsync(FrameworkElement pControl)
+         => ThreadHelper.JoinableTaskFactory.RunAsync(VsTaskRunContext.UIThreadNormalPriority,
+        () => Task.FromResult(_panel.Children.Contains(pControl)));
 
-            try
-            {
-                while (enumerator.MoveNext())
-                {
-                    var current = enumerator.Current as FrameworkElement;
-
-                    if (current == null || !(current.Name == "StatusBarContainer"))
-                    {
-                        continue;
-                    }
-
-                    frameworkElement = current;
-                    return frameworkElement;
-                }
-
-                return null;
-            }
-            finally
-            {
-                if (enumerator is IDisposable disposable)
-                {
-                    disposable.Dispose();
-                }
-            }
-        }
-
-        public void InjectControl(FrameworkElement pControl)
-        {
-            _panel.Dispatcher.Invoke(() =>
-            {
-                pControl.SetValue(DockPanel.DockProperty, Dock.Left);
-                _panel.Children.Insert(1, pControl);
-            });
-        }
-
-        public bool IsInjected(FrameworkElement pControl)
-        {
-            bool flag2 = false;
-
-            _panel.Dispatcher.Invoke(() =>
-            {
-                bool flag = _panel.Children.Contains(pControl);
-                bool flag1 = flag;
-                flag2 = flag;
-                return flag1;
-            });
-
-            return flag2;
-        }
-
-        public void UninjectControl(FrameworkElement pControl)
-        {
-            _panel.Dispatcher.Invoke(() => _panel.Children.Remove(pControl));
-        }
-
-        private void Window_Initialized(object sender, EventArgs e)
-        {
-        }
+        public JoinableTask UninjectControlAsync(FrameworkElement pControl) => ThreadHelper.JoinableTaskFactory
+            .StartOnIdle(() =>
+            _panel.Children.Remove(pControl), VsTaskRunContext.UIThreadNormalPriority);
     }
 }
