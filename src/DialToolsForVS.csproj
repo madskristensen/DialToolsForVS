@@ -56,7 +56,7 @@
     <Compile Include="Contracts\RotationDirection.cs" />
     <Compile Include="Contracts\IDialController.cs" />
     <Compile Include="Contracts\IDialControllerProvider.cs" />
-    <Compile Include="Controller\StatusBarControl.cs" />
+    <Compile Include="Controller\RadialControllerStatusBarHost.cs" />
     <Compile Include="Controller\StatusbarInjector.cs" />
     <Compile Include="CustomOptions.cs">
       <SubType>Component</SubType>
@@ -350,6 +350,12 @@
     <Content Include="source.extension.ico">
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.15.6.46\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.dll" />

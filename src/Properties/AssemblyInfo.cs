@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+[assembly: System.Windows.ThemeInfo(System.Windows.ResourceDictionaryLocation.None, System.Windows.ResourceDictionaryLocation.SourceAssembly)]
 [assembly: AssemblyTitle(Vsix.Name)]
 [assembly: AssemblyDescription(Vsix.Description)]
 [assembly: AssemblyConfiguration("")]
