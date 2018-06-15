@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using DialToolsForVS.Helpers;
 using Microsoft.VisualStudio.Threading;
@@ -23,6 +24,7 @@ namespace DialToolsForVS
 
         public void Initialize()
         {
+            VsCommands.Initialize();
             CommandsBox.Text = VsCommands.CommandsAsString;
             AssignedClickLabel.Text = CustomOptions.ClickAction;
             AssignedRightLabel.Text = CustomOptions.RightAction;
