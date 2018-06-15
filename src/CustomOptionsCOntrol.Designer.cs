@@ -46,7 +46,7 @@
             // AssignedClickLabel
             // 
             this.AssignedClickLabel.AutoEllipsis = true;
-            this.AssignedClickLabel.Location = new System.Drawing.Point(211, 353);
+            this.AssignedClickLabel.Location = new System.Drawing.Point(211, 369);
             this.AssignedClickLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AssignedClickLabel.MaximumSize = new System.Drawing.Size(300, 25);
             this.AssignedClickLabel.Name = "AssignedClickLabel";
@@ -56,7 +56,7 @@
             // AssignedRightLabel
             // 
             this.AssignedRightLabel.AutoEllipsis = true;
-            this.AssignedRightLabel.Location = new System.Drawing.Point(211, 405);
+            this.AssignedRightLabel.Location = new System.Drawing.Point(211, 421);
             this.AssignedRightLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AssignedRightLabel.MaximumSize = new System.Drawing.Size(300, 25);
             this.AssignedRightLabel.Name = "AssignedRightLabel";
@@ -66,7 +66,7 @@
             // AssignedLeftLabel
             // 
             this.AssignedLeftLabel.AutoEllipsis = true;
-            this.AssignedLeftLabel.Location = new System.Drawing.Point(211, 455);
+            this.AssignedLeftLabel.Location = new System.Drawing.Point(211, 471);
             this.AssignedLeftLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AssignedLeftLabel.MaximumSize = new System.Drawing.Size(300, 25);
             this.AssignedLeftLabel.Name = "AssignedLeftLabel";
@@ -75,7 +75,7 @@
             // 
             // AssignLeftAction
             // 
-            this.AssignLeftAction.Location = new System.Drawing.Point(529, 446);
+            this.AssignLeftAction.Location = new System.Drawing.Point(529, 462);
             this.AssignLeftAction.Margin = new System.Windows.Forms.Padding(4);
             this.AssignLeftAction.Name = "AssignLeftAction";
             this.AssignLeftAction.Size = new System.Drawing.Size(100, 42);
@@ -86,7 +86,7 @@
             // 
             // AssignRightAction
             // 
-            this.AssignRightAction.Location = new System.Drawing.Point(527, 396);
+            this.AssignRightAction.Location = new System.Drawing.Point(527, 412);
             this.AssignRightAction.Margin = new System.Windows.Forms.Padding(4);
             this.AssignRightAction.Name = "AssignRightAction";
             this.AssignRightAction.Size = new System.Drawing.Size(100, 42);
@@ -97,7 +97,7 @@
             // 
             // AssignClickAction
             // 
-            this.AssignClickAction.Location = new System.Drawing.Point(527, 345);
+            this.AssignClickAction.Location = new System.Drawing.Point(527, 361);
             this.AssignClickAction.Margin = new System.Windows.Forms.Padding(4);
             this.AssignClickAction.Name = "AssignClickAction";
             this.AssignClickAction.Size = new System.Drawing.Size(100, 42);
@@ -109,7 +109,7 @@
             // LeftLabel
             // 
             this.LeftLabel.AutoSize = true;
-            this.LeftLabel.Location = new System.Drawing.Point(22, 455);
+            this.LeftLabel.Location = new System.Drawing.Point(22, 471);
             this.LeftLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LeftLabel.Name = "LeftLabel";
             this.LeftLabel.Size = new System.Drawing.Size(154, 25);
@@ -119,7 +119,7 @@
             // RightLabel
             // 
             this.RightLabel.AutoSize = true;
-            this.RightLabel.Location = new System.Drawing.Point(22, 405);
+            this.RightLabel.Location = new System.Drawing.Point(22, 421);
             this.RightLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.RightLabel.Name = "RightLabel";
             this.RightLabel.Size = new System.Drawing.Size(167, 25);
@@ -129,7 +129,7 @@
             // ClickLabel
             // 
             this.ClickLabel.AutoSize = true;
-            this.ClickLabel.Location = new System.Drawing.Point(22, 353);
+            this.ClickLabel.Location = new System.Drawing.Point(22, 369);
             this.ClickLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ClickLabel.Name = "ClickLabel";
             this.ClickLabel.Size = new System.Drawing.Size(192, 25);
@@ -140,11 +140,11 @@
             // 
             this.CommandsBox.Location = new System.Drawing.Point(27, 97);
             this.CommandsBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.CommandsBox.MaximumSize = new System.Drawing.Size(600, 230);
+            this.CommandsBox.MaximumSize = new System.Drawing.Size(600, 238);
             this.CommandsBox.Multiline = true;
             this.CommandsBox.Name = "CommandsBox";
             this.CommandsBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.CommandsBox.Size = new System.Drawing.Size(600, 230);
+            this.CommandsBox.Size = new System.Drawing.Size(600, 238);
             this.CommandsBox.TabIndex = 17;
             this.CommandsBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CommandsBox_MouseClick);
             // 
