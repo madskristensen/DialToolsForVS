@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
@@ -13,11 +12,14 @@ namespace DialToolsForVS.Helpers
         {
             CommandsAsString = ReadCommandsAsString();
             CheckEmptyEntries(CommandsAsString);
+            commands = CommandsAsString
+                .Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .ToImmutableArray();
         }
 
         public static string CommandsAsString { get; private set; }
 
-        private static ImmutableArray<string> commands;
+        private static ImmutableArray<string> commands = new ImmutableArray<string>();
 
         public static ImmutableArray<string> Commands => commands == ImmutableArray<string>.Empty
             ? (commands = CommandsAsString
@@ -29,7 +31,6 @@ namespace DialToolsForVS.Helpers
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "DialToolsForVS.Resources.commands.txt";
-            var list = new List<string>();
             var stream = assembly.GetManifestResourceStream(resourceName);
             using (var reader = new StreamReader(stream))
             {

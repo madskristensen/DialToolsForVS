@@ -22,8 +22,10 @@ namespace DialToolsForVS
         {
             get
             {
-                var page = new CustomOptionsControl();
-                page.CustomOptions = this;
+                var page = new CustomOptionsControl
+                {
+                    CustomOptions = this
+                };
                 page.Initialize();
                 return page;
             }
