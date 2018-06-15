@@ -13,7 +13,7 @@ internal static class Logger
         {
             if (EnsurePane())
             {
-                _pane.OutputString(DateTime.Now.ToString() + ": " + message + Environment.NewLine);
+                _pane.OutputString($"{DateTime.Now}: {message}{Environment.NewLine}");
             }
         }
         catch (Exception ex)

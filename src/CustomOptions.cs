@@ -19,16 +19,9 @@ namespace DialToolsForVS
         public string LeftAction { get => _leftAction; set => _leftAction = value; }
 
         protected override IWin32Window Window
-        {
-            get
-            {
-                var page = new CustomOptionsControl
-                {
-                    CustomOptions = this
-                };
-                page.Initialize();
-                return page;
-            }
-        }
+         => new CustomOptionsControl
+         {
+             CustomOptions = this
+         };
     }
 }
