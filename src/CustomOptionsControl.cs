@@ -18,7 +18,7 @@ namespace DialControllerTools
 
         private ImmutableArray<string> commands;
         private ImmutableArray<string> Commands
-         => commands == ImmutableArray<string>.Empty
+         => commands.IsDefaultOrEmpty
             ? commands = VsCommands.ParseCommands(commandsString)
             : commands;
 

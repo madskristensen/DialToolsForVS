@@ -16,7 +16,7 @@ namespace DialControllerTools.Helpers
         internal static string ReadCommandsAsString()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            const string resourceName = "DialToolsForVS.Resources.commands.txt";
+            const string resourceName = "DialControllerTools.Resources.commands.txt";
             var stream = assembly.GetManifestResourceStream(resourceName);
             using (var reader = new StreamReader(stream))
             {
