@@ -1,62 +1,22 @@
-﻿using System;
-using System.ComponentModel.Composition;
+﻿
+using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using EnvDTE;
 using EnvDTE80;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.Editor;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.TextManager.Interop;
-using ServiceProvider = Microsoft.VisualStudio.Shell.ServiceProvider;
-using ThreadHelper = Microsoft.VisualStudio.Shell.ThreadHelper;
+using Microsoft.VisualStudio.Shell;
 
 namespace DialToolsForVS
 {
     internal static class VsHelpers
     {
-        private static IComponentModel _compositionService;
+        internal static async Task<TReturnType> GetServiceAsync<TServiceType, TReturnType>(this IAsyncServiceProvider provider, CancellationToken cancellationToken)
+         => (TReturnType)await provider.GetServiceAsync(typeof(TServiceType));
 
-        public static Task<DTE2> GetDteAsync(CancellationToken cancellationToken) => GetServiceAsync<DTE, DTE2>(cancellationToken);
-
-        public static async Task<TReturnType> GetServiceAsync<TServiceType, TReturnType>(CancellationToken cancellationToken = default)
-        {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            return (TReturnType)ServiceProvider.GlobalProvider.GetService(typeof(TServiceType));
-        }
-
-        public static async Task WriteStatusAsync(string text)
-        {
-            var statusbar = await GetServiceAsync<SVsStatusbar, IVsStatusbar>();
-            statusbar.FreezeOutput(0);
-            statusbar.SetText(text);
-            statusbar.FreezeOutput(1);
-        }
-
-        ///<summary>Gets the TextView for the active document.</summary>
-        public static IWpfTextView GetCurrentTextView()
-         => ThreadHelper.JoinableTaskFactory.Run(async () => GetTextView(await GetCurrentNativeTextViewAsync()));
-
-        public static IWpfTextView GetTextView(IVsTextView nativeView)
-        {
-            if (nativeView == null)
-                return null;
-
-            IVsEditorAdaptersFactoryService editorAdapter = _compositionService.GetService<IVsEditorAdaptersFactoryService>();
-            return editorAdapter.GetWpfTextView(nativeView);
-        }
-
-        public static async Task<IVsTextView> GetCurrentNativeTextViewAsync()
-        {
-            var textManager = await GetServiceAsync<SVsTextManager, IVsTextManager>();
-
-            ErrorHandler.ThrowOnFailure(textManager.GetActiveView(1, null, out IVsTextView activeView));
-            return activeView;
-        }
+        internal static Task<DTE2> GetDteAsync(this IAsyncServiceProvider provider, CancellationToken cancellationToken)
+         => provider.GetServiceAsync<DTE, DTE2>(cancellationToken);
 
         public static string GetFileInVsix(string relativePath)
         {
@@ -102,19 +62,6 @@ namespace DialToolsForVS
             }
 
             return false;
-        }
-
-        public static async Task SatisfyImportsOnceAsync(this object o, CancellationToken cancellationToken = default)
-        {
-            if (_compositionService == null)
-            {
-                _compositionService = await GetServiceAsync<SComponentModel, IComponentModel>(cancellationToken);
-            }
-
-            if (_compositionService != null)
-            {
-                _compositionService.DefaultCompositionService.SatisfyImportsOnce(o);
-            }
         }
     }
 }

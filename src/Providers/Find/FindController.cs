@@ -1,8 +1,9 @@
 ﻿using EnvDTE;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
-    internal class FindController : BaseController
+    internal class FindController : BaseTextController
     {
         private readonly Commands _commands;
 
@@ -10,7 +11,8 @@ namespace DialToolsForVS
         public override bool CanHandleClick => true;
         public override bool CanHandleRotate => true;
 
-        public FindController(IDialControllerHost host)
+        public FindController(IDialControllerHost host, IVsTextManager textManager)
+            : base(host, textManager)
         {
             _commands = host.DTE.Commands;
         }

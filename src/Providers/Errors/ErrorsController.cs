@@ -25,7 +25,8 @@ namespace DialToolsForVS
         {
             if (GotFocus.IsErrorList() && _errorList.TableControl.Entries.Any())
             {
-                _host.RequestActivation(Moniker);
+                _host.ReleaseActivation(LostFocus);
+                _host.RequestActivation(GotFocus, Moniker);
             }
         }
 

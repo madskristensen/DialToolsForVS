@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
@@ -10,12 +12,13 @@ namespace DialToolsForVS
 
         public FindControllerProvider() { }
 
-        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, CancellationToken cancellationToken)
+        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, IAsyncServiceProvider provider, CancellationToken cancellationToken)
         {
             string iconFilePath = VsHelpers.GetFileInVsix(@"Providers\Find\icon.png");
             await host.AddMenuItemAsync(Moniker, iconFilePath);
 
-            return new FindController(host);
+            IVsTextManager textManager = await provider.GetServiceAsync<SVsTextManager, IVsTextManager>(cancellationToken);
+            return new FindController(host, textManager);
         }
     }
 }

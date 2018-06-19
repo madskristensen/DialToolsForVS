@@ -110,9 +110,8 @@ namespace DialToolsForVS
             return null;
         }
 
-        public JoinableTask InjectControlAsync(FrameworkElement control) => ThreadHelper.JoinableTaskFactory
-            .StartOnIdle(() =>
-            _panel.Children.Insert(1, control), VsTaskRunContext.UIThreadNormalPriority);
+        public void InjectControl(FrameworkElement control)
+         => _panel.Children.Insert(1, control);
 
         public JoinableTask<bool> IsInjectedAsync(FrameworkElement control)
          => ThreadHelper.JoinableTaskFactory.RunAsync(VsTaskRunContext.UIThreadNormalPriority,

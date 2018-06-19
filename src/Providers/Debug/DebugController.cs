@@ -15,8 +15,8 @@ namespace DialToolsForVS
         {
             _dte = host.DTE;
             _events = _dte.Events.DebuggerEvents;
-            _events.OnEnterBreakMode += delegate { host.RequestActivation(Moniker); };
-            _events.OnEnterDesignMode += delegate { host.ReleaseActivation(); };
+            _events.OnEnterBreakMode += delegate { host.RequestActivation(_dte.MainWindow, Moniker); };
+            _events.OnEnterDesignMode += delegate { host.ReleaseActivation(_dte.MainWindow); };
         }
 
         public override string Moniker => DebugControllerProvider.Moniker;

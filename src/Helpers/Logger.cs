@@ -2,12 +2,24 @@ using System;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-internal static class Logger
+internal class Logger
 {
-    private static IVsOutputWindowPane _pane;
-    private static IVsOutputWindow _output = (IVsOutputWindow)ServiceProvider.GlobalProvider.GetService(typeof(SVsOutputWindow));
+    private IVsOutputWindowPane _pane;
+    private readonly IVsOutputWindow _output;
 
-    public static void Log(object message)
+    internal static Logger Instance { get; private set; }
+
+    internal static void Initialize(IVsOutputWindow output)
+    {
+        Instance = new Logger(output);
+    }
+
+    private Logger(IVsOutputWindow output)
+    {
+        this._output = output;
+    }
+
+    public void Log(object message)
     {
         try
         {
@@ -22,7 +34,7 @@ internal static class Logger
         }
     }
 
-    private static bool EnsurePane()
+    private bool EnsurePane()
     {
         if (_pane == null)
         {

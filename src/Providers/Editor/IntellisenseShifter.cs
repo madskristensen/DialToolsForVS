@@ -38,7 +38,7 @@ namespace DialToolsForVS
             }
             catch (Exception ex)
             {
-                Logger.Log(ex);
+                Logger.Instance.Log(ex);
             }
 
             return false;

@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace DialToolsForVS.Helpers
 {
-    public class VsCommands
+    public static class VsCommands
     {
         internal static ImmutableArray<string> ParseCommands(string commandsString) =>
             commandsString
@@ -16,7 +16,7 @@ namespace DialToolsForVS.Helpers
         internal static string ReadCommandsAsString()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var resourceName = "DialToolsForVS.Resources.commands.txt";
+            const string resourceName = "DialToolsForVS.Resources.commands.txt";
             var stream = assembly.GetManifestResourceStream(resourceName);
             using (var reader = new StreamReader(stream))
             {

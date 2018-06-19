@@ -1,9 +1,10 @@
 ﻿using EnvDTE;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
-    internal class ZoomController : BaseController
+    internal class ZoomController : BaseTextController
     {
         private readonly Commands _commands;
 
@@ -11,14 +12,15 @@ namespace DialToolsForVS
         public override bool CanHandleClick => true;
         public override bool CanHandleRotate => true;
 
-        public ZoomController(IDialControllerHost host)
+        public ZoomController(IDialControllerHost host, IVsTextManager textManager)
+            : base(host, textManager)
         {
             _commands = host.DTE.Commands;
         }
 
         public override bool OnClick()
         {
-            IWpfTextView view = VsHelpers.GetCurrentTextView();
+            IWpfTextView view = GetCurrentTextView();
 
             if (view == null || view.ZoomLevel == 100)
                 return false;

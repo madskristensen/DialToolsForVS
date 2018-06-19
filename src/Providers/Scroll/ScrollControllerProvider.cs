@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
@@ -15,12 +17,13 @@ namespace DialToolsForVS
 
         public ScrollControllerProvider() { }
 
-        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, CancellationToken cancellationToken)
+        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, IAsyncServiceProvider provider, CancellationToken cancellationToken)
         {
             string iconFilePath = VsHelpers.GetFileInVsix(@"Providers\Scroll\icon.png");
             await host.AddMenuItemAsync(Moniker, iconFilePath);
 
-            return new ScrollController(host, CompletionBroker);
+            IVsTextManager textManager = await provider.GetServiceAsync<SVsTextManager, IVsTextManager>(cancellationToken);
+            return new ScrollController(host, textManager, CompletionBroker);
         }
     }
 }

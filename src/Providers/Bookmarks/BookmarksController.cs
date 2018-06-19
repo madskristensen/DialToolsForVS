@@ -1,15 +1,17 @@
 ﻿using EnvDTE;
 using EnvDTE80;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
-    internal class BookmarksController : BaseController
+    internal class BookmarksController : BaseTextController
     {
         private readonly IDialControllerHost _host;
         private readonly Commands _commands;
         private readonly WindowEvents _events;
 
-        public BookmarksController(IDialControllerHost host)
+        public BookmarksController(IDialControllerHost host, IVsTextManager textManager)
+            : base(host, textManager)
         {
             _host = host;
             _commands = host.DTE.Commands;
@@ -21,7 +23,8 @@ namespace DialToolsForVS
         {
             if (GotFocus.IsBookmarks())
             {
-                _host.RequestActivation(Moniker);
+                _host.ReleaseActivation(LostFocus);
+                _host.RequestActivation(GotFocus, Moniker);
             }
         }
 

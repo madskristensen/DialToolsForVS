@@ -3,15 +3,17 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
-    internal class ScrollController : BaseController
+    internal class ScrollController : BaseTextController
     {
         private readonly DTE2 _dte;
         private readonly ICompletionBroker _broker;
 
-        public ScrollController(IDialControllerHost host, ICompletionBroker broker)
+        public ScrollController(IDialControllerHost host, IVsTextManager textManager, ICompletionBroker broker)
+            : base(host, textManager)
         {
             _dte = host.DTE;
             _broker = broker;
@@ -25,7 +27,7 @@ namespace DialToolsForVS
         {
             if (_dte.ActiveWindow.IsDocument())
             {
-                IWpfTextView view = VsHelpers.GetCurrentTextView();
+                IWpfTextView view = GetCurrentTextView();
 
                 if (view != null && view.HasAggregateFocus && !_broker.IsCompletionActive(view))
                     SendKeys.Send("+{F10}");
@@ -61,7 +63,7 @@ namespace DialToolsForVS
             bool handled = false;
             if (_dte.ActiveWindow.IsDocument())
             {
-                IWpfTextView view = VsHelpers.GetCurrentTextView();
+                IWpfTextView view = GetCurrentTextView();
 
                 if (view != null && view.HasAggregateFocus)
                 {

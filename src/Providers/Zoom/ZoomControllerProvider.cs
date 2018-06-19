@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialToolsForVS
 {
@@ -10,12 +12,13 @@ namespace DialToolsForVS
 
         public ZoomControllerProvider() { }
 
-        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, CancellationToken cancellationToken)
+        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, IAsyncServiceProvider provider, CancellationToken cancellationToken)
         {
             string iconFilePath = VsHelpers.GetFileInVsix(@"Providers\Zoom\icon.png");
             await host.AddMenuItemAsync(Moniker, iconFilePath);
 
-            return new ZoomController(host);
+            IVsTextManager textManager = await provider.GetServiceAsync<SVsTextManager, IVsTextManager>(cancellationToken);
+            return new ZoomController(host, textManager);
         }
     }
 }
