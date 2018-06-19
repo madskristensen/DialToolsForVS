@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace DialToolsForVS
 {
-    public class IntellisenseShifter
+    public static class IntellisenseShifter
     {
         public static bool TryShift(ITextView view, ICompletionBroker broker, RotationDirection direction)
         {

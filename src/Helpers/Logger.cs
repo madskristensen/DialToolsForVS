@@ -23,10 +23,12 @@ internal class Logger
     {
         try
         {
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
             if (EnsurePane())
             {
                 _pane.OutputString($"{DateTime.Now}: {message}{Environment.NewLine}");
             }
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
         catch (Exception ex)
         {
@@ -36,6 +38,7 @@ internal class Logger
 
     private bool EnsurePane()
     {
+        ThreadHelper.ThrowIfNotOnUIThread();
         if (_pane == null)
         {
             var guid = Guid.NewGuid();

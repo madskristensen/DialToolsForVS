@@ -8,7 +8,7 @@ namespace DialToolsForVS
     [DialControllerProvider(order: 3)]
     internal class NavigateControllerProvider : IDialControllerProvider
     {
-        public static string Moniker = KnownProviders.Navigation.ToString();
+        public static string Moniker = nameof(KnownProviders.Navigation);
 
         public NavigateControllerProvider() { }
 

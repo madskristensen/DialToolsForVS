@@ -7,7 +7,7 @@ namespace DialToolsForVS
     [DialControllerProvider(order: 9)]
     internal class CustomizableControllerProvider : IDialControllerProvider
     {
-        public static string Moniker = KnownProviders.Customizable.ToString();
+        public static string Moniker = nameof(KnownProviders.Customizable);
 
         public CustomizableControllerProvider() { }
 

@@ -8,7 +8,7 @@ namespace DialToolsForVS
     [DialControllerProvider(order: 7)]
     internal class BookmarksControllerProvider : IDialControllerProvider
     {
-        public static string Moniker = KnownProviders.Bookmarks.ToString();
+        public static string Moniker = nameof(KnownProviders.Bookmarks);
 
         public BookmarksControllerProvider() { }
 

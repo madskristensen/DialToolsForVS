@@ -41,11 +41,13 @@ namespace DialToolsForVS
 
         protected override async Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+#pragma warning disable U2U1003 // Avoid declaring methods used in delegate constructors static
             void LoadOptions()
             {
                 Options = (Options)GetDialogPage(typeof(Options));
                 CustomOptions = (CustomOptions)GetDialogPage(typeof(CustomOptions));
             }
+#pragma warning restore U2U1003 // Avoid declaring methods used in delegate constructors static
             var optionsLoadTask = ThreadHelper.JoinableTaskFactory.StartOnIdle(LoadOptions);
 
             Logger.Initialize(await GetServiceAsync<SVsOutputWindow, IVsOutputWindow>(cancellationToken));

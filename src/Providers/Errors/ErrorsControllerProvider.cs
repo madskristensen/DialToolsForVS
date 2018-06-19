@@ -7,7 +7,7 @@ namespace DialToolsForVS
     [DialControllerProvider(order: 6)]
     internal class ErrorsControllerProvider : IDialControllerProvider
     {
-        public static string Moniker = KnownProviders.Errors.ToString();
+        public static string Moniker = nameof(KnownProviders.Errors);
 
         public ErrorsControllerProvider() { }
 

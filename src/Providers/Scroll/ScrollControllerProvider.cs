@@ -10,7 +10,7 @@ namespace DialToolsForVS
     [DialControllerProvider(order: 1)]
     internal class ScrollControllerProvider : IDialControllerProvider
     {
-        public static string Moniker = KnownProviders.Scroll.ToString();
+        public static string Moniker = nameof(KnownProviders.Scroll);
 
         [Import]
         private ICompletionBroker CompletionBroker { get; set; }

@@ -8,7 +8,7 @@ namespace DialToolsForVS
     [DialControllerProvider(order: 8)]
     internal class FindControllerProvider : IDialControllerProvider
     {
-        public static string Moniker = KnownProviders.Find.ToString();
+        public static string Moniker = nameof(KnownProviders.Find);
 
         public FindControllerProvider() { }
 

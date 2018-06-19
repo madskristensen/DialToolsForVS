@@ -8,7 +8,7 @@ namespace DialToolsForVS
     [DialControllerProvider(order: 2)]
     internal class ZoomControllerProvider : IDialControllerProvider
     {
-        public static string Moniker = KnownProviders.Zoom.ToString();
+        public static string Moniker = nameof(KnownProviders.Zoom);
 
         public ZoomControllerProvider() { }
 

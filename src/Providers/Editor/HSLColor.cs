@@ -29,7 +29,7 @@ namespace DialToolsForVS
             set { luminosity = CheckRange(value / scale); }
         }
 
-        private double CheckRange(double value)
+        private static double CheckRange(double value)
         {
             if (value < 0.0)
                 value = 0.0;

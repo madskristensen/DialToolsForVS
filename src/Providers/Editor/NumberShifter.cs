@@ -4,14 +4,14 @@ using System.Globalization;
 
 namespace DialToolsForVS
 {
-    public class NumberShifter
+    public static class NumberShifter
     {
         public static string Shift(SnapshotSpan bufferSpan, RotationDirection direction)
         {
             string text = bufferSpan.GetText();
 
             float delta = GetDelta(text);
-            string format = text.Contains(".") ? "#.#0" : string.Empty;
+            string format = text.IndexOf('.') >= 0 ? "#.#0" : string.Empty;
 
             if (NumberDecimalPlaces(text) == 1)
                 format = "F1";
@@ -45,7 +45,7 @@ namespace DialToolsForVS
 
         private static int NumberDecimalPlaces(string value)
         {
-            int s = value.IndexOf(".", StringComparison.CurrentCulture) + 1; // the first numbers plus decimal point
+            int s = value.IndexOf('.') + 1; // the first numbers plus decimal point
             if (s == 0)                     // No decimal point
                 return 0;
 
