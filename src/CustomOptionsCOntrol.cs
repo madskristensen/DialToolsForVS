@@ -84,8 +84,10 @@ namespace DialToolsForVS
         {
             var searchText = _timer.Tag?.ToString() ?? string.Empty;
             var results = Commands.Where(c => c.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1);
+            int newLineSymbolsLength = Environment.NewLine.Length;
             CommandsBox.Text = results.Any()
-                ? results.Aggregate(new StringBuilder(),
+                ? results.Aggregate(
+                    new StringBuilder(results.Sum(r => r.Length + newLineSymbolsLength)),
                     (accum, item) =>
                     {
                         accum.Append(item);
@@ -94,7 +96,7 @@ namespace DialToolsForVS
                     },
                     accum =>
                     {
-                        accum.Length -= Environment.NewLine.Length;
+                        accum.Length -= newLineSymbolsLength;
                         return accum.ToString();
                     })
                 : string.Empty;
