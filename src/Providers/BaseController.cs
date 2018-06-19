@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     public abstract class BaseController : IDialController
     {

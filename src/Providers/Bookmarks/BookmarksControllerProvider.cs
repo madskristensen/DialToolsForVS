@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     [DialControllerProvider(order: 7)]
     internal class BookmarksControllerProvider : IDialControllerProvider

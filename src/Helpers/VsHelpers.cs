@@ -8,7 +8,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     internal static class VsHelpers
     {

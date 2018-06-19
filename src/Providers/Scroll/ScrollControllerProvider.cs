@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     [DialControllerProvider(order: 1)]
     internal class ScrollControllerProvider : IDialControllerProvider

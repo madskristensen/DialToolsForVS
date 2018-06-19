@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Globalization;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     public static class ColorShifter
     {

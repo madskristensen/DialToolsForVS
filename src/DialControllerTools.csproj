@@ -20,8 +20,8 @@
     <ProjectGuid>{8BB1C8EF-0C40-40A0-A2DF-D07010432122}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DialToolsForVS</RootNamespace>
-    <AssemblyName>DialToolsForVS</AssemblyName>
+    <RootNamespace>DialControllerTools</RootNamespace>
+    <AssemblyName>DialControllerTools</AssemblyName>
     <LangVersion>latest</LangVersion>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>

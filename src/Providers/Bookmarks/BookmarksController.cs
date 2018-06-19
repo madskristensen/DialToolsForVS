@@ -2,7 +2,7 @@
 using EnvDTE80;
 using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     internal class BookmarksController : BaseTextController
     {

@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     // From https://richnewman.wordpress.com/about/code-listings-and-diagrams/hslcolor-class/
     internal class HSLColor

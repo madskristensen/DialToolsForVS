@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     public interface IDialControllerProvider
     {

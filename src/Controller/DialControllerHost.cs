@@ -19,7 +19,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Input;
 using Task = System.Threading.Tasks.Task;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     internal class DialControllerHost : IDialControllerHost
     {
@@ -56,10 +56,6 @@ namespace DialToolsForVS
             this.serviceProvider = provider;
             compositionService.DefaultCompositionService.SatisfyImportsOnce(this);
         }
-
-        {
-            {
-            }
 
         public static async Task InitializeAsync(IAsyncServiceProvider provider, JoinableTask optionsLoadTask, CancellationToken cancellationToken)
         {

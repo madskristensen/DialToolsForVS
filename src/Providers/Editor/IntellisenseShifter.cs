@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Windows.Forms;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     public static class IntellisenseShifter
     {

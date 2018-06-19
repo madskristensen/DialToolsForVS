@@ -4,7 +4,7 @@ using EnvDTE80;
 using Microsoft.VisualStudio.ComponentModelHost;
 using Windows.UI.Input;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     public interface IDialControllerHost
     {

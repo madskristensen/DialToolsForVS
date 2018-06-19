@@ -1,4 +1,4 @@
-﻿namespace DialToolsForVS
+﻿namespace DialControllerTools
 {
     partial class CustomOptionsControl
     {

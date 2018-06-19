@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     public static class NumberShifter
     {

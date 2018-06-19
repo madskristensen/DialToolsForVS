@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DialToolsForVS.Helpers;
+using DialControllerTools.Helpers;
 using Microsoft.VisualStudio.Threading;
 using ThreadHelper = Microsoft.VisualStudio.Shell.ThreadHelper;
 //Timer idea from https://stackoverflow.com/questions/26020799/enforcing-a-delay-on-textbox-textchanged
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     public partial class CustomOptionsControl : UserControl
     {

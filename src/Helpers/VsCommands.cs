@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace DialToolsForVS.Helpers
+namespace DialControllerTools.Helpers
 {
     public static class VsCommands
     {

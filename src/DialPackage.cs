@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Windows.UI.Input;
 using Tasks = System.Threading.Tasks;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     [Guid(PackageGuids.guidPackageString)]
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]

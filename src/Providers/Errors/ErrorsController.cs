@@ -3,7 +3,7 @@ using System.Linq;
 using EnvDTE;
 using EnvDTE80;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     internal class ErrorsController : IDialController
     {

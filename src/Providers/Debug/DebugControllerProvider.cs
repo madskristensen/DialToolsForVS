@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Shell;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     [DialControllerProvider(order: 5)]
     internal class DebugControllerProvider : IDialControllerProvider
