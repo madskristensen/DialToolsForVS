@@ -106,9 +106,8 @@ namespace DialControllerTools
         {
             var current_line = CommandsBox.GetLineFromCharIndex(CommandsBox.SelectionStart);
             _selectedText = CommandsBox.Lines[current_line];
-            var line_length = _selectedText?.Length ?? 0;
-            CommandsBox.SelectionStart = CommandsBox.GetFirstCharIndexOfCurrentLine();
-            CommandsBox.SelectionLength = line_length;
+            CommandsBox.SelectionStart = CommandsBox.GetFirstCharIndexFromLine(current_line);
+            CommandsBox.SelectionLength = _selectedText?.Length ?? 0;
         }
     }
 }
