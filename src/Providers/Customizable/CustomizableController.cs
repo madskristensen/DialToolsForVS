@@ -1,6 +1,6 @@
 ﻿using EnvDTE;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     internal class CustomizableController : BaseController
     {

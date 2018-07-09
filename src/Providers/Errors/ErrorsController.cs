@@ -3,7 +3,7 @@ using System.Linq;
 using EnvDTE;
 using EnvDTE80;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     internal class ErrorsController : IDialController
     {
@@ -25,7 +25,8 @@ namespace DialToolsForVS
         {
             if (GotFocus.IsErrorList() && _errorList.TableControl.Entries.Any())
             {
-                _host.RequestActivation(Moniker);
+                _host.ReleaseActivation(LostFocus);
+                _host.RequestActivation(GotFocus, Moniker);
             }
         }
 

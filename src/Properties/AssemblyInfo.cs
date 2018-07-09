@@ -1,4 +1,4 @@
-﻿using DialToolsForVS;
+﻿using DialControllerTools;
 using System.Reflection;
 using System.Runtime.InteropServices;
 

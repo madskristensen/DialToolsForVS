@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Shell;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     [Guid("6C43E501-226F-4E73-949C-BF8808A94B48")]
     public class CustomOptions : DialogPage
@@ -19,14 +19,9 @@ namespace DialToolsForVS
         public string LeftAction { get => _leftAction; set => _leftAction = value; }
 
         protected override IWin32Window Window
-        {
-            get
-            {
-                var page = new CustomOptionsControl();
-                page.CustomOptions = this;
-                page.Initialize();
-                return page;
-            }
-        }
+         => new CustomOptionsControl
+         {
+             CustomOptions = this
+         };
     }
 }

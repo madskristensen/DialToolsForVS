@@ -7,10 +7,11 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
+using Microsoft.VisualStudio.TextManager.Interop;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
-    internal class EditorController : BaseController
+    internal class EditorController : BaseTextController
     {
         private readonly DTE2 _dte;
 
@@ -23,7 +24,8 @@ namespace DialToolsForVS
             { @"(\b|\-)[0-9\.]+", NumberShifter.Shift }
         };
 
-        public EditorController(IDialControllerHost host, ICompletionBroker completionBroker)
+        public EditorController(IDialControllerHost host, IVsTextManager textManager, ICompletionBroker completionBroker)
+            : base(host, textManager)
         {
             _dte = host.DTE;
             _broker = completionBroker;
@@ -38,7 +40,7 @@ namespace DialToolsForVS
                 if (!_dte.ActiveWindow.IsDocument())
                     return false;
 
-                _view = VsHelpers.GetCurrentTextView();
+                _view = GetCurrentTextView();
 
                 return _view != null && _view.HasAggregateFocus;
             }
@@ -48,7 +50,7 @@ namespace DialToolsForVS
 
         public override bool OnClick()
         {
-            _view = VsHelpers.GetCurrentTextView();
+            _view = GetCurrentTextView();
 
             if (_view == null || !_view.HasAggregateFocus)
                 return false;

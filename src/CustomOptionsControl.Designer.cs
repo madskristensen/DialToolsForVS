@@ -1,4 +1,4 @@
-﻿namespace DialToolsForVS
+﻿namespace DialControllerTools
 {
     partial class CustomOptionsControl
     {
@@ -38,44 +38,49 @@
             this.RightLabel = new System.Windows.Forms.Label();
             this.ClickLabel = new System.Windows.Forms.Label();
             this.CommandsBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.SearcBoxLabel = new System.Windows.Forms.Label();
             this.SearchBox = new System.Windows.Forms.TextBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.SearchBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.RootLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.RootLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // AssignedClickLabel
             // 
             this.AssignedClickLabel.AutoEllipsis = true;
-            this.AssignedClickLabel.Location = new System.Drawing.Point(211, 353);
+            this.AssignedClickLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AssignedClickLabel.Location = new System.Drawing.Point(204, 450);
             this.AssignedClickLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.AssignedClickLabel.MaximumSize = new System.Drawing.Size(300, 25);
             this.AssignedClickLabel.Name = "AssignedClickLabel";
-            this.AssignedClickLabel.Size = new System.Drawing.Size(300, 25);
+            this.AssignedClickLabel.Size = new System.Drawing.Size(364, 50);
             this.AssignedClickLabel.TabIndex = 26;
+            this.AssignedClickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // AssignedRightLabel
             // 
             this.AssignedRightLabel.AutoEllipsis = true;
-            this.AssignedRightLabel.Location = new System.Drawing.Point(211, 405);
+            this.AssignedRightLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AssignedRightLabel.Location = new System.Drawing.Point(204, 500);
             this.AssignedRightLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.AssignedRightLabel.MaximumSize = new System.Drawing.Size(300, 25);
             this.AssignedRightLabel.Name = "AssignedRightLabel";
-            this.AssignedRightLabel.Size = new System.Drawing.Size(300, 25);
+            this.AssignedRightLabel.Size = new System.Drawing.Size(364, 50);
             this.AssignedRightLabel.TabIndex = 25;
+            this.AssignedRightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // AssignedLeftLabel
             // 
             this.AssignedLeftLabel.AutoEllipsis = true;
-            this.AssignedLeftLabel.Location = new System.Drawing.Point(211, 455);
+            this.AssignedLeftLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AssignedLeftLabel.Location = new System.Drawing.Point(204, 550);
             this.AssignedLeftLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.AssignedLeftLabel.MaximumSize = new System.Drawing.Size(300, 25);
             this.AssignedLeftLabel.Name = "AssignedLeftLabel";
-            this.AssignedLeftLabel.Size = new System.Drawing.Size(300, 25);
+            this.AssignedLeftLabel.Size = new System.Drawing.Size(364, 50);
             this.AssignedLeftLabel.TabIndex = 24;
+            this.AssignedLeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // AssignLeftAction
             // 
-            this.AssignLeftAction.Location = new System.Drawing.Point(529, 446);
+            this.AssignLeftAction.Location = new System.Drawing.Point(576, 554);
             this.AssignLeftAction.Margin = new System.Windows.Forms.Padding(4);
             this.AssignLeftAction.Name = "AssignLeftAction";
             this.AssignLeftAction.Size = new System.Drawing.Size(100, 42);
@@ -86,7 +91,7 @@
             // 
             // AssignRightAction
             // 
-            this.AssignRightAction.Location = new System.Drawing.Point(527, 396);
+            this.AssignRightAction.Location = new System.Drawing.Point(576, 504);
             this.AssignRightAction.Margin = new System.Windows.Forms.Padding(4);
             this.AssignRightAction.Name = "AssignRightAction";
             this.AssignRightAction.Size = new System.Drawing.Size(100, 42);
@@ -97,7 +102,7 @@
             // 
             // AssignClickAction
             // 
-            this.AssignClickAction.Location = new System.Drawing.Point(527, 345);
+            this.AssignClickAction.Location = new System.Drawing.Point(576, 454);
             this.AssignClickAction.Margin = new System.Windows.Forms.Padding(4);
             this.AssignClickAction.Name = "AssignClickAction";
             this.AssignClickAction.Size = new System.Drawing.Size(100, 42);
@@ -109,83 +114,117 @@
             // LeftLabel
             // 
             this.LeftLabel.AutoSize = true;
-            this.LeftLabel.Location = new System.Drawing.Point(22, 455);
+            this.LeftLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LeftLabel.Location = new System.Drawing.Point(4, 550);
             this.LeftLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.LeftLabel.Name = "LeftLabel";
-            this.LeftLabel.Size = new System.Drawing.Size(154, 25);
+            this.LeftLabel.Size = new System.Drawing.Size(192, 50);
             this.LeftLabel.TabIndex = 20;
             this.LeftLabel.Text = "Dial left action:";
+            this.LeftLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // RightLabel
             // 
             this.RightLabel.AutoSize = true;
-            this.RightLabel.Location = new System.Drawing.Point(22, 405);
+            this.RightLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RightLabel.Location = new System.Drawing.Point(4, 500);
             this.RightLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.RightLabel.Name = "RightLabel";
-            this.RightLabel.Size = new System.Drawing.Size(167, 25);
+            this.RightLabel.Size = new System.Drawing.Size(192, 50);
             this.RightLabel.TabIndex = 19;
             this.RightLabel.Text = "Dial right action:";
+            this.RightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // ClickLabel
             // 
             this.ClickLabel.AutoSize = true;
-            this.ClickLabel.Location = new System.Drawing.Point(22, 353);
+            this.ClickLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ClickLabel.Location = new System.Drawing.Point(4, 450);
             this.ClickLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ClickLabel.Name = "ClickLabel";
-            this.ClickLabel.Size = new System.Drawing.Size(192, 25);
+            this.ClickLabel.Size = new System.Drawing.Size(192, 50);
             this.ClickLabel.TabIndex = 18;
             this.ClickLabel.Text = "Dial clicked action:";
+            this.ClickLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // CommandsBox
             // 
-            this.CommandsBox.Location = new System.Drawing.Point(27, 97);
-            this.CommandsBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.CommandsBox.MaximumSize = new System.Drawing.Size(600, 230);
+            this.RootLayoutPanel.SetColumnSpan(this.CommandsBox, 3);
+            this.CommandsBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CommandsBox.Location = new System.Drawing.Point(3, 64);
+            this.CommandsBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.CommandsBox.Multiline = true;
             this.CommandsBox.Name = "CommandsBox";
             this.CommandsBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.CommandsBox.Size = new System.Drawing.Size(600, 230);
+            this.CommandsBox.Size = new System.Drawing.Size(674, 382);
             this.CommandsBox.TabIndex = 17;
             this.CommandsBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CommandsBox_MouseClick);
             // 
-            // label1
+            // SearcBoxLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(332, 25);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Search for commands containing:";
+            this.SearcBoxLabel.AutoSize = true;
+            this.RootLayoutPanel.SetColumnSpan(this.SearcBoxLabel, 3);
+            this.SearcBoxLabel.Location = new System.Drawing.Point(3, 0);
+            this.SearcBoxLabel.Name = "SearcBoxLabel";
+            this.SearcBoxLabel.Size = new System.Drawing.Size(332, 25);
+            this.SearcBoxLabel.TabIndex = 16;
+            this.SearcBoxLabel.Text = "Search for commands containing:";
             // 
             // SearchBox
             // 
-            this.SearchBox.Location = new System.Drawing.Point(27, 47);
+            this.RootLayoutPanel.SetColumnSpan(this.SearchBox, 3);
+            this.SearchBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SearchBox.Location = new System.Drawing.Point(3, 27);
             this.SearchBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchBox.Name = "SearchBox";
-            this.SearchBox.Size = new System.Drawing.Size(600, 31);
+            this.SearchBox.Size = new System.Drawing.Size(674, 31);
             this.SearchBox.TabIndex = 15;
             this.SearchBox.TextChanged += new System.EventHandler(this.SearchBox_TextChanged);
+            // 
+            // RootLayoutPanel
+            // 
+            this.RootLayoutPanel.ColumnCount = 3;
+            this.RootLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.RootLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.RootLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.RootLayoutPanel.Controls.Add(this.SearcBoxLabel, 0, 0);
+            this.RootLayoutPanel.Controls.Add(this.SearchBox, 0, 1);
+            this.RootLayoutPanel.Controls.Add(this.CommandsBox, 0, 2);
+            this.RootLayoutPanel.Controls.Add(this.ClickLabel, 0, 3);
+            this.RootLayoutPanel.Controls.Add(this.RightLabel, 0, 4);
+            this.RootLayoutPanel.Controls.Add(this.LeftLabel, 0, 5);
+            this.RootLayoutPanel.Controls.Add(this.AssignedClickLabel, 1, 3);
+            this.RootLayoutPanel.Controls.Add(this.AssignedRightLabel, 1, 4);
+            this.RootLayoutPanel.Controls.Add(this.AssignedLeftLabel, 1, 5);
+            this.RootLayoutPanel.Controls.Add(this.AssignClickAction, 2, 3);
+            this.RootLayoutPanel.Controls.Add(this.AssignRightAction, 2, 4);
+            this.RootLayoutPanel.Controls.Add(this.AssignLeftAction, 2, 5);
+            this.RootLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RootLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.RootLayoutPanel.Name = "RootLayoutPanel";
+            this.RootLayoutPanel.RowCount = 8;
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.RootLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.RootLayoutPanel.Size = new System.Drawing.Size(680, 600);
+            this.RootLayoutPanel.TabIndex = 27;
             // 
             // CustomOptionsControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.AssignedClickLabel);
-            this.Controls.Add(this.AssignedRightLabel);
-            this.Controls.Add(this.AssignedLeftLabel);
-            this.Controls.Add(this.AssignLeftAction);
-            this.Controls.Add(this.AssignRightAction);
-            this.Controls.Add(this.AssignClickAction);
-            this.Controls.Add(this.LeftLabel);
-            this.Controls.Add(this.RightLabel);
-            this.Controls.Add(this.ClickLabel);
-            this.Controls.Add(this.CommandsBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.SearchBox);
+            this.Controls.Add(this.RootLayoutPanel);
             this.Name = "CustomOptionsControl";
             this.Size = new System.Drawing.Size(680, 600);
+            this.RootLayoutPanel.ResumeLayout(false);
+            this.RootLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -201,8 +240,9 @@
         private System.Windows.Forms.Label RightLabel;
         private System.Windows.Forms.Label ClickLabel;
         private System.Windows.Forms.TextBox CommandsBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label SearcBoxLabel;
         private System.Windows.Forms.TextBox SearchBox;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker SearchBackgroundWorker;
+        private System.Windows.Forms.TableLayoutPanel RootLayoutPanel;
     }
 }

@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Globalization;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
-    public class ColorShifter
+    public static class ColorShifter
     {
         public static string Shift(SnapshotSpan bufferSpan, RotationDirection direction)
         {

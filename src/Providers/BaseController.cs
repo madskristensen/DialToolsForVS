@@ -1,4 +1,12 @@
-﻿namespace DialToolsForVS
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio;
+using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.TextManager.Interop;
+
+namespace DialControllerTools
 {
     public abstract class BaseController : IDialController
     {

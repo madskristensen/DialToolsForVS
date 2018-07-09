@@ -1,4 +1,4 @@
-﻿namespace DialToolsForVS
+﻿namespace DialControllerTools
 {
     public enum RotationDirection
     {

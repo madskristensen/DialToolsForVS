@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26212.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialToolsForVS", "src\DialToolsForVS.csproj", "{8BB1C8EF-0C40-40A0-A2DF-D07010432122}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialControllerTools", "src\DialControllerTools.csproj", "{8BB1C8EF-0C40-40A0-A2DF-D07010432122}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{375D9B50-EADE-4F25-9C01-ABFE3A9611D7}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,5 +25,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4B5FFC0-8C7F-4E83-AC8D-D0C07D196AD4}
 	EndGlobalSection
 EndGlobal

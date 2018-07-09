@@ -2,19 +2,33 @@ using System;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-internal static class Logger
+internal class Logger
 {
-    private static IVsOutputWindowPane _pane;
-    private static IVsOutputWindow _output = (IVsOutputWindow)ServiceProvider.GlobalProvider.GetService(typeof(SVsOutputWindow));
+    private IVsOutputWindowPane _pane;
+    private readonly IVsOutputWindow _output;
 
-    public static void Log(object message)
+    internal static Logger Instance { get; private set; }
+
+    internal static void Initialize(IVsOutputWindow output)
+    {
+        Instance = new Logger(output);
+    }
+
+    private Logger(IVsOutputWindow output)
+    {
+        this._output = output;
+    }
+
+    public void Log(object message)
     {
         try
         {
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
             if (EnsurePane())
             {
-                _pane.OutputString(DateTime.Now.ToString() + ": " + message + Environment.NewLine);
+                _pane.OutputString($"{DateTime.Now}: {message}{Environment.NewLine}");
             }
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
         catch (Exception ex)
         {
@@ -22,12 +36,13 @@ internal static class Logger
         }
     }
 
-    private static bool EnsurePane()
+    private bool EnsurePane()
     {
+        ThreadHelper.ThrowIfNotOnUIThread();
         if (_pane == null)
         {
             var guid = Guid.NewGuid();
-            _output.CreatePane(ref guid, DialToolsForVS.Vsix.Name, 1, 1);
+            _output.CreatePane(ref guid, DialControllerTools.Vsix.Name, 1, 1);
             _output.GetPane(ref guid, out _pane);
         }
 

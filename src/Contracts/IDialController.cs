@@ -1,6 +1,6 @@
 ﻿using Windows.UI.Input;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
     public interface IDialController
     {

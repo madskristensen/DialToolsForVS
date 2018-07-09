@@ -3,9 +3,9 @@ using Microsoft.VisualStudio.Text.Editor;
 using System;
 using System.Windows.Forms;
 
-namespace DialToolsForVS
+namespace DialControllerTools
 {
-    public class IntellisenseShifter
+    public static class IntellisenseShifter
     {
         public static bool TryShift(ITextView view, ICompletionBroker broker, RotationDirection direction)
         {
@@ -38,7 +38,7 @@ namespace DialToolsForVS
             }
             catch (Exception ex)
             {
-                Logger.Log(ex);
+                Logger.Instance.Log(ex);
             }
 
             return false;
