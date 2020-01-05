@@ -25,8 +25,8 @@ namespace DialControllerTools
         {
             if (GotFocus.IsErrorList() && _errorList.TableControl.Entries.Any())
             {
-                _host.ReleaseActivation(LostFocus);
-                _host.RequestActivation(GotFocus, Moniker);
+                _host.ReleaseActivation(LostFocus.LinkedWindowFrame);
+                _host.RequestActivation(GotFocus.LinkedWindowFrame, Moniker);
             }
         }
 
