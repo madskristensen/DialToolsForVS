@@ -23,8 +23,8 @@ namespace DialControllerTools
         {
             if (GotFocus.IsBookmarks())
             {
-                _host.ReleaseActivation(LostFocus);
-                _host.RequestActivation(GotFocus, Moniker);
+                _host.ReleaseActivation(LostFocus.LinkedWindowFrame);
+                _host.RequestActivation(GotFocus.LinkedWindowFrame, Moniker);
             }
         }
 
