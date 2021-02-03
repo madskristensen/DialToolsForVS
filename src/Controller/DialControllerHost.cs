@@ -73,9 +73,29 @@ namespace DialControllerTools
 
         private void CreateStatusBarItem()
         {
-            _status = new RadialControllerStatusBarHost { Name = "PART_DialControllerHost" };
-            var injector = new StatusBarInjector(Application.Current.MainWindow);
-            injector.InjectControl(_status);
+            void CreateStatusBarItemImpl()
+            {
+                _status = new RadialControllerStatusBarHost { Name = "PART_DialControllerHost" };
+                var injector = new StatusBarInjector(Application.Current.MainWindow);
+                injector.InjectControl(_status);
+            }
+
+            var mainWindow = Application.Current.MainWindow;
+            
+            void OnMainWindowLoaded(object sender, RoutedEventArgs e)
+            {
+                CreateStatusBarItemImpl();
+                mainWindow.Loaded -= OnMainWindowLoaded;
+            }
+
+            if (mainWindow.IsLoaded)
+            {
+                CreateStatusBarItemImpl();
+            }
+            else
+            {
+                mainWindow.Loaded += OnMainWindowLoaded;
+            }
         }
 
         internal RadialController CreateController(EnvDTE.Window window)
