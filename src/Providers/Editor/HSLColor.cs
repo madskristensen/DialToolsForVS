@@ -48,8 +48,8 @@ namespace DialControllerTools
             Color color = this;
             return string.Format("R: {0:#0.##} G: {1:#0.##} B: {2:#0.##}", color.R, color.G, color.B);
         }
-
-        #region Casts to/from System.Drawing.Color
+        
+        #region Casts to/from System.Drawing.Color
         public static implicit operator Color(HSLColor hslColor)
         {
             double r = 0, g = 0, b = 0;
@@ -109,7 +109,7 @@ namespace DialControllerTools
                 saturation = color.GetSaturation()
             };
         }
-        #endregion
+        #endregion
 
         public void SetRGB(int red, int green, int blue)
         {
