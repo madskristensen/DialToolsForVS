@@ -36,7 +36,7 @@ namespace DialControllerTools
             }
             else if (debugMode == dbgDebugMode.dbgDesignMode)
             {
-                _dte.Debugger.Go();
+                _dte.Application.ExecuteCommand("Debug.Start"); //.Debugger.Go() does not seem to synchronize the VS Debug toolbar
             }
 
             return true;

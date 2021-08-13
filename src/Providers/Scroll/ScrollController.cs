@@ -68,7 +68,11 @@ namespace DialControllerTools
                 if (view != null && view.HasAggregateFocus)
                 {
                     string cmd = direction == RotationDirection.Left ? "Edit.ScrollLineUp" : "Edit.ScrollLineDown";
-                    handled = _dte.Commands.ExecuteCommand(cmd);
+
+                    for (int i = 0; i < DialPackage.Options.LinesToScroll; i++)
+                    {
+                        handled = _dte.Commands.ExecuteCommand(cmd);
+                    }
                 }
             }
 

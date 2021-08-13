@@ -138,16 +138,40 @@ namespace DialControllerTools
 
         internal void OptionsApplied(object sender, EventArgs e)
         {
+            var settings = (Options)sender;
+            var anyControllerChangesMade = false;
+
             foreach (var controller in controllersMapping.Values)
             {
-                controller.Menu.Items.Clear();
+                if (OptionsChangesMade(settings, controller))
+                {
+                    controller.Menu.Items.Clear();
+                    anyControllerChangesMade = true;
+                }
             }
-            ThreadHelper.JoinableTaskFactory.Run(() => ImportProvidersAsync());
+
+            if (anyControllerChangesMade)
+                ThreadHelper.JoinableTaskFactory.Run(() => ImportProvidersAsync());
+        }
+
+        private static bool OptionsChangesMade(Options settings, RadialController controller)
+        {
+            foreach (var setting in settings.MenuVisibility)
+            {
+                if (setting.Value && controller.Menu.Items.All(_ => _.DisplayText != setting.Key))
+                    return true; //setting turned on
+
+                if (!setting.Value && controller.Menu.Items.Any(_ => _.DisplayText == setting.Key))
+                    return true; //setting turned off
+            }
+
+            return false;
         }
 
         internal async Task ImportProvidersAsync(CancellationToken cancellationToken = default)
         {
             var tasks = _providers
+                .OrderBy(provider => provider.Metadata.Order) //this is the true add to the menu: TryCreateControllerAsync calls back to AddMenuItemAsync
                 .Select(async provider =>
                 {
                     var controller = await provider.Value.TryCreateControllerAsync(this, serviceProvider, cancellationToken);
@@ -155,7 +179,7 @@ namespace DialControllerTools
                 });
             _controllers = (await Task.WhenAll(tasks))
                            .Where(result => result.Controller != null)
-                           .OrderBy(result => result.Order)
+                           .OrderBy(result => result.Order)  //probably not needed
                            .Select(result => result.Controller)
                            .ToImmutableArray();
 
@@ -210,7 +234,7 @@ namespace DialControllerTools
         {
             RadialControllerMenuItem item = controller.Menu.Items.FirstOrDefault(i => i.DisplayText == moniker);
 
-            if (item != null)
+			if (item != null && _status != null) //status null if the 'open recent project' is visible and the dial is rotated
             {
                 controller.Menu.SelectMenuItem(item);
                 _status.Text = item.DisplayText;
@@ -241,18 +265,21 @@ namespace DialControllerTools
                 RequestActivation(sender, defaultMenu);
             }
 
-            Debug.Assert(_status != null);
-            _status.Text = sender.Menu.GetSelectedMenuItem()?.DisplayText;
+            if (_status != null)
+                _status.Text = sender.Menu.GetSelectedMenuItem()?.DisplayText;
         }
 
         private void OnControlLost(RadialController sender, object args)
         {
-            Debug.Assert(_status != null);
-            _status.IsActive = false;
+            if (_status != null)
+                _status.IsActive = false;
         }
 
         private void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)
         {
+            if (!DTE.Solution.IsOpen) //assume most controllers require a solution
+                return;
+
             IEnumerable<IDialController> controllers = GetApplicableControllers(sender).Where(c => c.CanHandleClick);
             Logger.Log("Click: " + string.Join(", ", controllers.Select(c => c.Moniker)));
 
@@ -274,6 +301,9 @@ namespace DialControllerTools
 
         private void OnRotationChanged(RadialController sender, RadialControllerRotationChangedEventArgs args)
         {
+            if (!DTE.Solution.IsOpen) //assume most controllers require a solution
+                return;
+
             IEnumerable<IDialController> controllers = GetApplicableControllers(sender).Where(c => c.CanHandleRotate);
             RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
 

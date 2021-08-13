@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="DialPackage.cs" />
     <Compile Include="Helpers\Logger.cs" />
+    <Compile Include="Helpers\PositiveIntegerConverter.cs" />
     <Compile Include="Helpers\VsCommands.cs" />
     <Compile Include="Helpers\VsHelpers.cs" />
     <Compile Include="Contracts\KnownProviders.cs" />
