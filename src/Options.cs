@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Collections.Generic;
 using System;
+using DialControllerTools.Helpers;
 
 namespace DialControllerTools
 {
@@ -85,6 +86,13 @@ namespace DialControllerTools
         [DefaultValue(false)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowLogInOutput { get; set; } = false;
+
+        [Category("Scrolling")]
+        [DisplayName("Lines To Scroll")]
+        [Description("The number of lines to scroll when the dial is rotated.  A positive integer from 1 to 20. (Affects document window only, not the Solution Explorer.)")]
+        [DefaultValue(1)]
+        [TypeConverter(typeof(PositiveIntegerConverter))]
+        public int LinesToScroll { get; set; } = 1;
 
         public Options()
         {
