@@ -1,4 +1,5 @@
 using System;
+using DialControllerTools;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -21,18 +22,21 @@ internal class Logger
 
     public void Log(object message)
     {
-        try
+        if (DialPackage.Options.ShowLogInOutput)
         {
-#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
-            if (EnsurePane())
+            try
             {
-                _pane.OutputString($"{DateTime.Now}: {message}{Environment.NewLine}");
-            }
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
+                if (EnsurePane())
+                {
+                    _pane.OutputString($"{DateTime.Now}: {message}{Environment.NewLine}");
+                }
 #pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.Write(ex);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.Write(ex);
+            }
         }
     }
 

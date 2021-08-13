@@ -9,75 +9,82 @@ namespace DialControllerTools
     {
         public event EventHandler OptionsApplied;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Default menu")]
         [Description("Determines the default Dial menu item when opening Visual Studio.")]
         [DefaultValue(KnownProviders.Scroll)]
         [TypeConverter(typeof(EnumConverter))]
         public KnownProviders DefaultProvider { get; set; }
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Bookmarks menu")]
         [Description("Set to true to show the Bookmarks menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowBookmarksMenu { get; set; } = true;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Customizable menu")]
         [Description("Set to true to show the Customizable menu")]
         [DefaultValue(false)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowCustomizableMenu { get; set; } = false;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Debug menu")]
         [Description("Set to true to show the Debug menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowDebugMenu { get; set; } = true;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Editor menu")]
         [Description("Set to true to show the Editor menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowEditorMenu { get; set; } = true;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Errors menu")]
         [Description("Set to true to show the Errors menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowErrorsMenu { get; set; } = true;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Find menu")]
         [Description("Set to true to show the Find menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowFindMenu { get; set; } = true;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Navigation menu")]
         [Description("Set to true to show the Navigation menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowNavigationMenu { get; set; } = true;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Scroll menu")]
         [Description("Set to true to show the Scroll menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowScrollMenu { get; set; } = true;
 
-        [Category("General")]
+        [Category("Menu")]
         [DisplayName("Show Zoom menu")]
         [Description("Set to true to show the Zoom menu")]
         [DefaultValue(true)]
         [TypeConverter(typeof(BooleanConverter))]
         public bool ShowZoomMenu { get; set; } = true;
+
+        [Category("Visual Studio Shell")]
+        [DisplayName("Show Dial Log")]
+        [Description("Set to true to show the Surface Dial log in the Output window")]
+        [DefaultValue(false)]
+        [TypeConverter(typeof(BooleanConverter))]
+        public bool ShowLogInOutput { get; set; } = false;
 
         public Options()
         {
