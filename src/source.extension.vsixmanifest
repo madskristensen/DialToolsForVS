@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="d4ce1d82-9bf6-4136-bd56-43cde615e0db" Version="0.8" Language="en-US" Publisher="Mads Kristensen" />
-    <DisplayName>Surface Dial Tools for Visual Studio</DisplayName>
+    <Identity Id="22e56b3b-9cee-4667-8505-1bc51da8df85" Version="1.0" Language="en-US" Publisher="Mads Kristensen" />
+    <DisplayName>Surface Dial Tools for Visual Studio 64-bit</DisplayName>
     <Description xml:space="preserve">Adds features to Visual Studio specific to the Surface Dial. You don't need a Surface Book or Surface Studio to take advantage of the Surface Dial.</Description>
     <MoreInfo>https://github.com/madskristensen/DialToolsForVS/blob/master/CHANGELOG.md</MoreInfo>
     <License>Resources\LICENSE</License>
@@ -13,13 +13,15 @@
     <Preview>true</Preview>
   </Metadata>
   <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0.27130,17.0)" />
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
   </Installation>
   <Assets>
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
   </Assets>
   <Prerequisites>
-    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,)" DisplayName="Visual Studio core editor" />
   </Prerequisites>
 </PackageManifest>
