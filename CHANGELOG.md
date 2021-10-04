@@ -12,6 +12,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 1.0
+
+- [x] Migrate to Visual Studio 64-bit and dropped suppot of version older than 17.0
+
 ## 0.7
 
 - [x] Only select Error List if it contains errors

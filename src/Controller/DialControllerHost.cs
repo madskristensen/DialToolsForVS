@@ -81,7 +81,7 @@ namespace DialControllerTools
             }
 
             var mainWindow = Application.Current.MainWindow;
-            
+
             void OnMainWindowLoaded(object sender, RoutedEventArgs e)
             {
                 CreateStatusBarItemImpl();
@@ -103,7 +103,7 @@ namespace DialControllerTools
             var interop = (IRadialControllerInterop)WindowsRuntimeMarshal.GetActivationFactory(typeof(RadialController));
             Guid guid = typeof(RadialController).GetInterface("IRadialController").GUID;
 
-            var radialController = interop.CreateForWindow(new IntPtr(window.HWnd), ref guid);
+            var radialController = interop.CreateForWindow(window.HWnd, ref guid);
             radialController.RotationChanged += OnRotationChanged;
             radialController.ButtonClicked += OnButtonClicked;
             radialController.ControlAcquired += OnControlAcquired;
@@ -131,7 +131,7 @@ namespace DialControllerTools
 
             foreach (var window in controllersMapping.Keys)
             {
-                config = radialControllerConfigInterop.GetForWindow(new IntPtr(window.HWnd), ref guid);
+                config = radialControllerConfigInterop.GetForWindow(window.HWnd, ref guid);
                 config.SetDefaultMenuItems(new RadialControllerSystemMenuItemKind[0]);
             }
         });
@@ -234,7 +234,7 @@ namespace DialControllerTools
         {
             RadialControllerMenuItem item = controller.Menu.Items.FirstOrDefault(i => i.DisplayText == moniker);
 
-			if (item != null && _status != null) //status null if the 'open recent project' is visible and the dial is rotated
+            if (item != null && _status != null) //status null if the 'open recent project' is visible and the dial is rotated
             {
                 controller.Menu.SelectMenuItem(item);
                 _status.Text = item.DisplayText;
