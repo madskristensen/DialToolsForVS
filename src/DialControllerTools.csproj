@@ -209,49 +209,49 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EnvDTE">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="EnvDTE100">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="EnvDTE80">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="EnvDTE90">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.CommandBars">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.ComponentModelHost">
-      <Version>17.0.391-preview-g5e248c9073</Version>
+      <Version>17.0.487</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Editor">
-      <Version>17.0.391-preview-g5e248c9073</Version>
+      <Version>17.0.487</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime">
-      <Version>17.0.0-previews-5-31722-452</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Language.Intellisense">
-      <Version>17.0.391-preview-g5e248c9073</Version>
+      <Version>17.0.487</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.10.0">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.11.0">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.8.0">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Validation">
-      <Version>17.0.25-alpha</Version>
+      <Version>17.0.34</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
       <Version>17.0.5232</Version>
@@ -262,10 +262,10 @@
       <Version>13.0.1</Version>
     </PackageReference>
     <PackageReference Include="stdole">
-      <Version>17.0.0-previews-4-31709-430</Version>
+      <Version>17.0.31902.203</Version>
     </PackageReference>
     <PackageReference Include="StreamJsonRpc">
-      <Version>2.8.28</Version>
+      <Version>2.9.85</Version>
     </PackageReference>
     <PackageReference Include="System.Collections.Immutable">
       <Version>5.0.0</Version>
