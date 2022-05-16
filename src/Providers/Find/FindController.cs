@@ -1,9 +1,12 @@
 ﻿using EnvDTE;
-using Microsoft.VisualStudio.TextManager.Interop;
+
+using EnvDTE80;
+
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
-    internal class FindController : BaseTextController
+    internal class FindController : BaseController
     {
         private readonly Commands _commands;
 
@@ -11,10 +14,9 @@ namespace DialControllerTools
         public override bool CanHandleClick => true;
         public override bool CanHandleRotate => true;
 
-        public FindController(IDialControllerHost host, IVsTextManager textManager)
-            : base(host, textManager)
+        public FindController(RadialControllerMenuItem menuItem, DTE2 dte) : base(menuItem)
         {
-            _commands = host.DTE.Commands;
+            _commands = dte.Commands;
         }
 
         public override bool OnClick()

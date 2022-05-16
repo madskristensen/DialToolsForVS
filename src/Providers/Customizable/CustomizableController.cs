@@ -1,5 +1,9 @@
 ﻿using EnvDTE;
 
+using EnvDTE80;
+
+using Windows.UI.Input;
+
 namespace DialControllerTools
 {
     internal class CustomizableController : BaseController
@@ -7,14 +11,12 @@ namespace DialControllerTools
         private readonly Commands _commands;
 
         public override string Moniker => CustomizableControllerProvider.Moniker;
-
         public override bool CanHandleClick => true;
-
         public override bool CanHandleRotate => true;
 
-        public CustomizableController(IDialControllerHost host)
+        public CustomizableController(RadialControllerMenuItem menuItem, DTE2 dte) : base(menuItem)
         {
-            _commands = host.DTE.Commands;
+            _commands = dte.Commands;
         }
 
         public override bool OnClick()

@@ -1,24 +1,24 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialControllerTools
 {
     [DialControllerProvider(order: 7)]
-    internal class BookmarksControllerProvider : IDialControllerProvider
+    internal class BookmarksControllerProvider : BaseDialControllerProvider
     {
         public static string Moniker = nameof(KnownProviders.Bookmarks);
 
         public BookmarksControllerProvider() { }
 
-        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, IAsyncServiceProvider provider, CancellationToken cancellationToken)
+        protected override async Task<IDialController> TryCreateControllerAsyncOverride(IAsyncServiceProvider provider, CancellationToken cancellationToken)
         {
             string iconFilePath = VsHelpers.GetFileInVsix("Providers\\Bookmarks\\icon.png");
-            await host.AddMenuItemAsync(Moniker, iconFilePath);
-
-            IVsTextManager textManager = await provider.GetServiceAsync<SVsTextManager, IVsTextManager>(cancellationToken);
-            return new BookmarksController(host, textManager);
+            var menuItem = await CreateMenuItemAsync(Moniker, iconFilePath);
+            var dte = await provider.GetDteAsync(cancellationToken);
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            return new BookmarksController(menuItem, dte);
         }
     }
 }

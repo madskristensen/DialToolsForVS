@@ -4,8 +4,11 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+
 using EnvDTE;
+
 using EnvDTE80;
+
 using Microsoft.VisualStudio.Shell;
 
 namespace DialControllerTools
@@ -26,23 +29,21 @@ namespace DialControllerTools
 
         public static bool IsSolutionExplorer(this Window window)
         {
-            return window?.Type == vsWindowType.vsWindowTypeSolutionExplorer;
+            return IsTool(window) && window.Type == vsWindowType.vsWindowTypeSolutionExplorer;
         }
 
         public static bool IsErrorList(this Window window)
         {
-            return window?.ObjectKind == WindowKinds.vsWindowKindErrorList;
+            return IsTool(window) && window.ObjectKind == WindowKinds.vsWindowKindErrorList;
         }
 
         public static bool IsBookmarks(this Window window)
         {
-            return window?.ObjectKind == WindowKinds.vsWindowKindBookmarks;
+            return IsTool(window) && window.ObjectKind == WindowKinds.vsWindowKindBookmarks;
         }
 
-        public static bool IsDocument(this Window window)
-        {
-            return window?.Kind == "Document";
-        }
+        public static bool IsDocument(this Window window) => window?.Kind == "Document";
+        public static bool IsTool(this Window window) => window?.Kind == "Tool";
 
         public static bool ExecuteCommand(this Commands commands, string commandName)
         {

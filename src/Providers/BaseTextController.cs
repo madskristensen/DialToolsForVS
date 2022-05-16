@@ -1,21 +1,26 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿
+using System.ComponentModel.Composition;
+
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Editor;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
+
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
     public abstract class BaseTextController : BaseController
     {
-        private readonly IDialControllerHost host;
         private readonly IVsTextManager textManager;
 
-        internal BaseTextController(IDialControllerHost host, IVsTextManager textManager)
+#pragma warning disable IDE0044 // Add readonly modifier
+        [Import]
+        private IVsEditorAdaptersFactoryService editorAdapter;
+#pragma warning restore IDE0044 // Add readonly modifier
+
+        internal BaseTextController(RadialControllerMenuItem menuItem, IVsTextManager textManager) : base(menuItem)
         {
-            this.host = host;
             this.textManager = textManager;
         }
 
@@ -33,7 +38,6 @@ namespace DialControllerTools
             if (nativeView == null)
                 return null;
 
-            IVsEditorAdaptersFactoryService editorAdapter = host.CompositionService.GetService<IVsEditorAdaptersFactoryService>();
             return editorAdapter.GetWpfTextView(nativeView);
         }
     }

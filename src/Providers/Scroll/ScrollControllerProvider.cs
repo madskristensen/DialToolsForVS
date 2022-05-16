@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
@@ -8,7 +9,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 namespace DialControllerTools
 {
     [DialControllerProvider(order: 1)]
-    internal class ScrollControllerProvider : IDialControllerProvider
+    internal class ScrollControllerProvider : BaseDialControllerProvider
     {
         public static string Moniker = nameof(KnownProviders.Scroll);
 
@@ -17,13 +18,13 @@ namespace DialControllerTools
 
         public ScrollControllerProvider() { }
 
-        public async Task<IDialController> TryCreateControllerAsync(IDialControllerHost host, IAsyncServiceProvider provider, CancellationToken cancellationToken)
+        protected override async Task<IDialController> TryCreateControllerAsyncOverride(IAsyncServiceProvider provider, CancellationToken cancellationToken)
         {
             string iconFilePath = VsHelpers.GetFileInVsix(@"Providers\Scroll\icon.png");
-            await host.AddMenuItemAsync(Moniker, iconFilePath);
-
+            var menuItem = await CreateMenuItemAsync(Moniker, iconFilePath);
+            var dte = await provider.GetDteAsync(cancellationToken);
             IVsTextManager textManager = await provider.GetServiceAsync<SVsTextManager, IVsTextManager>(cancellationToken);
-            return new ScrollController(host, textManager, CompletionBroker);
+            return new ScrollController(menuItem, dte, textManager);
         }
     }
 }

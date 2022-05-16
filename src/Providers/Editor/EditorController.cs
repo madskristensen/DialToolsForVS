@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
+
 using EnvDTE80;
+
 using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Formatting;
 using Microsoft.VisualStudio.TextManager.Interop;
+
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
@@ -15,7 +18,10 @@ namespace DialControllerTools
     {
         private readonly DTE2 _dte;
 
-        private readonly ICompletionBroker _broker;
+#pragma warning disable IDE0044 // Add readonly modifier
+        [Import]
+        private ICompletionBroker _broker;
+#pragma warning restore IDE0044 // Add readonly modifier
         private IWpfTextView _view;
         private delegate string Shift(SnapshotSpan bufferSpan, RotationDirection direction);
         private Dictionary<string, Shift> _dic = new Dictionary<string, Shift>()
@@ -24,11 +30,10 @@ namespace DialControllerTools
             { @"(\b|\-)[0-9\.]+", NumberShifter.Shift }
         };
 
-        public EditorController(IDialControllerHost host, IVsTextManager textManager, ICompletionBroker completionBroker)
-            : base(host, textManager)
+        public EditorController(RadialControllerMenuItem menuItem, DTE2 dte, IVsTextManager textManager)
+            : base(menuItem, textManager)
         {
-            _dte = host.DTE;
-            _broker = completionBroker;
+            _dte = dte;
         }
 
         public override string Moniker => EditorControllerProvider.Moniker;

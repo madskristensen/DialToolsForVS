@@ -1,5 +1,10 @@
 ﻿using EnvDTE;
+
+using EnvDTE80;
+
 using Microsoft.VisualStudio.TextManager.Interop;
+
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
@@ -10,10 +15,10 @@ namespace DialControllerTools
         public override string Moniker => NavigateControllerProvider.Moniker;
         public override bool CanHandleRotate => true;
 
-        public NavigateController(IDialControllerHost host, IVsTextManager textManager)
-            : base(host, textManager)
+        public NavigateController(RadialControllerMenuItem menuItem, DTE2 dte, IVsTextManager textManager)
+            : base(menuItem, textManager)
         {
-            _commands = host.DTE.Commands;
+            _commands = dte.Commands;
         }
 
         public override bool OnRotate(RotationDirection direction)

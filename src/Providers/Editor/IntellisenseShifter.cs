@@ -1,7 +1,9 @@
-﻿using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.Text.Editor;
-using System;
+﻿using System;
 using System.Windows.Forms;
+
+using Microsoft.VisualStudio.Language.Intellisense;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Text.Editor;
 
 namespace DialControllerTools
 {
@@ -38,7 +40,9 @@ namespace DialControllerTools
             }
             catch (Exception ex)
             {
-                Logger.Instance.Log(ex);
+                var outputPane = ThreadHelper.JoinableTaskContext.Factory.Run(DialPackage.GetOutputPaneAsync);
+                outputPane.WriteLine("Intellisense shifter failed");
+                outputPane.WriteLine(ex.ToString());
             }
 
             return false;

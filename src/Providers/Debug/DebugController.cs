@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using EnvDTE;
+
 using EnvDTE80;
 
 namespace DialControllerTools
@@ -11,18 +13,22 @@ namespace DialControllerTools
         private readonly DTE2 _dte;
         private readonly DebuggerEvents _events;
 
-        public DebugController(IDialControllerHost host)
+        public DebugController(RadialControllerMenuItem menuItem, DTE2 dte) : base(menuItem)
         {
-            _dte = host.DTE;
-            _events = _dte.Events.DebuggerEvents;
-            _events.OnEnterBreakMode += delegate { host.RequestActivation(_dte.MainWindow, Moniker); };
-            _events.OnEnterDesignMode += delegate { host.ReleaseActivation(_dte.MainWindow); };
+            _dte = dte;
+            // Switched in provider
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
+            _events = dte.Events.DebuggerEvents;
+            _events.OnEnterBreakMode += delegate { DialPackage.DialControllerHost.RequestActivation(this); };
+            _events.OnEnterDesignMode += delegate { DialPackage.DialControllerHost.ReleaseActivation(); };
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
 
         public override string Moniker => DebugControllerProvider.Moniker;
         public override bool CanHandleClick => true;
         public override bool CanHandleRotate => true;
 
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
         public override bool OnClick()
         {
             dbgDebugMode? debugMode = _dte.Application?.Debugger.CurrentMode;
@@ -102,6 +108,7 @@ namespace DialControllerTools
                 s.MoveToLineAndOffset(breakpoint.FileLine, breakpoint.FileColumn);
             }
         }
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
     }
 
     class FileOrderer : IComparer<Breakpoint>

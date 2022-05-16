@@ -1,11 +1,15 @@
-﻿using Microsoft.VisualStudio.Shell;
-using System.ComponentModel;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+
 using DialControllerTools.Helpers;
+
+using Microsoft.VisualStudio.Shell;
 
 namespace DialControllerTools
 {
+    [ComVisible(true)]
     public class Options : DialogPage
     {
         public event EventHandler OptionsApplied;
@@ -122,6 +126,6 @@ namespace DialControllerTools
             };
         }
 
-        internal Dictionary<string, bool> MenuVisibility { get; private set; }
+        internal IReadOnlyDictionary<string, bool> MenuVisibility { get; private set; }
     }
 }

@@ -1,28 +1,38 @@
-﻿using System.Windows.Forms;
+﻿using System.ComponentModel.Composition;
+using System.Windows.Forms;
+
 using EnvDTE;
+
 using EnvDTE80;
+
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.TextManager.Interop;
+
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
     internal class ScrollController : BaseTextController
     {
         private readonly DTE2 _dte;
-        private readonly ICompletionBroker _broker;
-
-        public ScrollController(IDialControllerHost host, IVsTextManager textManager, ICompletionBroker broker)
-            : base(host, textManager)
-        {
-            _dte = host.DTE;
-            _broker = broker;
-        }
+#pragma warning disable IDE0044 // Add readonly modifier
+        [Import]
+        private ICompletionBroker _broker;
+#pragma warning restore IDE0044 // Add readonly modifier
 
         public override string Moniker => ScrollControllerProvider.Moniker;
         public override bool CanHandleClick => true;
         public override bool CanHandleRotate => true;
+        public override bool IsHapticFeedbackEnabled => false;
 
+        public ScrollController(RadialControllerMenuItem menuItem, DTE2 dte, IVsTextManager textManager)
+            : base(menuItem, textManager)
+        {
+            _dte = dte;
+        }
+
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
         public override bool OnClick()
         {
             if (_dte.ActiveWindow.IsDocument())
@@ -57,6 +67,7 @@ namespace DialControllerTools
 
             return true;
         }
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
 
         public override bool OnRotate(RotationDirection direction)
         {

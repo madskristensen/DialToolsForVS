@@ -1,31 +1,30 @@
 ﻿using EnvDTE;
+
 using EnvDTE80;
-using Microsoft.VisualStudio.TextManager.Interop;
+
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
-    internal class BookmarksController : BaseTextController
+    internal class BookmarksController : BaseController
     {
-        private readonly IDialControllerHost _host;
         private readonly Commands _commands;
         private readonly WindowEvents _events;
 
-        public BookmarksController(IDialControllerHost host, IVsTextManager textManager)
-            : base(host, textManager)
+        public BookmarksController(RadialControllerMenuItem menuItem, DTE2 dte) : base(menuItem)
         {
-            _host = host;
-            _commands = host.DTE.Commands;
-            _events = host.DTE.Events.WindowEvents;
-            _events.WindowActivated += WindowActivated;
+            _commands = dte.Commands;
+            // Switched in provider
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
+            _events = dte.Events.WindowEvents;
+            _events.WindowActivated += OnToolWindowActivated;
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
 
-        private void WindowActivated(Window GotFocus, Window LostFocus)
+        private void OnToolWindowActivated(Window GotFocus, Window LostFocus)
         {
-            if (GotFocus.IsBookmarks())
-            {
-                _host.ReleaseActivation(LostFocus.LinkedWindowFrame);
-                _host.RequestActivation(GotFocus.LinkedWindowFrame, Moniker);
-            }
+            if (GotFocus.IsBookmarks()) DialPackage.DialControllerHost.RequestActivation(this);
+            else if (LostFocus.IsBookmarks()) DialPackage.DialControllerHost.ReleaseActivation();
         }
 
         public override string Moniker => BookmarksControllerProvider.Moniker;
