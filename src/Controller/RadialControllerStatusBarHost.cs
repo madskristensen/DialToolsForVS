@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-using Microsoft.VisualStudio.PlatformUI;
+using Microsoft.VisualStudio.PlatformUI.Shell.Controls;
 
 namespace DialControllerTools
 {
@@ -34,7 +34,7 @@ namespace DialControllerTools
     ///     <MyNamespace:RadialControllerStatusBarItem/>
     ///
     /// </summary>
-    [TemplatePart(Name = "PART_TextBlock", Type = typeof(LiveTextBlock))]
+    [TemplatePart(Name = "PART_TextControl", Type = typeof(TabItemTextControl))]
     [TemplateVisualState(GroupName = "ActivityStates", Name = RadialControllerStatusBarHost.ActiveStateName)]
     [TemplateVisualState(GroupName = "ActivityStates", Name = RadialControllerStatusBarHost.InactiveStateName)]
     public class RadialControllerStatusBarHost : Control
