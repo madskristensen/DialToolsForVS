@@ -22,20 +22,9 @@ namespace DialControllerTools
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string, PackageAutoLoadFlags.BackgroundLoad)]
     internal sealed class DialPackage : AsyncPackage
     {
-        public static Options Options
-        {
-            get;
-            private set;
-        }
-
-        public static CustomOptions CustomOptions
-        {
-            get;
-            private set;
-        }
-
+        public static Options Options { get; private set; }
+        public static CustomOptions CustomOptions { get; private set; }
         public static DialControllerHost DialControllerHost { get; private set; }
-
 
         private async Task<TReturnType> GetServiceAsync<TServiceType, TReturnType>(CancellationToken cancellationToken)
          => (TReturnType)await GetServiceAsync(typeof(TServiceType));
@@ -51,19 +40,15 @@ namespace DialControllerTools
                     Options = (Options)GetDialogPage(typeof(Options));
                     CustomOptions = (CustomOptions)GetDialogPage(typeof(CustomOptions));
                 }
-                var optionsLoadTask = ThreadHelper.JoinableTaskFactory.StartOnIdle(LoadOptions);
 
                 try
                 {
                     var serviceProvider = await GetServiceAsync<SAsyncServiceProvider, IAsyncServiceProvider>(cancellationToken);
-                    var outputPaneTask = GetOutputPaneAsync();
-                    var controllersTask = serviceProvider.GetControllersAsync(cancellationToken);
-                    await Task.WhenAll(outputPaneTask, controllersTask, optionsLoadTask.Task);
-                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+                    var outputPane = await GetOutputPaneAsync();
+                    LoadOptions();
+                    var controllers = await serviceProvider.GetControllersAsync(cancellationToken);
 
-#pragma warning disable VSTHRD103 // Call async methods when in an async method
-                    DialControllerHost = new DialControllerHost(outputPaneTask.Result, controllersTask.Result);
-#pragma warning restore VSTHRD103 // Call async methods when in an async method
+                    DialControllerHost = new DialControllerHost(outputPane, controllers);
                     Options.OptionsApplied += DialControllerHost.OptionsApplied;
                 }
                 catch (Exception ex)
