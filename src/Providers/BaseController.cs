@@ -1,10 +1,5 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Editor;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Text.Editor;
-using Microsoft.VisualStudio.TextManager.Interop;
+﻿
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
@@ -12,9 +7,19 @@ namespace DialControllerTools
     {
         public abstract string Moniker { get; }
 
+        public RadialControllerMenuItem MenuItem { get; }
+
         public virtual bool CanHandleClick => false;
 
         public virtual bool CanHandleRotate => false;
+
+        public virtual bool IsHapticFeedbackEnabled => true;
+
+        public BaseController(RadialControllerMenuItem menuItem)
+        {
+            MenuItem = menuItem;
+            menuItem.Invoked += (sender, args) => OnActivate();
+        }
 
         public virtual void OnActivate()
         { }

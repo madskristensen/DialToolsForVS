@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+
 using Microsoft.VisualStudio.Shell;
 
 namespace DialControllerTools
 {
+    [ComVisible(true)]
     [Guid("6C43E501-226F-4E73-949C-BF8808A94B48")]
     public class CustomOptions : DialogPage
     {

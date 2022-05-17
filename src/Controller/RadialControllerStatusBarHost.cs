@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.VisualStudio.PlatformUI;
+
+using Microsoft.VisualStudio.PlatformUI.Shell.Controls;
 
 namespace DialControllerTools
 {
@@ -45,7 +34,7 @@ namespace DialControllerTools
     ///     <MyNamespace:RadialControllerStatusBarItem/>
     ///
     /// </summary>
-    [TemplatePart(Name = "PART_TextBlock", Type = typeof(LiveTextBlock))]
+    [TemplatePart(Name = "PART_TextControl", Type = typeof(TabItemTextControl))]
     [TemplateVisualState(GroupName = "ActivityStates", Name = RadialControllerStatusBarHost.ActiveStateName)]
     [TemplateVisualState(GroupName = "ActivityStates", Name = RadialControllerStatusBarHost.InactiveStateName)]
     public class RadialControllerStatusBarHost : Control
@@ -69,8 +58,7 @@ namespace DialControllerTools
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (e.NewValue != null)
-                (d as RadialControllerStatusBarHost).IsActive = true;
+            (d as RadialControllerStatusBarHost).IsActive = e.NewValue != null;
         }
 
         public string Text

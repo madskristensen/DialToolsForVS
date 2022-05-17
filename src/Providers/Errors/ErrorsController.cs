@@ -1,56 +1,58 @@
-﻿using Microsoft.VisualStudio.Shell;
-using System.Linq;
+﻿using System.Linq;
+
 using EnvDTE;
+
 using EnvDTE80;
+
+using Microsoft.VisualStudio.Shell;
+
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
-    internal class ErrorsController : IDialController
+    internal class ErrorsController : BaseController
     {
-        private readonly IDialControllerHost _host;
         private readonly DTE2 _dte;
         private readonly IErrorList _errorList;
         private readonly WindowEvents _events;
+        public override string Moniker => ErrorsControllerProvider.Moniker;
 
-        public ErrorsController(IDialControllerHost host)
+        public override bool CanHandleClick => true;
+
+        public override bool CanHandleRotate => _errorList.TableControl.Entries.Any();
+
+
+        public ErrorsController(RadialControllerMenuItem menuItem, DTE2 dte) : base(menuItem)
         {
-            _host = host;
-            _dte = host.DTE;
+            _dte = dte;
+            // Switched in provider
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
             _errorList = _dte.ToolWindows.ErrorList as IErrorList;
             _events = _dte.Events.WindowEvents;
-            _events.WindowActivated += WindowActivated;
+            _events.WindowActivated += OnToolWindowActivated;
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
 
-        private void WindowActivated(Window GotFocus, Window LostFocus)
+        private void OnToolWindowActivated(Window GotFocus, Window LostFocus)
         {
             if (GotFocus.IsErrorList() && _errorList.TableControl.Entries.Any())
-            {
-                _host.ReleaseActivation(LostFocus.LinkedWindowFrame);
-                _host.RequestActivation(GotFocus.LinkedWindowFrame, Moniker);
-            }
+                DialPackage.DialControllerHost.RequestActivation(this);
+            else if (LostFocus.IsErrorList())
+                DialPackage.DialControllerHost.ReleaseActivation();
         }
 
-        public string Moniker => ErrorsControllerProvider.Moniker;
+        // Radial Controller events always occur on the UI thread
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
+        public override void OnActivate() => _dte.ToolWindows.ErrorList.Parent?.Activate();
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
 
-        public bool CanHandleClick => true;
-
-        public bool CanHandleRotate
-        {
-            get { return _errorList.TableControl.Entries.Any(); }
-        }
-
-        public void OnActivate()
-        {
-            _dte.ToolWindows.ErrorList.Parent?.Activate();
-        }
-
-        public bool OnClick()
+        public override bool OnClick()
         {
             OnActivate();
             return true;
         }
 
-        public bool OnRotate(RotationDirection direction)
+        public override bool OnRotate(RotationDirection direction)
         {
             var commands = _dte.Commands;
             switch (direction)

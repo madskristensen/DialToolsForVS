@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
+
 using EnvDTE;
+
 using EnvDTE80;
+
+using Windows.UI.Input;
 
 namespace DialControllerTools
 {
@@ -11,18 +16,22 @@ namespace DialControllerTools
         private readonly DTE2 _dte;
         private readonly DebuggerEvents _events;
 
-        public DebugController(IDialControllerHost host)
+        public DebugController(RadialControllerMenuItem menuItem, DTE2 dte) : base(menuItem)
         {
-            _dte = host.DTE;
-            _events = _dte.Events.DebuggerEvents;
-            _events.OnEnterBreakMode += delegate { host.RequestActivation(_dte.MainWindow, Moniker); };
-            _events.OnEnterDesignMode += delegate { host.ReleaseActivation(_dte.MainWindow); };
+            _dte = dte;
+            // Switched in provider
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
+            _events = dte.Events.DebuggerEvents;
+            _events.OnEnterBreakMode += delegate { DialPackage.DialControllerHost.RequestActivation(this); };
+            _events.OnEnterDesignMode += delegate { DialPackage.DialControllerHost.ReleaseActivation(); };
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
 
         public override string Moniker => DebugControllerProvider.Moniker;
         public override bool CanHandleClick => true;
         public override bool CanHandleRotate => true;
 
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
         public override bool OnClick()
         {
             dbgDebugMode? debugMode = _dte.Application?.Debugger.CurrentMode;
@@ -30,13 +39,55 @@ namespace DialControllerTools
             if (!debugMode.HasValue)
                 return false;
 
+            bool isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            bool isControlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            bool isAltPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
             if (debugMode == dbgDebugMode.dbgBreakMode)
             {
-                _dte.Application.Debugger.StepInto();
+                switch ((Control: isControlPressed, Shift: isShiftPressed))
+                {
+                    // Alt
+                    // to have it the same for both modes
+                    case (Control: false, Shift: false) when isAltPressed: _dte.Debugger.RunToCursor(); break;
+                    // Ctrl + Shift
+                    // like Ctrl + Shift  + F5
+                    case (Control: true, Shift: true): _dte.Application.ExecuteCommand("Debug.Restart"); break;
+                    // Shift
+                    // like Shift + F5
+                    case (Control: false, Shift: true): _dte.Debugger.Stop(); break;
+                    default: _dte.Debugger.Go(); break;
+                }
             }
             else if (debugMode == dbgDebugMode.dbgDesignMode)
             {
-                _dte.Application.ExecuteCommand("Debug.Start"); //.Debugger.Go() does not seem to synchronize the VS Debug toolbar
+                switch ((Control: isControlPressed, Shift: isShiftPressed))
+                {
+                    // Alt
+                    // to have it the same for both modes
+                    case (Control: false, Shift: false) when isAltPressed:
+                        _dte.Application.ExecuteCommand("Debug.RunToCursor");
+                        break;
+                    // Ctrl
+                    // like Ctrl + F5
+                    case (Control: true, Shift: false):
+                        _dte.Application.ExecuteCommand("Debug.StartWithoutDebugging");
+                        break;
+                    // Shift
+                    // like F10
+                    case (Control: false, Shift: true):
+                        _dte.Application.ExecuteCommand("Debug.StepOver");
+                        break;
+                    // Ctrl + Shift
+                    // like F11
+                    case (Control: true, Shift: true):
+                        _dte.Application.ExecuteCommand("Debug.StepInto");
+                        break;
+                    // like F5
+                    default:
+                        //.Debugger.Go() does not seem to synchronize the VS Debug toolbar
+                        _dte.Application.ExecuteCommand("Debug.Start");
+                        break;
+                }
             }
 
             return true;
@@ -46,11 +97,34 @@ namespace DialControllerTools
         {
             dbgDebugMode? debugMode = _dte.Application?.Debugger.CurrentMode;
 
+            // TODO: Find how to determine Historical Debugger enabled
             if (debugMode == dbgDebugMode.dbgBreakMode)
             {
+                bool isShiftPressed = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+                bool isControlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+                bool isAltPressed = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+
                 if (direction == RotationDirection.Right)
                 {
-                    _dte.Application.Debugger.StepOver();
+                    switch ((Control: isControlPressed, Alt: isAltPressed, Shift: isShiftPressed))
+                    {
+                        // like F10
+                        case (Control: false, Alt: false, Shift: false): _dte.Debugger.StepOver(); break;
+                        case (Control: false, Alt: true, Shift: false):
+                            // TODO: Find the right command
+                            _dte.Application.ExecuteCommand("Debug.StepOverNoBreakpoints"); break;
+                        // Ctrl
+                        // like F11
+                        case (Control: true, Alt: false, Shift: false): _dte.Debugger.StepInto(); break;
+                        // Shift
+                        // like Shift + F11
+                        case (Control: _, Alt: false, Shift: true): _dte.Debugger.StepOut(); break;
+                        case (Control: _, Alt: true, Shift: true):
+                            // TODO: Find the right command
+                            _dte.Application.ExecuteCommand("Debug.StepOutNoBreakpoints"); break;
+                        // any other
+                        default: _dte.Debugger.StepOver(); break;
+                    }
                 }
                 else
                 {
@@ -102,6 +176,7 @@ namespace DialControllerTools
                 s.MoveToLineAndOffset(breakpoint.FileLine, breakpoint.FileColumn);
             }
         }
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
     }
 
     class FileOrderer : IComparer<Breakpoint>

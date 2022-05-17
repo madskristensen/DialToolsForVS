@@ -2,9 +2,13 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Community.VisualStudio.Toolkit;
+
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+
 using Tasks = System.Threading.Tasks;
 
 namespace DialControllerTools
@@ -18,45 +22,38 @@ namespace DialControllerTools
     [ProvideAutoLoad(VSConstants.UICONTEXT.ShellInitialized_string, PackageAutoLoadFlags.BackgroundLoad)]
     internal sealed class DialPackage : AsyncPackage
     {
-        public static Options Options
-        {
-            get;
-            private set;
-        }
-
-        public static CustomOptions CustomOptions
-        {
-            get;
-            private set;
-        }
+        public static Options Options { get; private set; }
+        public static CustomOptions CustomOptions { get; private set; }
+        public static DialControllerHost DialControllerHost { get; private set; }
 
         private async Task<TReturnType> GetServiceAsync<TServiceType, TReturnType>(CancellationToken cancellationToken)
          => (TReturnType)await GetServiceAsync(typeof(TServiceType));
 
+        internal static Task<OutputWindowPane> GetOutputPaneAsync() => OutputWindowPane.CreateAsync(Vsix.Name);
+
         protected override async Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            async Tasks.Task InitializeDialControllerHostAsync()
+            async Task InitializeDialControllerHostAsync()
             {
-#pragma warning disable U2U1003 // Avoid declaring methods used in delegate constructors static
                 void LoadOptions()
                 {
                     Options = (Options)GetDialogPage(typeof(Options));
                     CustomOptions = (CustomOptions)GetDialogPage(typeof(CustomOptions));
                 }
-#pragma warning restore U2U1003 // Avoid declaring methods used in delegate constructors static
-                var optionsLoadTask = ThreadHelper.JoinableTaskFactory.StartOnIdle(LoadOptions);
 
-                Logger.Initialize(await GetServiceAsync<SVsOutputWindow, IVsOutputWindow>(cancellationToken));
                 try
                 {
-                    var serviceProvider = await GetServiceAsync<SAsyncServiceProvider, Microsoft.VisualStudio.Shell.IAsyncServiceProvider>(cancellationToken);
+                    var serviceProvider = await GetServiceAsync<SAsyncServiceProvider, IAsyncServiceProvider>(cancellationToken);
+                    var outputPane = await GetOutputPaneAsync();
+                    LoadOptions();
+                    var controllers = await serviceProvider.GetControllersAsync(cancellationToken);
 
-                    await DialControllerHost.InitializeAsync(serviceProvider, optionsLoadTask, cancellationToken);
-                    Options.OptionsApplied += DialControllerHost.Instance.OptionsApplied;
+                    DialControllerHost = new DialControllerHost(outputPane, controllers);
+                    Options.OptionsApplied += DialControllerHost.OptionsApplied;
                 }
                 catch (Exception ex)
                 {
-                    Logger.Instance.Log(ex);
+                    await ex.LogAsync("DialControllerHost.InitializeAsync");
                 }
             }
 
