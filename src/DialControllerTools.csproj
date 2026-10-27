@@ -27,7 +27,7 @@
     <AssemblyName>DialControllerTools</AssemblyName>
     <LangVersion>latest</LangVersion>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetPlatformVersion>10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.28000.0</TargetPlatformVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
@@ -157,7 +157,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="Windows">
-      <HintPath>$(MSBuildProgramFiles32)\Windows Kits\10\UnionMetadata\10.0.22000.0\Windows.WinMD</HintPath>
+      <HintPath>$(MSBuildProgramFiles32)\Windows Kits\10\UnionMetadata\$(TargetPlatformVersion)\Windows.WinMD</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
