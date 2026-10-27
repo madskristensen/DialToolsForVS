@@ -1,0 +1,113 @@
+# yaml-language-server: $schema=https://www.schemastore.org/github-workflow.json
+name: "Build"
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish the build to the Open VSIX Gallery
+        type: boolean
+        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    # Visual Studio 2022, the image that the AppVeyor build used. The project references private assemblies of the
+    # Visual Studio that builds it, so it is built with the oldest Visual Studio that the extension supports: a build
+    # with Visual Studio 2026 references version 18.0.0.0 of them, which Visual Studio 2022 cannot provide.
+    runs-on: windows-2022
+    timeout-minutes: 30
+    env:
+      Configuration: Release
+      Solution: DialControllerTools.sln
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v3
+
+      # What the AppVeyor build did with Vsix-IncrementVsixVersion and Vsix-TokenReplacement:
+      # Major.Minor.<run number> goes into the manifest and into Vsix.Version of source.extension.cs.
+      - name: Stamp the VSIX version
+        shell: pwsh
+        run: |
+          $manifestPath = 'src\source.extension.vsixmanifest'
+          $constantsPath = 'src\source.extension.cs'
+          $utf8 = [System.Text.UTF8Encoding]::new($false)
+
+          $manifest = [System.IO.File]::ReadAllText($manifestPath)
+          $identityVersion = [regex]::Match($manifest, '(?<=<Identity\b[^>]*\bVersion=")[^"]+')
+          if (-not $identityVersion.Success) { throw "No Identity Version found in $manifestPath" }
+          $current = [version]$identityVersion.Value
+          $version = '{0}.{1}.{2}' -f $current.Major, $current.Minor, $env:GITHUB_RUN_NUMBER
+          $manifest = $manifest.Remove($identityVersion.Index, $identityVersion.Length).Insert($identityVersion.Index, $version)
+          [System.IO.File]::WriteAllText($manifestPath, $manifest, $utf8)
+
+          $constants = [System.IO.File]::ReadAllText($constantsPath)
+          $token = '(?<=\bVersion = ")[0-9.]+(?=")'
+          if ([regex]::IsMatch($constants, $token)) {
+              [System.IO.File]::WriteAllText($constantsPath, [regex]::Replace($constants, $token, $version), $utf8)
+          } else {
+              Write-Host "::warning::No Version constant found in $constantsPath"
+          }
+
+          "VSIX version: $($identityVersion.Value) -> $version"
+
+      # The hosted runner has its own Windows SDK versions. The project takes the path of Windows.WinMD
+      # from the TargetPlatformVersion property, so the newest SDK metadata of the runner is used.
+      - name: Select the Windows SDK
+        shell: pwsh
+        run: |
+          $metadata = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\10\UnionMetadata'
+          $sdk = Get-ChildItem $metadata -Directory |
+              Where-Object { $_.Name -match '^10\.0\.\d+\.\d+$' } |
+              Sort-Object { [version]$_.Name } |
+              Select-Object -Last 1
+          if (-not $sdk) { throw "No Windows SDK metadata found in $metadata" }
+          "WindowsSdkVersion=$($sdk.Name)" >> $env:GITHUB_ENV
+          "Windows SDK: $($sdk.Name)"
+
+      - name: Restore NuGet packages
+        run: msbuild ${{ env.Solution }} /v:m /t:Restore /p:Configuration=${{ env.Configuration }} /p:TargetPlatformVersion=${{ env.WindowsSdkVersion }}
+
+      - name: Build
+        run: msbuild ${{ env.Solution }} /v:m /m /p:Configuration=${{ env.Configuration }} /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /p:TargetPlatformVersion=${{ env.WindowsSdkVersion }}
+
+      - name: Upload the VSIX
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ github.event.repository.name }}.vsix
+          path: src\bin\${{ env.Configuration }}\DialControllerTools.vsix
+          if-no-files-found: error
+
+  publish:
+    name: Publish to the Open VSIX Gallery
+    # Opt-in. The AppVeyor build uploaded every build that was not a pull request; here a public upload
+    # happens only when the workflow is started by hand with "publish" ticked.
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish }}
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download the VSIX
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ github.event.repository.name }}.vsix
+
+      - name: Publish to the Open VSIX Gallery
+        uses: madskristensen/publish-vsixgallery@v1
+        with:
+          vsix-file: DialControllerTools.vsix
