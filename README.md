@@ -1,6 +1,6 @@
 # Surface Dial Tools for Visual Studio
 
-[![Build status](https://ci.appveyor.com/api/projects/status/nk7vmh0assdw98da?svg=true)](https://ci.appveyor.com/project/madskristensen/dialtoolsforvs)
+[![Build](https://github.com/madskristensen/DialToolsForVS/actions/workflows/build.yml/badge.svg)](https://github.com/madskristensen/DialToolsForVS/actions/workflows/build.yml)
 
 Download this extension from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.SurfaceDialToolsforVisualStudio)
 or get the [CI build](http://vsixgallery.com/extension/d4ce1d82-9bf6-4136-bd56-43cde615e0db/).
