@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".mcp.json" />
+    <File Path="CHANGELOG.md" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Directory.Packages.props" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="src/DialControllerTools.csproj" Id="8bb1c8ef-0c40-40a0-a2df-d07010432122">
+    <Deploy Solution="Debug|Any CPU" />
+  </Project>
+</Solution>
