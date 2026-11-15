@@ -60,32 +60,36 @@ namespace DialControllerTools
             }
             else if (debugMode == dbgDebugMode.dbgDesignMode)
             {
+                // The commands go through the helper, which skips a command that is not available: without a solution
+                // or another start target there is nothing to start, and DTE.ExecuteCommand would throw on every click.
+                Commands commands = _dte.Commands;
+
                 switch ((Control: isControlPressed, Shift: isShiftPressed))
                 {
                     // Alt
                     // to have it the same for both modes
                     case (Control: false, Shift: false) when isAltPressed:
-                        _dte.Application.ExecuteCommand("Debug.RunToCursor");
+                        commands.ExecuteCommand("Debug.RunToCursor");
                         break;
                     // Ctrl
                     // like Ctrl + F5
                     case (Control: true, Shift: false):
-                        _dte.Application.ExecuteCommand("Debug.StartWithoutDebugging");
+                        commands.ExecuteCommand("Debug.StartWithoutDebugging");
                         break;
                     // Shift
                     // like F10
                     case (Control: false, Shift: true):
-                        _dte.Application.ExecuteCommand("Debug.StepOver");
+                        commands.ExecuteCommand("Debug.StepOver");
                         break;
                     // Ctrl + Shift
                     // like F11
                     case (Control: true, Shift: true):
-                        _dte.Application.ExecuteCommand("Debug.StepInto");
+                        commands.ExecuteCommand("Debug.StepInto");
                         break;
                     // like F5
                     default:
                         //.Debugger.Go() does not seem to synchronize the VS Debug toolbar
-                        _dte.Application.ExecuteCommand("Debug.Start");
+                        commands.ExecuteCommand("Debug.Start");
                         break;
                 }
             }
@@ -139,7 +143,7 @@ namespace DialControllerTools
                     {
                         return bs.FirstOrDefault(b =>
                             string.Equals(b.File, d.FullName, StringComparison.InvariantCultureIgnoreCase)
-                            && b.FileLine > s.CurrentLine
+                            && b.FileLine > (s?.CurrentLine ?? 0)
                             || string.Compare(b.File, d.FullName, true) > 0) ?? bs.FirstOrDefault();
                     });
                 }
@@ -149,7 +153,7 @@ namespace DialControllerTools
                     {
                         return bs.LastOrDefault(b =>
                             string.Equals(b.File, d.FullName, StringComparison.InvariantCultureIgnoreCase)
-                            && b.FileLine < s.CurrentLine
+                            && b.FileLine < (s?.CurrentLine ?? 0)
                             || string.Compare(b.File, d.FullName, true) < 0) ?? bs.LastOrDefault();
                     });
                 }
@@ -160,11 +164,18 @@ namespace DialControllerTools
 
         private void MoveToBreakpoint(Func<TextSelection, IEnumerable<Breakpoint>, Document, Breakpoint> findBreakpoint)
         {
-            var selection = ((TextSelection)_dte.ActiveDocument.Selection);
+            // Nothing is open, so there is no document to start from.
+            Document document = _dte.ActiveDocument;
+            if (document is null)
+                return;
+
+            // The selection is null when the document is not text, for example a preview or a designer: findBreakpoint then
+            // starts from the top of the document instead of from a caret.
+            var selection = document.Selection as TextSelection;
 
             IOrderedEnumerable<Breakpoint> breakpoints = _dte.Debugger.Breakpoints.OfType<Breakpoint>().OrderBy(b => b, new FileOrderer());
 
-            Breakpoint breakpoint = findBreakpoint(selection, breakpoints, _dte.ActiveDocument);
+            Breakpoint breakpoint = findBreakpoint(selection, breakpoints, document);
 
             if (breakpoint != null)
             {
