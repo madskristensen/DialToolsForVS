@@ -13,7 +13,7 @@
   & $msbuild DialControllerTools.slnx -restore -p:Configuration=Debug -p:DeployExtension=false -v:m
   ```
 
-* Test: there is no test project. Run the extension in the Visual Studio Experimental instance (F5 deploys it and starts that instance; the solution marks the project with `<Deploy>`, and the SDK-style extension support that this needs is in Visual Studio 2026 18.5 and later) with a Surface Dial paired, and open a solution first: the host ignores the Dial while no solution is open
+* Test: there is no test project. Run the extension in the Visual Studio Experimental instance (F5 deploys it and starts that instance; the solution marks the project with `<Deploy>`, and the SDK-style extension support that this needs is in Visual Studio 2026 18.5 and later) with a Surface Dial paired; a solution does not have to be open
 * CI: GitHub Actions (#file:'.github/workflows/build.yml') builds the solution in `Release` on `windows-2022` (Visual Studio 2022, the oldest Visual Studio that the extension supports; see "Private Visual Studio Assemblies") and uploads the VSIX as an artifact. A step stamps `Major.Minor.<run number>` into the manifest and into `Vsix.Version` of `source.extension.cs`, so change versions by hand only for a deliberate release bump. The hosted runner has its own Windows SDK versions, so a step passes the newest installed one as `TargetPlatformVersion`; that only helps while the `Windows.WinMD` reference in the project file is built from that property. Publishing to the Open VSIX Gallery is a manual run of the workflow with "publish" ticked
 
 ## Solution Structure
@@ -65,7 +65,8 @@
 * Floating windows: `DialControllerHost` subscribes to `FloatingWindowManager.FloatingWindowCreated`, and it creates a `RadialController` for each `MainWindow` or `FloatingWindow` that exists at start and for each one that appears later; the controller of a window is dropped when the window unloads. These types come from private Visual Studio assemblies (see the next section).
 * Every Dial menu item is a provider: a MEF export of `IDialControllerProvider` marked with `[DialControllerProvider(order)]`. `GetControllersAsync` creates them all and sorts them by `order`. A provider builds the menu item (the moniker is its text, the `icon.png` of its folder is its icon) and the controller that handles `OnClick` and `OnRotate`. The extension's own assembly is declared as a `MefComponent` asset in the manifest.
 * A controller is created with `new` by its provider; `BaseDialControllerProvider` then satisfies its `[Import]` fields, so they are `null` in the constructor. A provider that throws or returns `null` is dropped: the error goes to the Dial output pane and the other providers still load.
-* The host ignores the Dial while no solution is open. It routes a click or a rotation to the controller whose `Moniker` is the selected menu item, but only when that controller's `CanHandleClick` or `CanHandleRotate` is `true` (both are `false` in `BaseController`). It catches the exceptions of `OnClick` and `OnRotate` and writes them to the output pane; `CanHandleClick`, `CanHandleRotate` and `OnActivate` are not guarded.
+* The host routes a click or a rotation, whether or not a solution is open, to the controller whose `Moniker` is the selected menu item, but only when that controller's `CanHandleClick` or `CanHandleRotate` is `true` (both are `false` in `BaseController`). It catches the exceptions of `OnClick` and `OnRotate` per controller and writes them to the output pane; an exception of `CanHandleClick`, `CanHandleRotate` or of the lookup of the controllers is caught around the whole event, so it stops that event and is logged. `OnActivate` is not guarded.
+* No controller may assume a solution, a document or a text editor: Visual Studio can show a single file, only the Markdown preview, or nothing at all. `GetCurrentTextView()` of `BaseTextController` returns `null` while no text editor is open, and a command that has nothing to work on is not available, which `VsHelpers.ExecuteCommand` skips and `DTE.ExecuteCommand` answers with an exception.
 * The status bar indicator is inserted into the `StatusBarPanel` element that is found in the visual tree of the main window – an implementation detail of Visual Studio that can change between releases.
 
 ### Private Visual Studio Assemblies
@@ -105,7 +106,7 @@ Copy a small provider such as `Providers/Zoom/` and change all of these; a miss 
 
 ## Libraries in Use
 
-* [`Community.VisualStudio.Toolkit.17`](https://github.com/VsixCommunity/Community.VisualStudio.Toolkit) – the `VS.*` helpers, `OutputWindowPane`, `LogAsync`
+* [`Community.VisualStudio.Toolkit.17`](https://github.com/VsixCommunity/Community.VisualStudio.Toolkit) – `OutputWindowPane` and `LogAsync`; no source file uses the `VS.*` helpers
 * [Visual Studio SDK](https://learn.microsoft.com/visualstudio/extensibility/) packages (`Shell`, `Editor`, `Language.Intellisense`, `ComponentModelHost`, interop assemblies, `EnvDTE*`) – the extensibility APIs
 * `Microsoft.VSSDK.BuildTools` – builds the VSIX (`.vsct`, `.pkgdef`, packaging)
 * `Windows.UI.Input.RadialController` – the Surface Dial API, referenced from the Windows SDK metadata (`Windows.WinMD`) and not shipped in the VSIX
