@@ -2,6 +2,7 @@
 
 - [ ] Add telemtry
 - [x] Accurate zoom reset
+- [x] Zoom the Markdown preview and other web content (WebView2) of the active window
 
 Features that have a checkmark are complete and available for
 download in the

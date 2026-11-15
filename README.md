@@ -45,7 +45,7 @@ Scroll documents and tool windows.
 - **Click**: In a document it opens the context menu, otherwise it does the same as then ENTER key. In Solution Explorer it expands/collapses folders.
 
 ### Zooming
-Zooming is enhanced so that it only zoom the text editors and not other artifacts in Visual Studio
+Zooming is enhanced so that it only zoom the text editors and the Markdown preview, and not other artifacts in Visual Studio. The preview that is shown next to the text is zoomed while it has the focus, and the same goes for any other web content (WebView2) in the active window.
 
 - **Rotate right**: Zoom in
 - **Rotate left**: Zoom out
