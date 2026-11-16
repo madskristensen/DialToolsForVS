@@ -35,7 +35,9 @@ namespace DialControllerTools
             return ErrorHandler.Succeeded(textManager.GetActiveView(1, null, out IVsTextView activeView)) ? activeView : null;
         }
 
-        ///<summary>Gets the TextView for the active document.</summary>
+        ///<summary>
+        /// Gets the TextView for the active document.
+        /// </summary>
         public IWpfTextView GetCurrentTextView() => GetTextView(GetCurrentNativeTextView());
 
         public IWpfTextView GetTextView(IVsTextView nativeView)
