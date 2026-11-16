@@ -41,7 +41,9 @@ namespace DialControllerTools
             return editorAdapter.GetWpfTextView(nativeView);
         }
 
-        ///<summary>Gets the host of the TextView of a native view, which holds the margins of the view next to the text.</summary>
+        ///<summary>
+        /// Gets the host of the TextView of a native view, which holds the margins of the view next to the text.
+        /// </summary>
         public IWpfTextViewHost GetTextViewHost(IVsTextView nativeView)
         {
             if (nativeView is null)

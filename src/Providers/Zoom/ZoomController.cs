@@ -79,10 +79,12 @@ namespace DialControllerTools
             }
         }
 
-        /// <summary>Finds the web view that the active window of Visual Studio shows, such as the standalone Markdown preview.
+        /// <summary>
+        /// Finds the web view that the active window of Visual Studio shows, such as the standalone Markdown preview.
         /// <para>The commands of the text editor do nothing in such a window, so the web view is zoomed itself.</para>
         /// <para>The active window frame is asked, not the keyboard focus of WPF: the browser of a web view is a window of its own,
-        /// so the keyboard focus can be in it while WPF reports another element or none.</para></summary>
+        /// so the keyboard focus can be in it while WPF reports another element or none.</para>
+        /// </summary>
         /// <returns>The web view, or <see langword="null"/> when the active window shows none, and the text editor is zoomed.</returns>
         private DependencyObject FindWebView()
         {
@@ -106,8 +108,10 @@ namespace DialControllerTools
             return docView is WindowPane { Content: Visual content } ? WebViewZoom.Find(content) : null;
         }
 
-        /// <summary>Finds the web view of a preview that is shown next to the text of a code window, as the Markdown preview can be.
-        /// <para>While the text has the focus the user means the text, so there is no web view then.</para></summary>
+        /// <summary>
+        /// Finds the web view of a preview that is shown next to the text of a code window, as the Markdown preview can be.
+        /// <para>While the text has the focus the user means the text, so there is no web view then.</para>
+        /// </summary>
         private DependencyObject FindWebViewNextToEditor(IVsCodeWindow codeWindow)
         {
             ThreadHelper.ThrowIfNotOnUIThread();

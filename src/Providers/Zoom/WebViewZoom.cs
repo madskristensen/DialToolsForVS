@@ -10,16 +10,19 @@ using Microsoft.VisualStudio.Text.Editor;
 namespace DialControllerTools;
 
 /// <summary>
-/// Finds the WebView2 control that a window of Visual Studio shows and changes its zoom factor. The Zoom item of the Dial uses it
-/// when the active window holds web content, such as the standalone Markdown preview.
+/// Finds the <see cref="T:Microsoft.Web.WebView2.Wpf.WebView2"/> control that a window of Visual Studio shows and changes its zoom
+/// factor. The Zoom item of the Dial uses it when the active window holds web content, such as the standalone Markdown preview.
 /// <para>The WebView2 SDK is not referenced on purpose. Visual Studio runs its own copy of <c>Microsoft.Web.WebView2.Wpf</c>, which
 /// can be missing or older in the oldest Visual Studio that the extension supports, and the identity of its types depends on the
 /// binding redirects of the host. So the controls are recognized by the full name of their type, and the zoom is read and written
-/// through <c>ZoomFactorProperty</c>, the public dependency property that both WPF controls of the SDK declare. When a future SDK
-/// renames a type or the property, the web view is not found any more and the Zoom item falls back to the zoom commands of the
-/// editor.</para>
-/// <para>The zoom keys of the browser are no option: the host can turn them off (<c>AreBrowserAcceleratorKeysEnabled</c>), and Visual
-/// Studio binds the same keys to its own commands before the browser sees them.</para>
+/// through <see cref="F:Microsoft.Web.WebView2.Wpf.WebView2.ZoomFactorProperty"/>, the public dependency property that both WPF
+/// controls of the SDK declare. When a future SDK renames a type or the property, the web view is not found any more and the Zoom
+/// item falls back to the zoom commands of the editor.</para>
+/// <para>The zoom keys of the browser are no option: the host can turn them off
+/// (<see cref="P:Microsoft.Web.WebView2.Core.CoreWebView2Settings.AreBrowserAcceleratorKeysEnabled"/>), and Visual Studio binds the
+/// same keys to its own commands before the browser sees them.</para>
+/// <para>The references to the SDK are documentation IDs (<c>T:</c>, <c>F:</c>, <c>P:</c>): the compiler cannot resolve a type that
+/// the project does not reference and passes such an ID through without a check, so compare an ID with the SDK when you change one.</para>
 /// </summary>
 internal static class WebViewZoom
 {
@@ -36,7 +39,9 @@ internal static class WebViewZoom
     // visual tree. Only the UI thread uses it.
     private static readonly Dictionary<Type, DependencyProperty> ZoomFactorProperties = new Dictionary<Type, DependencyProperty>();
 
-    /// <summary>Finds the web view that <paramref name="root"/> is or contains.</summary>
+    /// <summary>
+    /// Finds the web view that <paramref name="root"/> is or contains.
+    /// </summary>
     /// <param name="root">The content of a window, or <see langword="null"/>.</param>
     /// <returns>The first web view that is shown, or <see langword="null"/> when there is none.</returns>
     internal static DependencyObject Find(DependencyObject root)
@@ -48,7 +53,9 @@ internal static class WebViewZoom
         return IsShownWebView(root) ? root : root.FindDescendant(IsShownWebView);
     }
 
-    /// <summary>Zooms a web view in or out by one step, the same step as the zoom commands of the text editor.</summary>
+    /// <summary>
+    /// Zooms a web view in or out by one step, the same step as the zoom commands of the text editor.
+    /// </summary>
     /// <param name="webView">A web view that <see cref="Find"/> returned.</param>
     /// <param name="direction">The direction of the rotation of the Dial.</param>
     internal static void Zoom(DependencyObject webView, RotationDirection direction)
@@ -66,7 +73,9 @@ internal static class WebViewZoom
         webView.SetCurrentValue(property, Math.Min(MaxZoomFactor, Math.Max(MinZoomFactor, zoomFactor)));
     }
 
-    /// <summary>Sets the zoom of a web view back to 100%.</summary>
+    /// <summary>
+    /// Sets the zoom of a web view back to 100%.
+    /// </summary>
     /// <param name="webView">A web view that <see cref="Find"/> returned.</param>
     internal static void Reset(DependencyObject webView)
     {
