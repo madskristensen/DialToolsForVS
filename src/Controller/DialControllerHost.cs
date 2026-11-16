@@ -272,57 +272,75 @@ namespace DialControllerTools
 
         //private void OnControlLost(RadialController sender, object args) => _status.IsActive = false;
 
-        private async void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)
+        // The two handlers below route every event, whether or not a solution is open: the controllers work on windows, editors and
+        // commands, and a command that is not available, for example because it needs a solution, is skipped by
+        // VsHelpers.ExecuteCommand or throws from DTE.ExecuteCommand into the catch of the handler.
+        private void OnButtonClicked(RadialController sender, RadialControllerButtonClickedEventArgs args)
         {
-            if (!await VS.Solutions.IsOpenAsync()) //assume most controllers require a solution
-                return;
-
             wasUsed = true;
-            IEnumerable<IDialController> controllers = GetApplicableControllers(sender).Where(c => c.CanHandleClick);
-            outputPane.WriteLine("Click: " + string.Join(", ", controllers.Select(c => c.Moniker)));
 
-            foreach (IDialController controller in controllers)
+            // The Windows Runtime raises the event, so no exception may escape from the handler. The outer catch also covers the
+            // lookup of the controllers and CanHandleClick, which the catch around each controller does not.
+            try
             {
-                try
-                {
-                    bool handled = controller.OnClick();
+                IEnumerable<IDialController> controllers = GetApplicableControllers(sender).Where(c => c.CanHandleClick);
+                outputPane.WriteLine("Click: " + string.Join(", ", controllers.Select(c => c.Moniker)));
 
-                    if (handled)
-                        break;
-                }
-                catch (Exception ex)
+                foreach (IDialController controller in controllers)
                 {
-                    outputPane.WriteLine($"Controller {controller.Moniker} failed:");
-                    outputPane.WriteLine(ex.ToString());
+                    try
+                    {
+                        bool handled = controller.OnClick();
+
+                        if (handled)
+                            break;
+                    }
+                    catch (Exception ex)
+                    {
+                        outputPane.WriteLine($"Controller {controller.Moniker} failed:");
+                        outputPane.WriteLine(ex.ToString());
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                outputPane.WriteLine("Click failed:");
+                outputPane.WriteLine(ex.ToString());
             }
         }
 
-        private async void OnRotationChanged(RadialController sender, RadialControllerRotationChangedEventArgs args)
+        private void OnRotationChanged(RadialController sender, RadialControllerRotationChangedEventArgs args)
         {
-            if (!await VS.Solutions.IsOpenAsync()) //assume most controllers require a solution
-                return;
-
             wasUsed = true;
-            IEnumerable<IDialController> controllers = GetApplicableControllers(sender).Where(c => c.CanHandleRotate);
-            RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
 
-            outputPane.WriteLine("Rotate: " + string.Join(", ", controllers.Select(c => c.Moniker)));
-
-            foreach (IDialController controller in controllers)
+            // See OnButtonClicked: the same applies to CanHandleRotate.
+            try
             {
-                try
-                {
-                    bool handled = controller.OnRotate(direction);
+                IEnumerable<IDialController> controllers = GetApplicableControllers(sender).Where(c => c.CanHandleRotate);
+                RotationDirection direction = args.RotationDeltaInDegrees > 0 ? RotationDirection.Right : RotationDirection.Left;
 
-                    if (handled)
-                        break;
-                }
-                catch (Exception ex)
+                outputPane.WriteLine("Rotate: " + string.Join(", ", controllers.Select(c => c.Moniker)));
+
+                foreach (IDialController controller in controllers)
                 {
-                    outputPane.WriteLine($"Controller {controller.Moniker} failed:");
-                    outputPane.WriteLine(ex.ToString());
+                    try
+                    {
+                        bool handled = controller.OnRotate(direction);
+
+                        if (handled)
+                            break;
+                    }
+                    catch (Exception ex)
+                    {
+                        outputPane.WriteLine($"Controller {controller.Moniker} failed:");
+                        outputPane.WriteLine(ex.ToString());
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                outputPane.WriteLine("Rotate failed:");
+                outputPane.WriteLine(ex.ToString());
             }
         }
 
