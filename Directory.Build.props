@@ -1,0 +1,12 @@
+<!--
+This file sets properties for all projects in the directory.
+See https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory
+-->
+<Project>
+
+  <!-- The latest C# for every C# project; it needs the .NET SDK 10 or later -->
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'">
+    <LangVersion>14</LangVersion>
+  </PropertyGroup>
+
+</Project>

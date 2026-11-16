@@ -1,6 +1,6 @@
 # Surface Dial Tools for Visual Studio
 
-[![Build status](https://ci.appveyor.com/api/projects/status/nk7vmh0assdw98da?svg=true)](https://ci.appveyor.com/project/madskristensen/dialtoolsforvs)
+[![Build](https://github.com/madskristensen/DialToolsForVS/actions/workflows/build.yml/badge.svg)](https://github.com/madskristensen/DialToolsForVS/actions/workflows/build.yml)
 
 Download this extension from the [Marketplace](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.SurfaceDialToolsforVisualStudio)
 or get the [CI build](http://vsixgallery.com/extension/d4ce1d82-9bf6-4136-bd56-43cde615e0db/).
@@ -45,7 +45,7 @@ Scroll documents and tool windows.
 - **Click**: In a document it opens the context menu, otherwise it does the same as then ENTER key. In Solution Explorer it expands/collapses folders.
 
 ### Zooming
-Zooming is enhanced so that it only zoom the text editors and not other artifacts in Visual Studio
+Zooming is enhanced so that it only zoom the text editors and the Markdown preview, and not other artifacts in Visual Studio. The preview that is shown next to the text is zoomed while it has the focus, and the same goes for any other web content (WebView2) in the active window.
 
 - **Rotate right**: Zoom in
 - **Rotate left**: Zoom out

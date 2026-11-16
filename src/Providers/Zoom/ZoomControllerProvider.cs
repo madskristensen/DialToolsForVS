@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace DialControllerTools
@@ -19,7 +20,9 @@ namespace DialControllerTools
             var menuItem = await CreateMenuItemAsync(Moniker, iconFilePath);
             var dte = await provider.GetDteAsync(cancellationToken);
             IVsTextManager textManager = await provider.GetServiceAsync<SVsTextManager, IVsTextManager>(cancellationToken);
-            return new ZoomController(menuItem, dte, textManager);
+            IVsMonitorSelection monitorSelection = await provider.GetServiceAsync<SVsShellMonitorSelection, IVsMonitorSelection>(cancellationToken);
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            return new ZoomController(menuItem, dte, textManager, monitorSelection);
         }
     }
 }
